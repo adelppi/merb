@@ -22,4 +22,4 @@
 | 仕様 | 状態 | Issue |
 |---|---|---|
 | [question-format.md](question-format.md) | 実装済み | #6、#11 |
-| [i18n.md](i18n.md) | 合意 | #15 |
+| [i18n.md](i18n.md) | 実装済み | #15 |
