@@ -21,4 +21,4 @@
 
 | 仕様 | 状態 | Issue |
 |---|---|---|
-| （まだない） | | |
+| [question-format.md](question-format.md) | 合意 | #6 |
