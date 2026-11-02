@@ -21,11 +21,11 @@
 
 | 場所 | 中身 |
 |---|---|
-| `src/app/` | Next.js の App Router のページ。薄く保ち、問題を読んで画面の部品に渡すだけにする。言語で分けるページは `src/app/[locale]/` に置く |
+| `src/app/` | Next.js の App Router のページ。薄く保ち、問題を読んで画面の部品に渡すだけにする。URL に言語を含めないので、言語でフォルダを分けない（D-0006） |
 | `src/questions/` | 問題の形、札の生成、判定、問題の JSON の検査。純粋な関数で書く |
 | `src/quiz/` | 出題の進行。reducer、札を混ぜる処理、次の問題を選ぶ処理、`useQuiz` |
 | `src/components/` | 表示の部品。数式、札、回答エリアなど。props だけで描く |
-| `src/i18n/` | next-intl の設定 |
+| `src/i18n/` | next-intl の設定と、言語を読み書きする処理。文言のファイルは `src/i18n/messages/` に置く |
 | `content/` | 観点シートと問題の JSON |
 | `src/**/*.test.ts` | Vitest の単体テスト。テストするファイルと同じフォルダに置く |
 | `e2e/` | Playwright のテスト |

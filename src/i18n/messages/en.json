@@ -1,0 +1,10 @@
+{
+  "Home": {
+    "settings": "Settings"
+  },
+  "Settings": {
+    "title": "Settings",
+    "language": "Language",
+    "back": "Back to top"
+  }
+}

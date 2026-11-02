@@ -1,7 +1,5 @@
+import { HomeContent } from "./home-content";
+
 export default function Home() {
-  return (
-    <main>
-      <h1>merb</h1>
-    </main>
-  );
+  return <HomeContent />;
 }
