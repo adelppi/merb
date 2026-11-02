@@ -21,4 +21,4 @@
 
 | 仕様 | 状態 | Issue |
 |---|---|---|
-| [question-format.md](question-format.md) | 合意 | #6 |
+| [question-format.md](question-format.md) | 実装済み | #6、#11 |
