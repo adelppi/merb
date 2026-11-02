@@ -1,0 +1,10 @@
+{
+  "Home": {
+    "settings": "設定"
+  },
+  "Settings": {
+    "title": "設定",
+    "language": "言語",
+    "back": "トップに戻る"
+  }
+}
