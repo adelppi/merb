@@ -75,3 +75,11 @@
 - 影響: ソースコードを書く最初の Issue、`AGENTS.md` の「コードを書くとき」
 - 選択肢: 開発者の希望は、Next.js と Vercel だけで完結させ、認証も DB も持たないこと。問題の作り方は [D-0002](decisions/D-0002-question-source.md) のとおり、アプリでは LLM を呼ばない。
 - 決定: [D-0003](decisions/D-0003-tech-stack.md)
+
+### OQ-007
+
+- 問い: ソースコードをどう構成し、どの設計パターンを使うか。判定や札の生成の処理と UI のコードを分けるか、出題の状態をどこで持つか、Server Component と Client Component の境目をどこに置くか、札を混ぜる乱数をテストでどう固定するか。
+- 状態: 解決
+- 起票: 2026-11-03、Issue #13
+- 影響: 出題の画面を作る Issue、`AGENTS.md` の「ソースコードの置き場」
+- 決定: [D-0005](decisions/D-0005-architecture.md)

@@ -17,11 +17,16 @@
 
 技術スタックは `docs/decisions/D-0003-tech-stack.md` のとおり。TypeScript、Next.js の App Router、Vercel を使い、パッケージマネージャーは pnpm にする。
 
-ソースコードの置き場は次のとおり。
+ソースコードの置き場は次のとおり。理由は `docs/decisions/D-0005-architecture.md` に書いてある。
 
 | 場所 | 中身 |
 |---|---|
-| `src/app/` | Next.js の App Router のページ |
+| `src/app/` | Next.js の App Router のページ。薄く保ち、問題を読んで画面の部品に渡すだけにする。言語で分けるページは `src/app/[locale]/` に置く |
+| `src/questions/` | 問題の形、札の生成、判定、問題の JSON の検査。純粋な関数で書く |
+| `src/quiz/` | 出題の進行。reducer、札を混ぜる処理、次の問題を選ぶ処理、`useQuiz` |
+| `src/components/` | 表示の部品。数式、札、回答エリアなど。props だけで描く |
+| `src/i18n/` | next-intl の設定 |
+| `content/` | 観点シートと問題の JSON |
 | `src/**/*.test.ts` | Vitest の単体テスト。テストするファイルと同じフォルダに置く |
 | `e2e/` | Playwright のテスト |
 
