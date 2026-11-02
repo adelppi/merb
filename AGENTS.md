@@ -15,7 +15,27 @@
 
 ## コードを書くとき
 
-- 技術スタックはまだ決まっていない（`docs/open-questions.md` の OQ-006）。決まったら、使うコマンドと、PR を出す前に通す検査（lint やテストなど）をこの節に書く。
+技術スタックは `docs/decisions/D-0003-tech-stack.md` のとおり。TypeScript、Next.js の App Router、Vercel を使い、パッケージマネージャーは pnpm にする。
+
+プロジェクトの雛形はまだない。雛形を作るときに、`package.json` に次の名前でスクリプトを用意する。
+
+| コマンド | すること |
+|---|---|
+| `pnpm install` | 依存するパッケージを入れる |
+| `pnpm dev` | 開発用のサーバーを起動する |
+| `pnpm build` | 本番用にビルドする |
+| `pnpm lint` | Biome で lint と整形を検査する |
+| `pnpm typecheck` | TypeScript の型を検査する |
+| `pnpm test` | Vitest で単体テストと問題の JSON の検査を実行する |
+| `pnpm test:e2e` | Playwright でブラウザでの操作をテストする |
+
+PR を出す前に、次をすべて通す。
+
+1. `pnpm lint`
+2. `pnpm typecheck`
+3. `pnpm test`
+4. `pnpm test:e2e`
+5. `pnpm build`
 
 ## 日本語の文体（yomiyasu）
 
