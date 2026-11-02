@@ -17,7 +17,15 @@
 
 技術スタックは `docs/decisions/D-0003-tech-stack.md` のとおり。TypeScript、Next.js の App Router、Vercel を使い、パッケージマネージャーは pnpm にする。
 
-プロジェクトの雛形はまだない。雛形を作るときに、`package.json` に次の名前でスクリプトを用意する。
+ソースコードの置き場は次のとおり。
+
+| 場所 | 中身 |
+|---|---|
+| `src/app/` | Next.js の App Router のページ |
+| `src/**/*.test.ts` | Vitest の単体テスト。テストするファイルと同じフォルダに置く |
+| `e2e/` | Playwright のテスト |
+
+使うコマンドは次のとおり。`package.json` に同じ名前でスクリプトを用意してある。
 
 | コマンド | すること |
 |---|---|
@@ -27,7 +35,9 @@
 | `pnpm lint` | Biome で lint と整形を検査する |
 | `pnpm typecheck` | TypeScript の型を検査する |
 | `pnpm test` | Vitest で単体テストと問題の JSON の検査を実行する |
-| `pnpm test:e2e` | Playwright でブラウザでの操作をテストする |
+| `pnpm test:e2e` | Playwright でブラウザでの操作をテストする。本番用にビルドしてからサーバーを起動して試す |
+
+`pnpm test:e2e` を初めて実行する前に、`pnpm exec playwright install chromium` でブラウザを入れる。
 
 PR を出す前に、次をすべて通す。
 
