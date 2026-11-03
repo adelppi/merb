@@ -17,6 +17,10 @@ export type QuizState = {
   // 回答エリアに並んだ札の id
   placed: number[];
   phase: Phase;
+  // この問題で一度でも間違えたか。間違えたあとに札を運んで「不正解」を消しても、「答えを見る」を出し続けるために使う。
+  missed: boolean;
+  // 答え合わせをした回数。画面には見せず、答え合わせのたびに「不正解」を出し直すきっかけにだけ使う。
+  checks: number;
 };
 
 export type QuizAction =
@@ -28,7 +32,6 @@ export type QuizAction =
   // 回答エリアの中で札を to 番目へ移す。
   | { type: "move"; id: number; to: number }
   | { type: "check" }
-  | { type: "retry" }
   | { type: "reveal" };
 
 // 問題を出したときの状態を作る。
@@ -37,7 +40,30 @@ export function startState(
   question: Question,
   cards: Card[],
 ): QuizState {
-  return { index, question, cards, placed: [], phase: "solving" };
+  return {
+    index,
+    question,
+    cards,
+    placed: [],
+    phase: "solving",
+    missed: false,
+    checks: 0,
+  };
+}
+
+// 札を運べるか。解いているあいだと、間違えたあとは運べる。
+export function canMoveCards(state: QuizState): boolean {
+  return state.phase === "solving" || state.phase === "incorrect";
+}
+
+// 「答えを見る」のボタンを出すか。間違えたあとは、次の問題を出すまで出す。
+export function canReveal(state: QuizState): boolean {
+  return state.missed && canMoveCards(state);
+}
+
+// 回答エリアの並びを変えた状態。間違えたあとなら「不正解」の表示を消すため、解いている状態に戻す。
+function withPlaced(state: QuizState, placed: number[]): QuizState {
+  return { ...state, placed, phase: "solving" };
 }
 
 export function quizReducer(state: QuizState, action: QuizAction): QuizState {
@@ -46,7 +72,7 @@ export function quizReducer(state: QuizState, action: QuizAction): QuizState {
       return startState(action.index, action.question, action.cards);
     case "place": {
       if (
-        state.phase !== "solving" ||
+        !canMoveCards(state) ||
         state.placed.includes(action.id) ||
         !state.cards.some((card) => card.id === action.id)
       ) {
@@ -55,43 +81,44 @@ export function quizReducer(state: QuizState, action: QuizAction): QuizState {
       const placed = [...state.placed];
       const at = clamp(action.at ?? placed.length, 0, placed.length);
       placed.splice(at, 0, action.id);
-      return { ...state, placed };
+      return withPlaced(state, placed);
     }
     case "unplace":
-      if (state.phase !== "solving" || !state.placed.includes(action.id)) {
+      if (!canMoveCards(state) || !state.placed.includes(action.id)) {
         return state;
       }
-      return {
-        ...state,
-        placed: state.placed.filter((id) => id !== action.id),
-      };
+      return withPlaced(
+        state,
+        state.placed.filter((id) => id !== action.id),
+      );
     case "move": {
       const from = state.placed.indexOf(action.id);
-      if (state.phase !== "solving" || from < 0) {
+      if (!canMoveCards(state) || from < 0) {
         return state;
       }
       const placed = state.placed.filter((id) => id !== action.id);
-      placed.splice(clamp(action.to, 0, placed.length), 0, action.id);
-      return { ...state, placed };
-    }
-    case "check":
-      if (state.phase !== "solving") {
+      const to = clamp(action.to, 0, placed.length);
+      // 同じ位置に落としたときは並びが変わらないので、「不正解」の表示も消さない。
+      if (to === from) {
         return state;
       }
+      placed.splice(to, 0, action.id);
+      return withPlaced(state, placed);
+    }
+    case "check": {
+      if (!canMoveCards(state)) {
+        return state;
+      }
+      const correct = judge(placedTexts(state), state.question);
       return {
         ...state,
-        phase: judge(placedTexts(state), state.question)
-          ? "correct"
-          : "incorrect",
+        phase: correct ? "correct" : "incorrect",
+        missed: state.missed || !correct,
+        checks: state.checks + 1,
       };
-    case "retry":
-      return state.phase === "incorrect"
-        ? { ...state, phase: "solving" }
-        : state;
+    }
     case "reveal":
-      return state.phase === "incorrect"
-        ? { ...state, phase: "revealed" }
-        : state;
+      return canReveal(state) ? { ...state, phase: "revealed" } : state;
   }
 }
 
