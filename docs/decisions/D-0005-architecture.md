@@ -110,3 +110,5 @@ content/              観点シートと問題の JSON（いまのまま）
 - 既存のコードは `src/questions/` にあり、決めた構成のとおりなので、移していない。
 
 `src/app/[locale]/` にページを置く点を D-0006 で置き換えた。
+
+Next.js の Server Component と Client Component の境目、`src/app/` にページを置く点を D-0012 で置き換えた。
