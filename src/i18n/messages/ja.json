@@ -34,8 +34,6 @@
     "answer": "答え",
     "answerArea": "回答エリア",
     "pool": "札置き場",
-    "noQuestions": "問題がありません",
-    "changeCategories": "分類を選び直す",
-    "back": "トップに戻る"
+    "noQuestions": "問題がありません"
   }
 }

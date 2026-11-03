@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { pickNextIndex } from "./next";
+import { indexOfQuestion, pickNextIndex } from "./next";
 
 describe("pickNextIndex", () => {
   it("問題がなければ null を返す", () => {
@@ -27,5 +27,18 @@ describe("pickNextIndex", () => {
       [0, 0.34, 0.67].map((r) => pickNextIndex(4, 1, () => r)),
     );
     expect(picked).toEqual(new Set([0, 2, 3]));
+  });
+});
+
+describe("indexOfQuestion", () => {
+  const questions = [{ id: "a-1" }, { id: "a-2" }, { id: "b-1" }];
+
+  it("id が一致する問題の番号を返す", () => {
+    expect(indexOfQuestion(questions, "b-1")).toBe(2);
+  });
+
+  it("一致する問題がないときと、id がないときは null を返す", () => {
+    expect(indexOfQuestion(questions, "c-1")).toBeNull();
+    expect(indexOfQuestion(questions, undefined)).toBeNull();
   });
 });

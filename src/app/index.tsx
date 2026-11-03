@@ -1,4 +1,4 @@
-import { type Href, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SymbolView } from "expo-symbols";
 import { Pressable, StyleSheet, Text, View } from "react-native";
@@ -6,8 +6,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { GlassCircleButton } from "../components/GlassCircleButton";
 import { colors } from "../components/theme";
 import { useI18n } from "../i18n/provider";
-
-const categoriesHref = "/categories" as Href;
 
 // ホーム。右上の歯車で設定、下の「問題を解く」で分類を選ぶ画面へ移る。
 export default function Home() {
@@ -28,7 +26,7 @@ export default function Home() {
       <View style={styles.bottom}>
         <Pressable
           accessibilityRole="button"
-          onPress={() => router.push(categoriesHref)}
+          onPress={() => router.push("/categories")}
           style={({ pressed }) => [styles.start, pressed && styles.pressed]}
         >
           <SymbolView
