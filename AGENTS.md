@@ -28,7 +28,7 @@
 | `src/i18n/` | next-intl の設定と、言語を読み書きする処理。文言のファイルは `src/i18n/messages/` に置く |
 | `content/` | 観点シートと問題の JSON |
 | `src/**/*.test.ts` | Vitest の単体テスト。テストするファイルと同じフォルダに置く |
-| `e2e/` | Playwright のテスト |
+| `e2e/` | Playwright のテスト。テスト用の問題は `e2e/fixtures/questions/` に置く |
 
 使うコマンドは次のとおり。`package.json` に同じ名前でスクリプトを用意してある。
 
@@ -42,7 +42,7 @@
 | `pnpm test` | Vitest で単体テストと問題の JSON の検査を実行する |
 | `pnpm test:e2e` | Playwright でブラウザでの操作をテストする。本番用にビルドしてからサーバーを起動して試す |
 
-`pnpm test:e2e` を初めて実行する前に、`pnpm exec playwright install chromium` でブラウザを入れる。
+`pnpm test:e2e` を初めて実行する前に、`pnpm exec playwright install chromium` でブラウザを入れる。`pnpm test:e2e` は、`content/questions/` の代わりにテスト用の問題を読んでビルドする（`docs/specs/quiz.md`）。
 
 PR を出す前に、次をすべて通す。
 
