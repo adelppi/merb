@@ -4,6 +4,10 @@
     {
       "id": "vectors-functions-001",
       "perspective": "内積 dot・外積 cross",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\mathbf{a} \\cdot \\mathbf{b}",
       "answers": [
         {
@@ -15,6 +19,10 @@
     {
       "id": "vectors-functions-002",
       "perspective": "内積 dot・外積 cross",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\mathbf{u} \\times \\mathbf{v}",
       "answers": [
         {
@@ -26,6 +34,10 @@
     {
       "id": "vectors-functions-003",
       "perspective": "行列式",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\det A",
       "answers": [
         {
@@ -40,6 +52,10 @@
     {
       "id": "vectors-functions-004",
       "perspective": "行列式",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\det M",
       "answers": [
         {
@@ -54,6 +70,10 @@
     {
       "id": "vectors-functions-005",
       "perspective": "関数 f of x",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "g(t)",
       "answers": [
         {
@@ -65,6 +85,10 @@
     {
       "id": "vectors-functions-006",
       "perspective": "関数 f of x",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "f(x+1)",
       "answers": [
         {
@@ -76,6 +100,10 @@
     {
       "id": "vectors-functions-007",
       "perspective": "関数 f of x",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "h(2)",
       "answers": [
         {
@@ -87,6 +115,10 @@
     {
       "id": "vectors-functions-008",
       "perspective": "逆関数",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "f^{-1}(x)",
       "answers": [
         {
@@ -101,6 +133,10 @@
     {
       "id": "vectors-functions-009",
       "perspective": "逆関数",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "g^{-1}(y)",
       "answers": [
         {
@@ -115,6 +151,10 @@
     {
       "id": "vectors-functions-010",
       "perspective": "対数の種類（natural / common / binary）",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\ln 5",
       "answers": [
         {
@@ -129,6 +169,10 @@
     {
       "id": "vectors-functions-011",
       "perspective": "対数の種類（natural / common / binary）",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\log_{10} x",
       "answers": [
         {
@@ -143,6 +187,10 @@
     {
       "id": "vectors-functions-012",
       "perspective": "対数の種類（natural / common / binary）",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\log_2 8",
       "answers": [
         {
@@ -157,6 +205,10 @@
     {
       "id": "vectors-functions-013",
       "perspective": "極限",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\lim_{x \\to 0} f(x)",
       "answers": [
         {
@@ -193,6 +245,10 @@
     {
       "id": "vectors-functions-014",
       "perspective": "極限",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\lim_{n \\to \\infty} a_n",
       "answers": [
         {
@@ -229,6 +285,10 @@
     {
       "id": "vectors-functions-015",
       "perspective": "三角・逆三角関数",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\sin^{-1} x",
       "answers": [
         {
@@ -243,6 +303,10 @@
     {
       "id": "vectors-functions-016",
       "perspective": "三角・逆三角関数",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\cos \\theta",
       "answers": [
         {
@@ -257,6 +321,10 @@
     {
       "id": "vectors-functions-017",
       "perspective": "三角・逆三角関数",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\tan^{-1} y",
       "answers": [
         {

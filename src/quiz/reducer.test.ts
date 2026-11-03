@@ -14,6 +14,10 @@ import {
 const fifthPower: Question = {
   id: "scripts-powers-roots-001",
   perspective: "n乗（序数＋power）",
+  prompt: {
+    ja: "次の数式を英語で読んでください。",
+    en: "Read the expression in English.",
+  },
   latex: "x^5",
   answers: [
     { cards: ["x", "to", "the", "fifth", "power"] },

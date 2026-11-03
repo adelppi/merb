@@ -7,6 +7,10 @@ function validQuestion() {
   return {
     id: "scripts-powers-roots-001",
     perspective: "n乗（序数＋power）",
+    prompt: {
+      ja: "次の数式を英語で読んでください。",
+      en: "Read the expression in English.",
+    },
     latex: "x^5",
     answers: [
       { cards: ["x", "to", "the", "fifth", "power"] },
@@ -113,6 +117,34 @@ describe("checkQuestionFiles", () => {
     expect(check({ ...validQuestion(), perspective: "n乗" })).toEqual([
       expect.stringContaining("観点シートにない"),
     ]);
+  });
+
+  describe("すべての問題に、日本語と英語の問題文があり、どちらも空白だけの文字列になっていない", () => {
+    const prompt = validQuestion().prompt;
+    it.each([
+      ["prompt がない", { ...validQuestion(), prompt: undefined }],
+      [
+        "日本語の問題文がない",
+        { ...validQuestion(), prompt: { en: prompt.en } },
+      ],
+      ["英語の問題文がない", { ...validQuestion(), prompt: { ja: prompt.ja } }],
+      [
+        "日本語の問題文が空",
+        { ...validQuestion(), prompt: { ...prompt, ja: "" } },
+      ],
+      [
+        "英語の問題文が空白だけ",
+        { ...validQuestion(), prompt: { ...prompt, en: " \t" } },
+      ],
+      [
+        "知らない言語の問題文がある",
+        { ...validQuestion(), prompt: { ...prompt, fr: "Lisez." } },
+      ],
+    ])("%s", (_, question) => {
+      expect(check(question)).toEqual([
+        expect.stringContaining("形が合っていない"),
+      ]);
+    });
   });
 
   it("latex を KaTeX で描けない", () => {

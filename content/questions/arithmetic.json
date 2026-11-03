@@ -4,6 +4,10 @@
     {
       "id": "arithmetic-001",
       "perspective": "±",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "a \\pm b",
       "answers": [
         {
@@ -15,6 +19,10 @@
     {
       "id": "arithmetic-002",
       "perspective": "±",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "3 \\pm \\sqrt{2}",
       "answers": [
         {
@@ -36,6 +44,10 @@
     {
       "id": "arithmetic-003",
       "perspective": "掛け算 times / multiplied by",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "4 \\times 5",
       "answers": [
         {
@@ -50,6 +62,10 @@
     {
       "id": "arithmetic-004",
       "perspective": "掛け算 times / multiplied by",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "3x",
       "answers": [
         {
@@ -64,6 +80,10 @@
     {
       "id": "arithmetic-005",
       "perspective": "割り算 divided by / over",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "6 \\div 2",
       "answers": [
         {
@@ -75,6 +95,10 @@
     {
       "id": "arithmetic-006",
       "perspective": "割り算 divided by / over",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "12 \\div 4",
       "answers": [
         {
@@ -86,6 +110,10 @@
     {
       "id": "arithmetic-007",
       "perspective": "比",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "2 : 5",
       "answers": [
         {
@@ -100,6 +128,10 @@
     {
       "id": "arithmetic-008",
       "perspective": "比",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "3 : 4",
       "answers": [
         {
@@ -114,6 +146,10 @@
     {
       "id": "arithmetic-009",
       "perspective": "階乗",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "n!",
       "answers": [
         {
@@ -125,6 +161,10 @@
     {
       "id": "arithmetic-010",
       "perspective": "階乗",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "5!",
       "answers": [
         {
@@ -136,6 +176,10 @@
     {
       "id": "arithmetic-011",
       "perspective": "階乗",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "(n+1)!",
       "answers": [
         {
@@ -147,6 +191,10 @@
     {
       "id": "arithmetic-012",
       "perspective": "括弧のまとまり（the sum of / the quantity）",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "2(x+1)",
       "answers": [
         {
@@ -161,6 +209,10 @@
     {
       "id": "arithmetic-013",
       "perspective": "括弧のまとまり（the sum of / the quantity）",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "3(a-b)",
       "answers": [
         {
@@ -172,6 +224,10 @@
     {
       "id": "arithmetic-014",
       "perspective": "括弧のまとまり（the sum of / the quantity）",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "(x+y)z",
       "answers": [
         {
@@ -186,6 +242,10 @@
     {
       "id": "arithmetic-015",
       "perspective": "入れ子括弧 open / close",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "[a(b+c)]",
       "answers": [
         {
@@ -210,6 +270,10 @@
     {
       "id": "arithmetic-016",
       "perspective": "入れ子括弧 open / close",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "[(a+b)c]",
       "answers": [
         {
@@ -234,6 +298,10 @@
     {
       "id": "arithmetic-017",
       "perspective": "絶対値",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\lvert x \\rvert",
       "answers": [
         {
@@ -245,6 +313,10 @@
     {
       "id": "arithmetic-018",
       "perspective": "絶対値",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\lvert a - b \\rvert",
       "answers": [
         {
