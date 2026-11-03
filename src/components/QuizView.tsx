@@ -1,7 +1,6 @@
 import { SymbolView } from "expo-symbols";
 import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,
   useReducedMotion,
@@ -13,13 +12,7 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useI18n } from "../i18n/provider";
 import type { Answer } from "../questions/schema";
-import {
-  otherAnswers,
-  placedCards,
-  poolCards,
-  type QuizAction,
-  type QuizState,
-} from "../quiz/reducer";
+import { otherAnswers, type QuizAction, type QuizState } from "../quiz/reducer";
 import { quizView } from "../quiz/view";
 import { CardBoard } from "./CardBoard";
 import { MathView } from "./MathView";
@@ -78,20 +71,15 @@ export function QuizView({ state, dispatch, next }: Props) {
 
   return (
     <View style={styles.screen}>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={[
-          styles.content,
-          { paddingBottom: bottom + 52 + 40 },
-        ]}
-      >
+      <View style={styles.content}>
         <Text style={styles.prompt}>{state.question.prompt[locale]}</Text>
         <View style={styles.math}>
           <MathView latex={state.question.latex} color={colors.text} />
         </View>
         <CardBoard
-          pool={poolCards(state)}
-          placed={placedCards(state)}
+          key={state.index}
+          cards={state.cards}
+          placedIds={state.placed}
           movable={view.showPool}
           placedGreen={view.placedGreen}
           answerLabel={messages.Quiz.answerArea}
@@ -101,7 +89,7 @@ export function QuizView({ state, dispatch, next }: Props) {
           onUnplace={(id) => dispatch({ type: "unplace", id })}
           onMove={(id, to) => dispatch({ type: "move", id, to })}
         />
-      </ScrollView>
+      </View>
       <View style={[styles.footer, { paddingBottom: bottom }]}>
         {view.showReveal ? (
           <View style={styles.button}>

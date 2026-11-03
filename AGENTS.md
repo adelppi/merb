@@ -64,7 +64,7 @@ Maestro の操作テストは、PR を出す前の確認に入れない。シミ
 2. `EXPO_NO_TYPESCRIPT_SETUP=1 pnpm exec expo start --port 8099` で開発用サーバーを動かす。
 3. `maestro test maestro/correct.yaml` のように、フローを指定して実行する。フローは、Expo Go を開き直してから、`exp://127.0.0.1:8099/...` のリンクで画面を開く。
 
-Maestro では、札の長押しドラッグを送れない（D-0021）。ドラッグを画面で確かめるには、手で操作する。
+札のドラッグは、Maestro の `swipe` で送れる（D-0023）。ドラッグの途中の見た目は、手で操作して確かめる。
 
 Claude Design の iOS デザインは、参照資料として `docs/design/ios/` に置いてある（`docs/decisions/D-0017-design-import.md`）。コードではないので、lint、型検査、テストの対象に入れない。仕様との差は `docs/design/README.md` に書いてある。画面を作るときは、あわせて読む。
 
