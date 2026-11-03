@@ -8,7 +8,8 @@
     "platforms": ["ios"],
     "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "bundleIdentifier": "com.adelppi.merb"
     },
     "plugins": ["expo-router", "expo-asset", "expo-font"],
     "experiments": {
