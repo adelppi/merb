@@ -20,21 +20,22 @@
 - 対象 OS は iOS だけにする。Android はあとで別の Issue で扱う（D-0014）。
 - Next.js の Web 版は削除した（D-0012、Issue #31）。Vercel との連携もやめた（D-0013）。
 - 画面の部品の操作テストと実機に近い操作テストの道具は、画面を作り直す Issue（#35 以降）で決める（D-0015）。
-- 数式の描画と札のドラッグの道具は #33、文言の切り替えと言語の保存は #37 で決める（OQ-015）。それまで `katex` は、問題の JSON の検査（`src/questions/latex.ts`）のために残す。
+- 数式の描画と札のドラッグの道具は D-0016、文言の切り替え（自作の Context）と言語の保存（AsyncStorage）は D-0019 で決めた。`katex` は、問題の JSON の検査（`src/questions/latex.ts`）と数式の描画に使う。
 
 ソースコードの置き場は次のとおり。理由は `docs/decisions/D-0005-architecture.md` に書いてある。
 
 | 場所 | 中身 |
 |---|---|
-| `src/app/` | Expo Router の画面。薄く保ち、問題を読んで画面の部品に渡すだけにする。いまは `_layout.tsx` と、問題の数を出すだけの `index.tsx` がある |
+| `src/app/` | Expo Router の画面。薄く保ち、問題を読んで画面の部品に渡すだけにする。`_layout.tsx` が `I18nProvider` を載せる。いまは `index.tsx`（ホーム）と `settings.tsx`（設定）がある |
 | `src/questions/` | 問題の形、札の生成、判定、問題の JSON の検査。純粋な関数で書く。アプリに同梱する問題は `bundled.ts` が読み込む。`content/questions/` に JSON を足したら、`bundled.ts` にも足す |
 | `src/quiz/` | 出題の進行。reducer、札を混ぜる処理、次の問題を選ぶ処理、`useQuiz` |
-| `src/i18n/` | 言語の型と値の検査（`locale.ts`）。文言のファイルは `src/i18n/messages/` に置く |
+| `src/i18n/` | 言語の型と値の検査（`locale.ts`）、言語の保存と読み出し（`storage.ts`）、`I18nProvider` と `useI18n()`（`provider.tsx`）。文言のファイルは `src/i18n/messages/` に置く |
+| `src/components/` | 画面の部品と、画面で共有する色（`theme.ts`）。画面ごとのフォルダは作らず、ここに並べる |
 | `content/` | 観点シートと問題の JSON |
 | `src/**/*.test.ts` | Vitest の単体テスト。テストするファイルと同じフォルダに置く |
 | `app.json` | Expo の設定 |
 
-画面の部品（`src/components/` など）の置き場は、画面の作り直し（#35〜#37）で決める。
+画面の文言は、`useI18n()` が返す `messages` から読む。キーを足すときは、`ja.json` と `en.json` に同じ構造で足す。
 
 使うコマンドは次のとおり。`package.json` に同じ名前でスクリプトを用意してある。
 
