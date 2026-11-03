@@ -45,6 +45,7 @@
 | `pnpm install` | 依存するパッケージを入れる |
 | `pnpm start` | Expo の開発用サーバーを起動する |
 | `pnpm ios` | 開発用サーバーを起動し、iOS のシミュレーターで開く（Xcode が要る） |
+| `pnpm ios:device` | 接続した iPhone の実機にビルドして入れる（Xcode と Apple ID の署名が要る）。生成される `ios/` はコミットしない |
 | `pnpm lint` | Biome で lint と整形を検査する |
 | `pnpm typecheck` | TypeScript の型を検査する |
 | `pnpm test` | Vitest で単体テストと問題の JSON の検査を実行する |
