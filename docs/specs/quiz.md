@@ -1,6 +1,6 @@
 # 1問を解く出題の画面
 
-- 状態: 合意
+- 状態: 実装済み
 - Issue: #17、#22
 - 関係する決定: [D-0003](../decisions/D-0003-tech-stack.md)、[D-0004](../decisions/D-0004-question-format.md)、[D-0005](../decisions/D-0005-architecture.md)、[D-0006](../decisions/D-0006-locale-storage.md)、[D-0007](../decisions/D-0007-quiz-screen.md)、[D-0009](../decisions/D-0009-card-font.md)
 
@@ -86,7 +86,7 @@
 - [x] 問題が1問もないときは「問題がありません」と出す（Vitest）
 - [x] 英語を選んでいるときは、出題の画面の文言が英語で出る（Playwright）
 - [x] ページはビルドのときに静的に作る
-- [ ] 英字1文字の札は KaTeX の斜体で、ほかの札は KaTeX の立体で出る。札のボタンの名前は札の文字列のままになる（Vitest と Playwright）
+- [x] 英字1文字の札は KaTeX の斜体で、ほかの札は KaTeX の立体で出る。札のボタンの名前は札の文字列のままになる（Vitest と Playwright）
 
 ## 範囲外
 
