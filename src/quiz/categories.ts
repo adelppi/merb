@@ -6,12 +6,37 @@ import {
 } from "../questions/schema";
 
 // 選んだ分類を渡す URL のクエリの名前。決まりは docs/specs/category-select.md に書いてある。
-export const categoryParam = "category";
+export const categoryParam = "categories";
 
-// URL のクエリ category の値を、分類の id の配列にする。
+// クエリ categories の値（コンマ区切りの文字列。Expo Router は重なると配列で返す）を、分類の id の配列にする。
 // 分類の id でないものと重なったものを除き、分類の表の順に並べる。
-export function parseCategories(values: readonly string[]): CategoryId[] {
+export function parseCategories(
+  value: string | readonly string[] | undefined,
+): CategoryId[] {
+  const values = (typeof value === "string" ? [value] : (value ?? [])).flatMap(
+    (item) => item.split(","),
+  );
   return categoryIds.filter((id) => values.includes(id));
+}
+
+// 分類の行をタップしたときの、選んだ分類を返す。問題がない分類（available にないもの）は切り替えない。
+// 結果は分類の表の順に並べる。
+export function toggleCategory(
+  selected: readonly CategoryId[],
+  id: CategoryId,
+  available: readonly CategoryId[],
+): CategoryId[] {
+  if (!available.includes(id)) {
+    return [...selected];
+  }
+  return categoryIds.filter((item) =>
+    item === id ? !selected.includes(id) : selected.includes(item),
+  );
+}
+
+// 「選んだ分類で始める」を押せるか。分類を1つ以上選んでいるときだけ押せる。
+export function canStart(selected: readonly CategoryId[]): boolean {
+  return selected.length > 0;
 }
 
 // 問題が1問以上ある分類を、分類の表の順に返す。
@@ -35,7 +60,8 @@ export function selectQuestions(
     .flatMap((file) => file.questions);
 }
 
-// 選んだ分類を付けた URL を返す。分類を1つも選んでいなければ、クエリを付けない。
+// 選んだ分類を付けた URL を返す（例: /quiz?categories=numbers,fractions）。
+// 分類は分類の表の順に並べる。分類を1つも選んでいなければ、クエリを付けない。
 export function categoriesHref(
   path: string,
   categories: readonly CategoryId[],
@@ -43,8 +69,6 @@ export function categoriesHref(
   if (categories.length === 0) {
     return path;
   }
-  const query = new URLSearchParams(
-    categories.map((id) => [categoryParam, id]),
-  );
-  return `${path}?${query}`;
+  const ordered = categoryIds.filter((id) => categories.includes(id));
+  return `${path}?${categoryParam}=${ordered.join(",")}`;
 }

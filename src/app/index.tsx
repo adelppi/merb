@@ -7,7 +7,6 @@ import { GlassCircleButton } from "../components/GlassCircleButton";
 import { colors } from "../components/theme";
 import { useI18n } from "../i18n/provider";
 
-// 分類を選ぶ画面は #36 で作る。それまでは、この移動先に画面がない。
 const categoriesHref = "/categories" as Href;
 
 // ホーム。右上の歯車で設定、下の「問題を解く」で分類を選ぶ画面へ移る。

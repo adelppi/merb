@@ -2,9 +2,11 @@ import { describe, expect, it } from "vitest";
 import type { CategoryId, QuestionFile } from "../questions/schema";
 import {
   availableCategories,
+  canStart,
   categoriesHref,
   parseCategories,
   selectQuestions,
+  toggleCategory,
 } from "./categories";
 import { pickNextIndex } from "./next";
 
@@ -30,18 +32,28 @@ function ids(categories: CategoryId[]): string[] {
 
 describe("parseCategories", () => {
   it("分類の id を、分類の表の順に並べて返す", () => {
-    expect(parseCategories(["calculus", "numbers"])).toEqual([
+    expect(parseCategories("calculus,numbers")).toEqual([
       "numbers",
       "calculus",
     ]);
   });
 
+  it("クエリが重なって配列で渡されても読める", () => {
+    expect(parseCategories(["calculus", "numbers,fractions"])).toEqual([
+      "numbers",
+      "fractions",
+      "calculus",
+    ]);
+  });
+
   it("分類の id でないものと、重なったものを除く", () => {
-    expect(parseCategories(["numbers", "foo", "numbers", "NUMBERS"])).toEqual([
+    expect(parseCategories("numbers,foo,numbers,NUMBERS,")).toEqual([
       "numbers",
     ]);
-    expect(parseCategories(["foo"])).toEqual([]);
+    expect(parseCategories("foo")).toEqual([]);
+    expect(parseCategories("")).toEqual([]);
     expect(parseCategories([])).toEqual([]);
+    expect(parseCategories(undefined)).toEqual([]);
   });
 });
 
@@ -64,7 +76,7 @@ describe("selectQuestions", () => {
   });
 
   it("分類の id でないものしかなければ、すべての分類から出す", () => {
-    expect(ids(parseCategories(["foo"]))).toHaveLength(4);
+    expect(ids(parseCategories("foo"))).toHaveLength(4);
   });
 
   it("問題がない分類だけを選ぶと、問題を返さない", () => {
@@ -96,13 +108,56 @@ describe("availableCategories", () => {
 });
 
 describe("categoriesHref", () => {
-  it("選んだ分類を category のクエリに1つずつ付ける", () => {
-    expect(categoriesHref("/quiz", ["numbers", "scripts-powers-roots"])).toBe(
-      "/quiz?category=numbers&category=scripts-powers-roots",
+  it("選んだ分類を、表の順にコンマでつないで categories に付ける", () => {
+    expect(categoriesHref("/quiz", ["scripts-powers-roots", "numbers"])).toBe(
+      "/quiz?categories=numbers,scripts-powers-roots",
+    );
+  });
+
+  it("分類を1つ選んだときは、コンマを付けない", () => {
+    expect(categoriesHref("/quiz", ["fractions"])).toBe(
+      "/quiz?categories=fractions",
     );
   });
 
   it("分類を1つも選んでいなければ、クエリを付けない", () => {
-    expect(categoriesHref("/categories", [])).toBe("/categories");
+    expect(categoriesHref("/quiz", [])).toBe("/quiz");
+  });
+
+  it("付けたクエリを parseCategories で元の分類に戻せる", () => {
+    const href = categoriesHref("/quiz", ["calculus", "fractions"]);
+    const value = href.split("categories=")[1];
+    expect(parseCategories(value)).toEqual(["fractions", "calculus"]);
+  });
+});
+
+describe("toggleCategory", () => {
+  const available = availableCategories(files);
+
+  it("選んでいない分類を選び、選んでいる分類を外す", () => {
+    expect(toggleCategory([], "fractions", available)).toEqual(["fractions"]);
+    expect(toggleCategory(["fractions"], "fractions", available)).toEqual([]);
+  });
+
+  it("複数の分類を選べて、結果は分類の表の順に並ぶ", () => {
+    const first = toggleCategory([], "calculus", available);
+    const second = toggleCategory(first, "numbers", available);
+    expect(second).toEqual(["numbers", "calculus"]);
+    expect(toggleCategory(second, "numbers", available)).toEqual(["calculus"]);
+  });
+
+  it("問題がない分類は、選べない", () => {
+    expect(toggleCategory([], "relations", available)).toEqual([]);
+    expect(toggleCategory(["numbers"], "relations", available)).toEqual([
+      "numbers",
+    ]);
+  });
+});
+
+describe("canStart", () => {
+  it("分類を1つも選んでいなければ押せず、1つ以上選んでいれば押せる", () => {
+    expect(canStart([])).toBe(false);
+    expect(canStart(["numbers"])).toBe(true);
+    expect(canStart(["numbers", "calculus"])).toBe(true);
   });
 });
