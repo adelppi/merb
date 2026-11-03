@@ -5,6 +5,10 @@ import type { Question } from "./schema";
 const fifthPower: Question = {
   id: "scripts-powers-roots-001",
   perspective: "n乗（序数＋power）",
+  prompt: {
+    ja: "次の数式を英語で読んでください。",
+    en: "Read the expression in English.",
+  },
   latex: "x^5",
   answers: [
     { cards: ["x", "to", "the", "fifth", "power"] },
@@ -16,6 +20,10 @@ const fifthPower: Question = {
 const fourier: Question = {
   id: "combined-001",
   perspective: "フーリエ変換",
+  prompt: {
+    ja: "次の数式を英語で読んでください。",
+    en: "Read the expression in English.",
+  },
   latex: "F(\\omega)",
   answers: [{ cards: ["F", "of", "omega"] }],
   distractors: ["f"],

@@ -4,6 +4,10 @@
     {
       "id": "calculus-001",
       "perspective": "差分 delta",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\Delta x",
       "answers": [
         {
@@ -15,6 +19,10 @@
     {
       "id": "calculus-002",
       "perspective": "差分 delta",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\frac{\\Delta y}{\\Delta x}",
       "answers": [
         {
@@ -26,6 +34,10 @@
     {
       "id": "calculus-003",
       "perspective": "導関数",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\frac{dy}{dx}",
       "answers": [
         {
@@ -40,6 +52,10 @@
     {
       "id": "calculus-004",
       "perspective": "導関数",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\frac{d^2y}{dx^2}",
       "answers": [
         {
@@ -54,6 +70,10 @@
     {
       "id": "calculus-005",
       "perspective": "導関数",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\frac{df}{dt}",
       "answers": [
         {
@@ -68,6 +88,10 @@
     {
       "id": "calculus-006",
       "perspective": "偏微分 with respect to",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\frac{\\partial f}{\\partial y}",
       "answers": [
         {
@@ -92,6 +116,10 @@
     {
       "id": "calculus-007",
       "perspective": "偏微分 with respect to",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\frac{\\partial u}{\\partial t}",
       "answers": [
         {
@@ -116,6 +144,10 @@
     {
       "id": "calculus-008",
       "perspective": "定積分 from … to …",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\int_0^1 x \\, dx",
       "answers": [
         {
@@ -154,6 +186,10 @@
     {
       "id": "calculus-009",
       "perspective": "定積分 from … to …",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\int_a^b f(x) \\, dx",
       "answers": [
         {
@@ -196,6 +232,10 @@
     {
       "id": "calculus-010",
       "perspective": "総和 Σ",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\sum_{k=1}^{n} k",
       "answers": [
         {
@@ -218,6 +258,10 @@
     {
       "id": "calculus-011",
       "perspective": "総和 Σ",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\sum_{i=1}^{10} i^2",
       "answers": [
         {
@@ -241,6 +285,10 @@
     {
       "id": "calculus-012",
       "perspective": "総乗 Π",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\prod_{i=1}^{n} i",
       "answers": [
         {
@@ -263,6 +311,10 @@
     {
       "id": "calculus-013",
       "perspective": "総乗 Π",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\prod_{k=1}^{5} a_k",
       "answers": [
         {
