@@ -9,7 +9,6 @@
     "ignoreUnknown": false,
     "includes": [
       "src/**",
-      "e2e/**",
       "content/**/*.json",
       "*.ts",
       "*.json",

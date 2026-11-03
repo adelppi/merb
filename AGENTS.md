@@ -17,42 +17,41 @@
 
 技術スタックは `docs/decisions/D-0003-tech-stack.md` のとおり。TypeScript、Next.js の App Router、Vercel を使い、パッケージマネージャーは pnpm にする。
 
-アプリは React Native と Expo のネイティブアプリに切り替える（`docs/decisions/D-0012-native-app.md`）。Web 版（Next.js）はやめる。切り替えが終わるまでは、次の置き場とコマンドの表が Next.js の Web 版を指している。使うライブラリと対象は `docs/open-questions.md` の OQ-015 で決める。
+アプリは React Native と Expo のネイティブアプリに切り替える（`docs/decisions/D-0012-native-app.md`）。Next.js の Web 版は削除した（Issue #31）。Expo の雛形は Issue #32 で作るので、いまは画面も、画面を動かすコマンドもない。使うライブラリと対象は `docs/open-questions.md` の OQ-015 で決める。
+
+削除した範囲と残した範囲は次のとおり。
+
+- 削除した: `src/app/`、`src/components/`、`e2e/`、Next.js と Playwright の設定（`next.config.ts`、`playwright.config.ts`）、`next`、`next-intl`、`@dnd-kit/*`、`@playwright/test`、`react-dom` への依存、言語を保存する処理（`src/i18n/storage.ts`）。
+- 残した: `src/questions/`、`src/quiz/`、`content/`、`src/i18n/` のうち言語の型と値の検査（`locale.ts`）と文言のファイル（`messages.ts`、`messages/`）。`katex` は、問題の JSON の検査（`src/questions/latex.ts`）が使うので残した。
 
 ソースコードの置き場は次のとおり。理由は `docs/decisions/D-0005-architecture.md` に書いてある。
 
 | 場所 | 中身 |
 |---|---|
-| `src/app/` | Next.js の App Router のページ。薄く保ち、問題を読んで画面の部品に渡すだけにする。URL に言語を含めないので、言語でフォルダを分けない（D-0006） |
 | `src/questions/` | 問題の形、札の生成、判定、問題の JSON の検査。純粋な関数で書く |
 | `src/quiz/` | 出題の進行。reducer、札を混ぜる処理、次の問題を選ぶ処理、`useQuiz` |
-| `src/components/` | 表示の部品。数式、札、回答エリアなど。props だけで描く |
-| `src/i18n/` | next-intl の設定と、言語を読み書きする処理。文言のファイルは `src/i18n/messages/` に置く |
+| `src/i18n/` | 言語の型と値の検査（`locale.ts`）。文言のファイルは `src/i18n/messages/` に置く |
 | `content/` | 観点シートと問題の JSON |
 | `src/**/*.test.ts` | Vitest の単体テスト。テストするファイルと同じフォルダに置く |
-| `e2e/` | Playwright のテスト。テスト用の問題は `e2e/fixtures/questions/` に置く |
 
-使うコマンドは次のとおり。`package.json` に同じ名前でスクリプトを用意してある。
+画面の部品の置き場は、Expo の雛形づくり（#32）と画面の作り直し（#35〜#37）で決める。
+
+使うコマンドは次のとおり。`package.json` に同じ名前でスクリプトを用意してある。`pnpm dev`、`pnpm build`、`pnpm test:e2e` は、Expo の雛形づくり（#32）まで用意しない。
 
 | コマンド | すること |
 |---|---|
 | `pnpm install` | 依存するパッケージを入れる |
-| `pnpm dev` | 開発用のサーバーを起動する |
-| `pnpm build` | 本番用にビルドする |
 | `pnpm lint` | Biome で lint と整形を検査する |
 | `pnpm typecheck` | TypeScript の型を検査する |
 | `pnpm test` | Vitest で単体テストと問題の JSON の検査を実行する |
-| `pnpm test:e2e` | Playwright でブラウザでの操作をテストする。本番用にビルドしてからサーバーを起動して試す |
-
-`pnpm test:e2e` を初めて実行する前に、`pnpm exec playwright install chromium` でブラウザを入れる。`pnpm test:e2e` は、`content/questions/` の代わりにテスト用の問題を読んでビルドする（`docs/specs/quiz.md`）。
 
 PR を出す前に、次をすべて通す。
 
 1. `pnpm lint`
 2. `pnpm typecheck`
 3. `pnpm test`
-4. `pnpm test:e2e`
-5. `pnpm build`
+
+`pnpm test:e2e` と `pnpm build` は、Expo の雛形づくり（#32）まで対象がないので通さない。
 
 ## 日本語の文体（yomiyasu）
 
