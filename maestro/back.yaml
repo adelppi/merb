@@ -1,0 +1,27 @@
+# 出題の画面の戻るボタンで、選んだ分類を残したまま分類を選ぶ画面へ戻る流れ。
+appId: host.exp.Exponent
+---
+- stopApp
+- launchApp
+- openLink: exp://127.0.0.1:8099
+- extendedWaitUntil:
+    visible: "merb"
+    timeout: 90000
+- openLink: exp://127.0.0.1:8099/--/categories
+- extendedWaitUntil:
+    visible: "選んだ分類で始める"
+    timeout: 30000
+- tapOn: "数"
+- tapOn: "選んだ分類で始める"
+- extendedWaitUntil:
+    visible: "答え合わせ"
+    timeout: 30000
+# 戻るボタン（ヘッダーの左上）
+- tapOn:
+    point: 9%,9%
+- extendedWaitUntil:
+    visible: "すべての分類から出す"
+    timeout: 10000
+# 選んだ分類が残っているので、「選んだ分類で始める」を押せる
+- tapOn: "選んだ分類で始める"
+- assertVisible: "答え合わせ"

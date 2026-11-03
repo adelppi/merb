@@ -25,18 +25,7 @@
 
 ## 未解決
 
-### OQ-015
-
-- 問い: ネイティブアプリ版で、どのライブラリと対象を使うか。対象にする OS、数式の描画（KaTeX の代わり）、札のドラッグ（dnd-kit の代わり）、文言の切り替え（next-intl の代わり）、言語と設定の保存、画面の移動、単体テストとブラウザーに代わる操作のテスト、D-0003 のうち変えない項目（TypeScript、pnpm、Zod、Biome、Vitest）をそのまま使うか、`vision.md` の「スマートフォンでも使える」をネイティブアプリに合わせて書き換えるか。
-- 状態: 未解決（一部を解決）
-- 起票: 2026-11-03、Issue #29
-- 影響: `AGENTS.md` の「コードを書くとき」、Expo の雛形づくりの Issue、画面を作り直す Issue
-- 選択肢: 分かっていない。実装を分けた Issue で試して決める。
-- 解決した分（Issue #32）: 対象 OS と画面の移動は [D-0014](decisions/D-0014-ios-expo-router.md)。D-0003 のうち変えない項目、単体テストの道具、`vision.md` の書き方は [D-0015](decisions/D-0015-test-and-toolchain.md)。
-- 解決した分（Issue #33）: 数式の描画と札のドラッグは [D-0016](decisions/D-0016-math-and-drag-libs.md)。
-- 解決した分（Issue #37）: 文言の切り替えと言語の保存は [D-0019](decisions/D-0019-i18n-and-locale-storage.md)。
-- 残っている分: 画面の部品の操作テストと実機に近い操作テストの道具（#35 以降。D-0015）。
-- 決定: 一部のみ。上の「解決した分」
+なし
 
 ## 解決済み
 
@@ -228,3 +217,16 @@
 - 影響: #35、#36
 - 選択肢: (a) Claude Design で足してもらい、取り込み直す。(b) 実装の Issue で、iOS の標準の見た目（薄い文字色、押せない状態の色）に合わせて作り、adelppi が確かめる（推奨）。
 - 決定: [D-0018](decisions/D-0018-design-open-questions.md)
+
+### OQ-015
+
+- 問い: ネイティブアプリ版で、どのライブラリと対象を使うか。対象にする OS、数式の描画（KaTeX の代わり）、札のドラッグ（dnd-kit の代わり）、文言の切り替え（next-intl の代わり）、言語と設定の保存、画面の移動、単体テストとブラウザーに代わる操作のテスト、D-0003 のうち変えない項目（TypeScript、pnpm、Zod、Biome、Vitest）をそのまま使うか、`vision.md` の「スマートフォンでも使える」をネイティブアプリに合わせて書き換えるか。
+- 状態: 解決
+- 起票: 2026-11-03、Issue #29
+- 影響: `AGENTS.md` の「コードを書くとき」、Expo の雛形づくりの Issue、画面を作り直す Issue
+- 選択肢: 分かっていない。実装を分けた Issue で試して決める。
+- 解決した分（Issue #32）: 対象 OS と画面の移動は [D-0014](decisions/D-0014-ios-expo-router.md)。D-0003 のうち変えない項目、単体テストの道具、`vision.md` の書き方は [D-0015](decisions/D-0015-test-and-toolchain.md)。
+- 解決した分（Issue #33）: 数式の描画と札のドラッグは [D-0016](decisions/D-0016-math-and-drag-libs.md)。
+- 解決した分（Issue #37）: 文言の切り替えと言語の保存は [D-0019](decisions/D-0019-i18n-and-locale-storage.md)。
+- 解決した分（Issue #35）: 画面の部品の操作テストと実機に近い操作テストの道具は [D-0021](decisions/D-0021-operation-test-tool.md)。
+- 決定: 上の「解決した分」の各決定

@@ -17,3 +17,12 @@ export function pickNextIndex(
   const index = Math.floor(random() * (count - 1));
   return index >= previous ? index + 1 : index;
 }
+
+// id が一致する問題の番号を返す。なければ null を返す。
+export function indexOfQuestion(
+  questions: readonly { id: string }[],
+  id: string | undefined,
+): number | null {
+  const index = questions.findIndex((question) => question.id === id);
+  return index < 0 ? null : index;
+}

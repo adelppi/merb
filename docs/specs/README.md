@@ -23,7 +23,7 @@
 |---|---|---|
 | [question-format.md](question-format.md) | 実装済み | #6、#11 |
 | [i18n.md](i18n.md) | 実装済み | #15 |
-| [quiz.md](quiz.md) | 実装済み | #17、#19、#22、#23、#24 |
+| [quiz.md](quiz.md) | 合意 | #17、#19、#22、#23、#24、#35 |
 | [category-select.md](category-select.md) | 合意 | #19、#36 |
 
-Next.js の Web 版の削除（#31）により、`quiz.md`、`category-select.md`、`i18n.md` の画面に対応するコードは、いまはない。画面は #35〜#37 で作り直し、そのとき仕様を書き換える。各仕様の冒頭の「注記」に、残してあるコードを書いた。
+Next.js の Web 版は削除した（#31）。`quiz.md`、`category-select.md`、`i18n.md` の画面は、#35〜#37 で React Native で作り直し、そのとき仕様もネイティブアプリに合わせて書き換えた。

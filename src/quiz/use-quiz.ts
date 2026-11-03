@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useReducer } from "react";
 import type { Question } from "../questions/schema";
 import { dealShuffled } from "./deal";
-import { pickNextIndex } from "./next";
+import { indexOfQuestion, pickNextIndex } from "./next";
 import {
   type QuizAction,
   type QuizState,
@@ -10,7 +10,7 @@ import {
 } from "./reducer";
 import type { Random } from "./shuffle";
 
-// 問題を出す前（ビルドのときと、画面を開いた直後）は null。
+// 問題を出す前（画面を開いた直後）は null。
 function reducer(
   state: QuizState | null,
   action: QuizAction,
@@ -22,33 +22,45 @@ function reducer(
 }
 
 // 出題の状態と、それを動かす関数をまとめる。
-// 問題はブラウザーで選び、札もブラウザーで混ぜる。ビルドのときに描いた画面と食い違わないよう、
-// 画面を開いたあとに最初の問題を出す。
+// 問題は画面を開いたあとに選び、札もそのとき混ぜる。
+// firstId があり、questions の中にその問題があれば、最初の問題をそれにする（確かめ用）。
 export function useQuiz(
   questions: readonly Question[],
   random: Random = Math.random,
+  firstId?: string,
 ) {
   const [state, dispatch] = useReducer(reducer, null);
   const previous = state?.index ?? null;
 
+  const show = useCallback(
+    (index: number) => {
+      const question = questions[index];
+      dispatch({
+        type: "start",
+        index,
+        question,
+        cards: dealShuffled(question, random),
+      });
+    },
+    [questions, random],
+  );
+
   const next = useCallback(() => {
     const index = pickNextIndex(questions.length, previous, random);
-    if (index === null) {
-      return;
+    if (index !== null) {
+      show(index);
     }
-    const question = questions[index];
-    dispatch({
-      type: "start",
-      index,
-      question,
-      cards: dealShuffled(question, random),
-    });
-  }, [questions, previous, random]);
+  }, [questions, previous, random, show]);
 
   // 最初の問題は、画面を開いたときに1回だけ出す。
   // biome-ignore lint/correctness/useExhaustiveDependencies: next は問題を出すたびに変わるので、依存に入れると出し続ける
   useEffect(() => {
-    next();
+    const first = indexOfQuestion(questions, firstId);
+    if (first === null) {
+      next();
+    } else {
+      show(first);
+    }
   }, []);
 
   return { state, dispatch, next };

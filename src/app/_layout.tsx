@@ -36,6 +36,16 @@ function RootStack() {
           headerLargeStyle: { backgroundColor: colors.background },
         }}
       />
+      <Stack.Screen
+        name="quiz"
+        options={{
+          headerShown: true,
+          title: "",
+          headerBackButtonDisplayMode: "minimal",
+          headerShadowVisible: false,
+          headerStyle: { backgroundColor: colors.background },
+        }}
+      />
     </Stack>
   );
 }

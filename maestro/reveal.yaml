@@ -1,0 +1,27 @@
+# 不正解のあとに答えを見る流れ。
+appId: host.exp.Exponent
+---
+- stopApp
+- launchApp
+- openLink: exp://127.0.0.1:8099
+- extendedWaitUntil:
+    visible: "merb"
+    timeout: 90000
+- openLink: exp://127.0.0.1:8099/--/quiz?categories=numbers&question=numbers-001
+- extendedWaitUntil:
+    visible: "答え合わせ"
+    timeout: 60000
+- tapOn: "hundreds"
+- tapOn: "答え合わせ"
+- assertVisible: "不正解"
+- tapOn: "答えを見る"
+# 答えを見たあとは、「答え」にすべての読み方を出し、「不正解」と札置き場は出さない
+- assertVisible: "答え"
+- assertVisible: "a hundred"
+- assertVisible: "one hundred"
+- assertNotVisible: "不正解"
+- assertNotVisible: "答え合わせ"
+- assertNotVisible: "答えを見る"
+- assertVisible: "次の問題"
+- tapOn: "次の問題"
+- assertVisible: "答え合わせ"

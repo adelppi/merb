@@ -1,6 +1,12 @@
 import { useFonts } from "expo-font";
-import { type ComponentRef, useRef, useState } from "react";
-import { type LayoutRectangle, Pressable, Text, View } from "react-native";
+import { type ComponentRef, type ReactNode, useRef, useState } from "react";
+import {
+  type LayoutRectangle,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   runOnJS,
@@ -8,7 +14,9 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import { type DropArea, type Point, resolveDrop } from "../quiz/drop";
 import type { Card } from "../quiz/reducer";
+import { colors } from "./theme";
 
 // 札の文字は KaTeX の書体で出す。英字1文字は斜体、ほかは立体（docs/specs/quiz.md）。
 const fonts = {
@@ -20,13 +28,20 @@ export function cardFontFamily(text: string): string {
   return /^[A-Za-z]$/.test(text) ? "KaTeX_Math" : "KaTeX_Main";
 }
 
-type Area = "pool" | "answer";
-
 type Props = {
   // 札置き場の札（混ぜたときの順）
   pool: Card[];
   // 回答エリアの札（並んだ順）
   placed: Card[];
+  // 札置き場を出し、札を運べるか。false なら札置き場を出さず、回答エリアの札も運べない。
+  movable: boolean;
+  // 回答エリアの札を緑で出すか（正解のとき）。それ以外は藍で出す。
+  placedGreen: boolean;
+  // 回答エリアの読み上げ用の名前と、札置き場の読み上げ用の名前
+  answerLabel: string;
+  poolLabel: string;
+  // 回答エリアと札置き場のあいだに出すもの（「不正解」など）
+  between?: ReactNode;
   // 札置き場の札を回答エリアの at 番目へ運ぶ。at がなければ末尾。
   onPlace: (id: number, at?: number) => void;
   // 回答エリアの札を札置き場へ戻す。
@@ -35,54 +50,59 @@ type Props = {
   onMove: (id: number, to: number) => void;
 };
 
-type Point = { x: number; y: number };
-
-function contains(rect: LayoutRectangle, point: Point): boolean {
-  return (
-    point.x >= rect.x &&
-    point.x <= rect.x + rect.width &&
-    point.y >= rect.y &&
-    point.y <= rect.y + rect.height
-  );
-}
+const emptyRect: LayoutRectangle = { x: 0, y: 0, width: 0, height: 0 };
 
 // 札置き場と回答エリア。タップで札を運び、長押ししてドラッグでも運ぶ。
-// 札の位置は onLayout で集め、落とした位置と照らして運び先を決める。
-export function CardBoard({ pool, placed, onPlace, onUnplace, onMove }: Props) {
+// 札の位置は onLayout で集め、落とした位置と照らして運び先を決める（src/quiz/drop.ts）。
+export function CardBoard({
+  pool,
+  placed,
+  movable,
+  placedGreen,
+  answerLabel,
+  poolLabel,
+  between,
+  onPlace,
+  onUnplace,
+  onMove,
+}: Props) {
   const [fontsLoaded] = useFonts(fonts);
-  const [dragFrom, setDragFrom] = useState<Area | null>(null);
-  const areaRects = useRef<Record<Area, LayoutRectangle>>({
-    pool: { x: 0, y: 0, width: 0, height: 0 },
-    answer: { x: 0, y: 0, width: 0, height: 0 },
+  const [dragFrom, setDragFrom] = useState<DropArea | null>(null);
+  const areaRects = useRef<Record<DropArea, LayoutRectangle>>({
+    pool: emptyRect,
+    answer: emptyRect,
   });
   const cardRects = useRef(new Map<number, LayoutRectangle>());
   const boardRef = useRef<ComponentRef<typeof View>>(null);
 
-  // 札のid から、いまの座標（盤面全体の中）を返す。
-  function boardRect(id: number, area: Area): LayoutRectangle | undefined {
-    const rect = cardRects.current.get(id);
-    const origin = areaRects.current[area];
-    return rect && { ...rect, x: origin.x + rect.x, y: origin.y + rect.y };
-  }
-
-  // 札 id を area から (x, y)（盤面全体の中の座標）に落としたときの処理。
-  function drop(id: number, from: Area, point: Point) {
+  // 札 id を from から point（盤面の中の座標）に落としたときの処理。
+  function drop(id: number, from: DropArea, point: Point) {
     setDragFrom(null);
-    if (contains(areaRects.current.answer, point)) {
-      // 札の上に落としたらその札の前へ、札のないところなら末尾へ。
-      const others = placed.filter((card) => card.id !== id);
-      const target = others.findIndex((card) => {
-        const rect = boardRect(card.id, "answer");
-        return rect !== undefined && contains(rect, point);
-      });
-      const at = target < 0 ? others.length : target;
-      if (from === "pool") {
-        onPlace(id, at);
-      } else {
-        onMove(id, at);
-      }
-    } else if (from === "answer" && contains(areaRects.current.pool, point)) {
-      onUnplace(id);
+    const origin = areaRects.current.answer;
+    const action = resolveDrop({
+      id,
+      from,
+      point,
+      answerRect: areaRects.current.answer,
+      poolRect: areaRects.current.pool,
+      placed: placed.flatMap((card) => {
+        const rect = cardRects.current.get(card.id);
+        return rect
+          ? [
+              {
+                id: card.id,
+                rect: { ...rect, x: origin.x + rect.x, y: origin.y + rect.y },
+              },
+            ]
+          : [];
+      }),
+    });
+    if (action?.type === "place") {
+      onPlace(action.id, action.at);
+    } else if (action?.type === "move") {
+      onMove(action.id, action.to);
+    } else if (action?.type === "unplace") {
+      onUnplace(action.id);
     }
   }
 
@@ -90,60 +110,103 @@ export function CardBoard({ pool, placed, onPlace, onUnplace, onMove }: Props) {
     return null;
   }
 
-  function renderArea(area: Area, cards: Card[]) {
+  function renderCard(card: Card, area: DropArea) {
+    const tone = area === "pool" ? "pool" : placedGreen ? "green" : "indigo";
+    if (!movable) {
+      return (
+        <CardFace
+          key={card.id}
+          card={card}
+          tone={tone}
+          onLayout={(rect) => cardRects.current.set(card.id, rect)}
+        />
+      );
+    }
     return (
-      <View
-        onLayout={(event) => {
-          areaRects.current[area] = event.nativeEvent.layout;
+      <DraggableCard
+        key={card.id}
+        card={card}
+        tone={tone}
+        onLayout={(rect) => cardRects.current.set(card.id, rect)}
+        onTap={() => (area === "pool" ? onPlace(card.id) : onUnplace(card.id))}
+        onDragStart={() => setDragFrom(area)}
+        onDrop={(windowPoint) => {
+          // 指を離した位置は画面全体の座標なので、盤面の中の座標に直す。
+          boardRef.current?.measureInWindow((x, y) => {
+            drop(card.id, area, {
+              x: windowPoint.x - x,
+              y: windowPoint.y - y,
+            });
+          });
         }}
-        style={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          gap: 8,
-          minHeight: 64,
-          padding: 8,
-          borderWidth: 1,
-          borderRadius: 8,
-          borderStyle: area === "answer" ? "solid" : "dashed",
-          borderColor: "#888888",
-          zIndex: dragFrom === area ? 10 : 0,
-        }}
-      >
-        {cards.map((card) => (
-          <DraggableCard
-            key={card.id}
-            card={card}
-            onLayout={(rect) => cardRects.current.set(card.id, rect)}
-            onTap={() =>
-              area === "pool" ? onPlace(card.id) : onUnplace(card.id)
-            }
-            onDragStart={() => setDragFrom(area)}
-            onDrop={(windowPoint) => {
-              // 指を離した位置は画面全体の座標なので、盤面の中の座標に直す。
-              boardRef.current?.measureInWindow((x, y) => {
-                drop(card.id, area, {
-                  x: windowPoint.x - x,
-                  y: windowPoint.y - y,
-                });
-              });
-            }}
-          />
-        ))}
-      </View>
+      />
     );
   }
 
   return (
-    <View ref={boardRef} collapsable={false} style={{ gap: 16 }}>
-      {renderArea("answer", placed)}
-      {renderArea("pool", pool)}
+    <View ref={boardRef} collapsable={false}>
+      <View
+        accessibilityLabel={answerLabel}
+        onLayout={(event) => {
+          areaRects.current.answer = event.nativeEvent.layout;
+        }}
+        style={[styles.answer, dragFrom === "answer" && styles.raised]}
+      >
+        {placed.map((card) => renderCard(card, "answer"))}
+      </View>
+      {between}
+      {movable ? (
+        <View
+          accessibilityLabel={poolLabel}
+          onLayout={(event) => {
+            areaRects.current.pool = event.nativeEvent.layout;
+          }}
+          style={[styles.pool, dragFrom === "pool" && styles.raised]}
+        >
+          {pool.map((card) => renderCard(card, "pool"))}
+        </View>
+      ) : null}
     </View>
   );
 }
 
-type CardProps = {
+type Tone = "pool" | "indigo" | "green";
+
+type FaceProps = {
   card: Card;
+  tone: Tone;
   onLayout: (rect: LayoutRectangle) => void;
+};
+
+// 札の見た目だけ。札を運べないときに使う。
+function CardFace({ card, tone, onLayout }: FaceProps) {
+  return (
+    <View
+      accessible
+      accessibilityLabel={card.text}
+      onLayout={(event) => onLayout(event.nativeEvent.layout)}
+      style={[styles.card, toneStyles[tone]]}
+    >
+      <CardText card={card} tone={tone} />
+    </View>
+  );
+}
+
+function CardText({ card, tone }: { card: Card; tone: Tone }) {
+  return (
+    <Text
+      style={[
+        styles.cardText,
+        { fontFamily: cardFontFamily(card.text) },
+        tone === "pool" ? styles.poolText : styles.placedText,
+      ]}
+    >
+      {card.text}
+    </Text>
+  );
+}
+
+type CardProps = FaceProps & {
   onTap: () => void;
   onDragStart: () => void;
   // 指を離した位置（画面全体の座標）を渡す。
@@ -153,6 +216,7 @@ type CardProps = {
 // 札1枚。ドラッグ中は、指に合わせて札自身が動く。離したら元の位置へ戻り、運び先は親が決める。
 function DraggableCard({
   card,
+  tone,
   onLayout,
   onTap,
   onDragStart,
@@ -163,7 +227,7 @@ function DraggableCard({
   const lifted = useSharedValue(0);
 
   const pan = Gesture.Pan()
-    // タッチでは少し長く押したときにドラッグを始める。それより短い操作はタップにする。
+    // 少し長く押したときにドラッグを始める。それより短い操作はタップにする。
     .activateAfterLongPress(250)
     .onStart(() => {
       lifted.value = 1;
@@ -186,10 +250,10 @@ function DraggableCard({
     transform: [
       { translateX: dx.value },
       { translateY: dy.value },
-      { scale: lifted.value ? 1.1 : 1 },
+      { scale: lifted.value ? 1.08 : 1 },
     ],
     zIndex: lifted.value ? 20 : 0,
-    opacity: lifted.value ? 0.85 : 1,
+    opacity: lifted.value ? 0.9 : 1,
   }));
 
   return (
@@ -202,20 +266,55 @@ function DraggableCard({
           onPress={onTap}
           accessibilityRole="button"
           accessibilityLabel={card.text}
-          style={{
-            paddingHorizontal: 12,
-            paddingVertical: 8,
-            borderWidth: 1,
-            borderRadius: 6,
-            borderColor: "#444444",
-            backgroundColor: "#ffffff",
-          }}
+          style={[styles.card, toneStyles[tone]]}
         >
-          <Text style={{ fontFamily: cardFontFamily(card.text), fontSize: 20 }}>
-            {card.text}
-          </Text>
+          <CardText card={card} tone={tone} />
         </Pressable>
       </Animated.View>
     </GestureDetector>
   );
 }
+
+const styles = StyleSheet.create({
+  answer: {
+    minHeight: 116,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignContent: "flex-start",
+    gap: 8,
+    padding: 12,
+    borderRadius: 22,
+    backgroundColor: colors.answerArea,
+  },
+  pool: {
+    minHeight: 60,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignContent: "flex-start",
+    gap: 8,
+    marginTop: 16,
+    paddingHorizontal: 2,
+  },
+  raised: { zIndex: 10 },
+  card: {
+    height: 44,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    justifyContent: "center",
+  },
+  cardText: { fontSize: 18 },
+  poolText: { color: colors.text },
+  placedText: { color: "#ffffff" },
+});
+
+const toneStyles = StyleSheet.create({
+  pool: {
+    backgroundColor: colors.surface,
+    shadowColor: "#000000",
+    shadowOpacity: 0.12,
+    shadowRadius: 1,
+    shadowOffset: { width: 0, height: 1 },
+  },
+  indigo: { backgroundColor: colors.indigo },
+  green: { backgroundColor: colors.green },
+});
