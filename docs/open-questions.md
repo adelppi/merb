@@ -99,3 +99,12 @@
 - 起票: 2026-11-03、Issue #17
 - 影響: `docs/specs/quiz.md`
 - 決定: [D-0007](decisions/D-0007-quiz-screen.md)
+
+### OQ-013
+
+- 問い: 問題ごとの問題文をどう書くか。問題の JSON のキーの名前、128 問の問題文をすべて同じ文にするか観点に合わせて変えるか、問題文の文面、検査で確かめること。
+- 状態: 解決
+- 起票: 2026-11-03、Issue #24
+- 影響: `docs/specs/question-format.md`、`docs/specs/quiz.md`、`content/prompt.md`、`content/questions/` の問題
+- 選択肢: キーの名前は、`prompt` の中に言語ごとの `ja` と `en` を置く案（推奨）と、`promptJa` と `promptEn` を問題に直に置く案。問題文は、すべて同じ文にする案（推奨）と、観点に合わせて変える案と、分類ごとに変える案。文面は、「次の数式を英語で読んでください。」と「Read the expression in English.」にする案（推奨）と、札を並べることまで書く案。
+- 決定: [D-0011](decisions/D-0011-question-prompt.md)

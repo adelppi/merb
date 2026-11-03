@@ -43,6 +43,10 @@ LLM で問題を作るときに使うプロンプト。使い方は次のとお�
     {
       "id": "scripts-powers-roots-001",
       "perspective": "n乗（序数＋power）",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "x^5",
       "answers": [
         { "cards": ["x", "to", "the", "fifth", "power"] },
@@ -56,6 +60,7 @@ LLM で問題を作るときに使うプロンプト。使い方は次のとお�
 - category: 分類の id。
 - id: 「<分類の id>-<3桁の連番>」。001 から順に付けてください。
 - perspective: もとにした観点。節 1〜7 では観点シートの表の「観点」の欄、節 8 では「式」の欄の式の名前（例: 解の公式）を、そのまま写してください。
+- prompt: 出題の画面で数式の上に出す問題文。ja に日本語の問題文、en に英語の問題文を書いてください。どの問題でも、上の例の文（ja は「次の数式を英語で読んでください。」、en は「Read the expression in English.」）をそのまま使ってください。
 - latex: 画面に描く数式。KaTeX で描ける LaTeX にしてください。$ で囲まないでください。
 - answers: 正解の配列。cards には、読み方を並べる順に札で書いてください。
   - 読み方が複数ある数式では、正解を複数書いてください（例: times と multiplied by、equals と is equal to）。
