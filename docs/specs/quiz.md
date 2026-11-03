@@ -1,6 +1,6 @@
 # 1問を解く出題の画面
 
-- 状態: 合意
+- 状態: 実装済み
 - Issue: #17、#19
 - 関係する決定: [D-0003](../decisions/D-0003-tech-stack.md)、[D-0004](../decisions/D-0004-question-format.md)、[D-0005](../decisions/D-0005-architecture.md)、[D-0006](../decisions/D-0006-locale-storage.md)、[D-0007](../decisions/D-0007-quiz-screen.md)、[D-0008](../decisions/D-0008-category-select.md)
 
@@ -67,7 +67,7 @@
 
 この条件をすべて満たせば実装済みとする。テストはこの条件と対応させる。
 
-- [ ] `/quiz` を開くと、数式と、混ぜた札が出る
+- [x] `/quiz` を開くと、数式と、混ぜた札が出る
 - [x] 札置き場の札をタップすると回答エリアの末尾へ、回答エリアの札をタップすると札置き場の元の位置へ動く（Vitest と Playwright）
 - [x] 札置き場の札を、ドラッグで回答エリアへ運べる（Playwright）
 - [x] 回答エリアの中での並べ替えと、札置き場へ戻す動きが「札を運ぶ」の節のとおりになる（Vitest）

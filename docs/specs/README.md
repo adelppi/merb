@@ -23,5 +23,5 @@
 |---|---|---|
 | [question-format.md](question-format.md) | 実装済み | #6、#11 |
 | [i18n.md](i18n.md) | 実装済み | #15 |
-| [quiz.md](quiz.md) | 合意 | #17、#19 |
-| [category-select.md](category-select.md) | 合意 | #19 |
+| [quiz.md](quiz.md) | 実装済み | #17、#19 |
+| [category-select.md](category-select.md) | 実装済み | #19 |
