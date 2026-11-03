@@ -1,0 +1,257 @@
+{
+  "category": "arithmetic",
+  "questions": [
+    {
+      "id": "arithmetic-001",
+      "perspective": "±",
+      "latex": "a \\pm b",
+      "answers": [
+        {
+          "cards": ["a", "plus", "or", "minus", "b"]
+        }
+      ],
+      "distractors": ["and"]
+    },
+    {
+      "id": "arithmetic-002",
+      "perspective": "±",
+      "latex": "3 \\pm \\sqrt{2}",
+      "answers": [
+        {
+          "cards": [
+            "three",
+            "plus",
+            "or",
+            "minus",
+            "the",
+            "square",
+            "root",
+            "of",
+            "two"
+          ]
+        }
+      ],
+      "distractors": ["and", "cube"]
+    },
+    {
+      "id": "arithmetic-003",
+      "perspective": "掛け算 times / multiplied by",
+      "latex": "4 \\times 5",
+      "answers": [
+        {
+          "cards": ["four", "times", "five"]
+        },
+        {
+          "cards": ["four", "multiplied", "by", "five"]
+        }
+      ],
+      "distractors": ["plus"]
+    },
+    {
+      "id": "arithmetic-004",
+      "perspective": "掛け算 times / multiplied by",
+      "latex": "3x",
+      "answers": [
+        {
+          "cards": ["three", "times", "x"]
+        },
+        {
+          "cards": ["three", "x"]
+        }
+      ],
+      "distractors": ["plus"]
+    },
+    {
+      "id": "arithmetic-005",
+      "perspective": "割り算 divided by / over",
+      "latex": "6 \\div 2",
+      "answers": [
+        {
+          "cards": ["six", "divided", "by", "two"]
+        }
+      ],
+      "distractors": ["divide"]
+    },
+    {
+      "id": "arithmetic-006",
+      "perspective": "割り算 divided by / over",
+      "latex": "12 \\div 4",
+      "answers": [
+        {
+          "cards": ["twelve", "divided", "by", "four"]
+        }
+      ],
+      "distractors": ["divide", "times"]
+    },
+    {
+      "id": "arithmetic-007",
+      "perspective": "比",
+      "latex": "2 : 5",
+      "answers": [
+        {
+          "cards": ["the", "ratio", "of", "two", "to", "five"]
+        },
+        {
+          "cards": ["two", "to", "five"]
+        }
+      ],
+      "distractors": ["by", "over"]
+    },
+    {
+      "id": "arithmetic-008",
+      "perspective": "比",
+      "latex": "3 : 4",
+      "answers": [
+        {
+          "cards": ["the", "ratio", "of", "three", "to", "four"]
+        },
+        {
+          "cards": ["three", "to", "four"]
+        }
+      ],
+      "distractors": ["divided", "by"]
+    },
+    {
+      "id": "arithmetic-009",
+      "perspective": "階乗",
+      "latex": "n!",
+      "answers": [
+        {
+          "cards": ["n", "factorial"]
+        }
+      ],
+      "distractors": ["exclamation"]
+    },
+    {
+      "id": "arithmetic-010",
+      "perspective": "階乗",
+      "latex": "5!",
+      "answers": [
+        {
+          "cards": ["five", "factorial"]
+        }
+      ],
+      "distractors": ["fifth"]
+    },
+    {
+      "id": "arithmetic-011",
+      "perspective": "階乗",
+      "latex": "(n+1)!",
+      "answers": [
+        {
+          "cards": ["the", "quantity", "n", "plus", "one", "factorial"]
+        }
+      ],
+      "distractors": ["exclamation"]
+    },
+    {
+      "id": "arithmetic-012",
+      "perspective": "括弧のまとまり（the sum of / the quantity）",
+      "latex": "2(x+1)",
+      "answers": [
+        {
+          "cards": ["two", "times", "the", "sum", "of", "x", "plus", "one"]
+        },
+        {
+          "cards": ["two", "times", "the", "quantity", "x", "plus", "one"]
+        }
+      ],
+      "distractors": ["product"]
+    },
+    {
+      "id": "arithmetic-013",
+      "perspective": "括弧のまとまり（the sum of / the quantity）",
+      "latex": "3(a-b)",
+      "answers": [
+        {
+          "cards": ["three", "times", "the", "quantity", "a", "minus", "b"]
+        }
+      ],
+      "distractors": ["sum", "product"]
+    },
+    {
+      "id": "arithmetic-014",
+      "perspective": "括弧のまとまり（the sum of / the quantity）",
+      "latex": "(x+y)z",
+      "answers": [
+        {
+          "cards": ["the", "sum", "of", "x", "plus", "y", "times", "z"]
+        },
+        {
+          "cards": ["the", "quantity", "x", "plus", "y", "times", "z"]
+        }
+      ],
+      "distractors": ["product"]
+    },
+    {
+      "id": "arithmetic-015",
+      "perspective": "入れ子括弧 open / close",
+      "latex": "[a(b+c)]",
+      "answers": [
+        {
+          "cards": [
+            "open",
+            "bracket",
+            "a",
+            "open",
+            "parenthesis",
+            "b",
+            "plus",
+            "c",
+            "close",
+            "parenthesis",
+            "close",
+            "bracket"
+          ]
+        }
+      ],
+      "distractors": ["brace"]
+    },
+    {
+      "id": "arithmetic-016",
+      "perspective": "入れ子括弧 open / close",
+      "latex": "[(a+b)c]",
+      "answers": [
+        {
+          "cards": [
+            "open",
+            "bracket",
+            "open",
+            "parenthesis",
+            "a",
+            "plus",
+            "b",
+            "close",
+            "parenthesis",
+            "c",
+            "close",
+            "bracket"
+          ]
+        }
+      ],
+      "distractors": ["brace"]
+    },
+    {
+      "id": "arithmetic-017",
+      "perspective": "絶対値",
+      "latex": "\\lvert x \\rvert",
+      "answers": [
+        {
+          "cards": ["the", "absolute", "value", "of", "x"]
+        }
+      ],
+      "distractors": ["values"]
+    },
+    {
+      "id": "arithmetic-018",
+      "perspective": "絶対値",
+      "latex": "\\lvert a - b \\rvert",
+      "answers": [
+        {
+          "cards": ["the", "absolute", "value", "of", "a", "minus", "b"]
+        }
+      ],
+      "distractors": ["values"]
+    }
+  ]
+}

@@ -1,0 +1,192 @@
+{
+  "category": "fractions",
+  "questions": [
+    {
+      "id": "fractions-001",
+      "perspective": "一般形 over",
+      "latex": "\\frac{a}{b}",
+      "answers": [
+        {
+          "cards": ["a", "over", "b"]
+        },
+        {
+          "cards": ["a", "divided", "by", "b"]
+        }
+      ],
+      "distractors": ["under"]
+    },
+    {
+      "id": "fractions-002",
+      "perspective": "一般形 over",
+      "latex": "\\frac{p}{q}",
+      "answers": [
+        {
+          "cards": ["p", "over", "q"]
+        }
+      ],
+      "distractors": ["under", "of"]
+    },
+    {
+      "id": "fractions-003",
+      "perspective": "序数を使う読み方",
+      "latex": "\\frac{1}{5}",
+      "answers": [
+        {
+          "cards": ["one", "fifth"]
+        },
+        {
+          "cards": ["a", "fifth"]
+        }
+      ],
+      "distractors": ["five", "fifths"]
+    },
+    {
+      "id": "fractions-004",
+      "perspective": "序数を使う読み方",
+      "latex": "\\frac{1}{3}",
+      "answers": [
+        {
+          "cards": ["one", "third"]
+        },
+        {
+          "cards": ["a", "third"]
+        }
+      ],
+      "distractors": ["three", "thirds"]
+    },
+    {
+      "id": "fractions-005",
+      "perspective": "序数を使う読み方",
+      "latex": "\\frac{1}{8}",
+      "answers": [
+        {
+          "cards": ["one", "eighth"]
+        },
+        {
+          "cards": ["an", "eighth"]
+        }
+      ],
+      "distractors": ["eight", "eighths"]
+    },
+    {
+      "id": "fractions-006",
+      "perspective": "分子が2以上なら複数形",
+      "latex": "\\frac{2}{7}",
+      "answers": [
+        {
+          "cards": ["two", "sevenths"]
+        }
+      ],
+      "distractors": ["seventh"]
+    },
+    {
+      "id": "fractions-007",
+      "perspective": "分子が2以上なら複数形",
+      "latex": "\\frac{5}{6}",
+      "answers": [
+        {
+          "cards": ["five", "sixths"]
+        }
+      ],
+      "distractors": ["sixth"]
+    },
+    {
+      "id": "fractions-008",
+      "perspective": "分子が2以上なら複数形",
+      "latex": "\\frac{3}{10}",
+      "answers": [
+        {
+          "cards": ["three", "tenths"]
+        }
+      ],
+      "distractors": ["tenth"]
+    },
+    {
+      "id": "fractions-009",
+      "perspective": "half / quarter",
+      "latex": "\\frac{3}{4}",
+      "answers": [
+        {
+          "cards": ["three", "quarters"]
+        },
+        {
+          "cards": ["three", "fourths"]
+        }
+      ],
+      "distractors": ["quarter"]
+    },
+    {
+      "id": "fractions-010",
+      "perspective": "half / quarter",
+      "latex": "\\frac{1}{2}",
+      "answers": [
+        {
+          "cards": ["one", "half"]
+        },
+        {
+          "cards": ["a", "half"]
+        }
+      ],
+      "distractors": ["second", "two"]
+    },
+    {
+      "id": "fractions-011",
+      "perspective": "half / quarter",
+      "latex": "\\frac{1}{4}",
+      "answers": [
+        {
+          "cards": ["one", "quarter"]
+        },
+        {
+          "cards": ["a", "quarter"]
+        },
+        {
+          "cards": ["one", "fourth"]
+        },
+        {
+          "cards": ["a", "fourth"]
+        }
+      ],
+      "distractors": ["quarters"]
+    },
+    {
+      "id": "fractions-012",
+      "perspective": "帯分数は and でつなぐ",
+      "latex": "1\\frac{1}{2}",
+      "answers": [
+        {
+          "cards": ["one", "and", "a", "half"]
+        },
+        {
+          "cards": ["one", "and", "one", "half"]
+        }
+      ],
+      "distractors": ["plus"]
+    },
+    {
+      "id": "fractions-013",
+      "perspective": "帯分数は and でつなぐ",
+      "latex": "2\\frac{3}{4}",
+      "answers": [
+        {
+          "cards": ["two", "and", "three", "quarters"]
+        },
+        {
+          "cards": ["two", "and", "three", "fourths"]
+        }
+      ],
+      "distractors": ["quarter", "plus"]
+    },
+    {
+      "id": "fractions-014",
+      "perspective": "帯分数は and でつなぐ",
+      "latex": "3\\frac{2}{5}",
+      "answers": [
+        {
+          "cards": ["three", "and", "two", "fifths"]
+        }
+      ],
+      "distractors": ["fifth", "plus"]
+    }
+  ]
+}

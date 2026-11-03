@@ -1,0 +1,288 @@
+{
+  "category": "calculus",
+  "questions": [
+    {
+      "id": "calculus-001",
+      "perspective": "差分 delta",
+      "latex": "\\Delta x",
+      "answers": [
+        {
+          "cards": ["delta", "x"]
+        }
+      ],
+      "distractors": ["d"]
+    },
+    {
+      "id": "calculus-002",
+      "perspective": "差分 delta",
+      "latex": "\\frac{\\Delta y}{\\Delta x}",
+      "answers": [
+        {
+          "cards": ["delta", "y", "over", "delta", "x"]
+        }
+      ],
+      "distractors": ["d"]
+    },
+    {
+      "id": "calculus-003",
+      "perspective": "導関数",
+      "latex": "\\frac{dy}{dx}",
+      "answers": [
+        {
+          "cards": ["d", "y", "over", "d", "x"]
+        },
+        {
+          "cards": ["d", "y", "by", "d", "x"]
+        }
+      ],
+      "distractors": ["delta"]
+    },
+    {
+      "id": "calculus-004",
+      "perspective": "導関数",
+      "latex": "\\frac{d^2y}{dx^2}",
+      "answers": [
+        {
+          "cards": ["d", "squared", "y", "over", "d", "x", "squared"]
+        },
+        {
+          "cards": ["d", "squared", "y", "by", "d", "x", "squared"]
+        }
+      ],
+      "distractors": ["delta", "second"]
+    },
+    {
+      "id": "calculus-005",
+      "perspective": "導関数",
+      "latex": "\\frac{df}{dt}",
+      "answers": [
+        {
+          "cards": ["d", "f", "over", "d", "t"]
+        },
+        {
+          "cards": ["d", "f", "by", "d", "t"]
+        }
+      ],
+      "distractors": ["delta", "partial"]
+    },
+    {
+      "id": "calculus-006",
+      "perspective": "偏微分 with respect to",
+      "latex": "\\frac{\\partial f}{\\partial y}",
+      "answers": [
+        {
+          "cards": [
+            "the",
+            "partial",
+            "derivative",
+            "of",
+            "f",
+            "with",
+            "respect",
+            "to",
+            "y"
+          ]
+        },
+        {
+          "cards": ["partial", "f", "over", "partial", "y"]
+        }
+      ],
+      "distractors": ["d"]
+    },
+    {
+      "id": "calculus-007",
+      "perspective": "偏微分 with respect to",
+      "latex": "\\frac{\\partial u}{\\partial t}",
+      "answers": [
+        {
+          "cards": [
+            "the",
+            "partial",
+            "derivative",
+            "of",
+            "u",
+            "with",
+            "respect",
+            "to",
+            "t"
+          ]
+        },
+        {
+          "cards": ["partial", "u", "over", "partial", "t"]
+        }
+      ],
+      "distractors": ["d"]
+    },
+    {
+      "id": "calculus-008",
+      "perspective": "定積分 from … to …",
+      "latex": "\\int_0^1 x \\, dx",
+      "answers": [
+        {
+          "cards": [
+            "the",
+            "integral",
+            "from",
+            "zero",
+            "to",
+            "one",
+            "of",
+            "x",
+            "with",
+            "respect",
+            "to",
+            "x"
+          ]
+        },
+        {
+          "cards": [
+            "the",
+            "integral",
+            "from",
+            "zero",
+            "to",
+            "one",
+            "of",
+            "x",
+            "d",
+            "x"
+          ]
+        }
+      ],
+      "distractors": ["sum"]
+    },
+    {
+      "id": "calculus-009",
+      "perspective": "定積分 from … to …",
+      "latex": "\\int_a^b f(x) \\, dx",
+      "answers": [
+        {
+          "cards": [
+            "the",
+            "integral",
+            "from",
+            "a",
+            "to",
+            "b",
+            "of",
+            "f",
+            "of",
+            "x",
+            "d",
+            "x"
+          ]
+        },
+        {
+          "cards": [
+            "the",
+            "integral",
+            "from",
+            "a",
+            "to",
+            "b",
+            "of",
+            "f",
+            "of",
+            "x",
+            "with",
+            "respect",
+            "to",
+            "x"
+          ]
+        }
+      ],
+      "distractors": ["sum"]
+    },
+    {
+      "id": "calculus-010",
+      "perspective": "総和 Σ",
+      "latex": "\\sum_{k=1}^{n} k",
+      "answers": [
+        {
+          "cards": [
+            "the",
+            "sum",
+            "from",
+            "k",
+            "equals",
+            "one",
+            "to",
+            "n",
+            "of",
+            "k"
+          ]
+        }
+      ],
+      "distractors": ["integral", "product"]
+    },
+    {
+      "id": "calculus-011",
+      "perspective": "総和 Σ",
+      "latex": "\\sum_{i=1}^{10} i^2",
+      "answers": [
+        {
+          "cards": [
+            "the",
+            "sum",
+            "from",
+            "i",
+            "equals",
+            "one",
+            "to",
+            "ten",
+            "of",
+            "i",
+            "squared"
+          ]
+        }
+      ],
+      "distractors": ["product"]
+    },
+    {
+      "id": "calculus-012",
+      "perspective": "総乗 Π",
+      "latex": "\\prod_{i=1}^{n} i",
+      "answers": [
+        {
+          "cards": [
+            "the",
+            "product",
+            "from",
+            "i",
+            "equals",
+            "one",
+            "to",
+            "n",
+            "of",
+            "i"
+          ]
+        }
+      ],
+      "distractors": ["sum"]
+    },
+    {
+      "id": "calculus-013",
+      "perspective": "総乗 Π",
+      "latex": "\\prod_{k=1}^{5} a_k",
+      "answers": [
+        {
+          "cards": [
+            "the",
+            "product",
+            "from",
+            "k",
+            "equals",
+            "one",
+            "to",
+            "five",
+            "of",
+            "a",
+            "sub",
+            "k"
+          ]
+        }
+      ],
+      "distractors": ["sum"]
+    }
+  ]
+}

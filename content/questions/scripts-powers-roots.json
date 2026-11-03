@@ -1,0 +1,285 @@
+{
+  "category": "scripts-powers-roots",
+  "questions": [
+    {
+      "id": "scripts-powers-roots-001",
+      "perspective": "prime / bar / hat",
+      "latex": "\\bar{x}",
+      "answers": [
+        {
+          "cards": ["x", "bar"]
+        }
+      ],
+      "distractors": ["hat", "prime"]
+    },
+    {
+      "id": "scripts-powers-roots-002",
+      "perspective": "prime / bar / hat",
+      "latex": "\\hat{y}",
+      "answers": [
+        {
+          "cards": ["y", "hat"]
+        }
+      ],
+      "distractors": ["bar", "prime"]
+    },
+    {
+      "id": "scripts-powers-roots-003",
+      "perspective": "prime / bar / hat",
+      "latex": "x'",
+      "answers": [
+        {
+          "cards": ["x", "prime"]
+        }
+      ],
+      "distractors": ["bar", "hat"]
+    },
+    {
+      "id": "scripts-powers-roots-004",
+      "perspective": "下付き添字 sub",
+      "latex": "a_n",
+      "answers": [
+        {
+          "cards": ["a", "sub", "n"]
+        }
+      ],
+      "distractors": ["to", "the", "nth"]
+    },
+    {
+      "id": "scripts-powers-roots-005",
+      "perspective": "下付き添字 sub",
+      "latex": "x_1",
+      "answers": [
+        {
+          "cards": ["x", "sub", "one"]
+        },
+        {
+          "cards": ["x", "one"]
+        }
+      ],
+      "distractors": ["first", "to"]
+    },
+    {
+      "id": "scripts-powers-roots-006",
+      "perspective": "下付き添字 sub",
+      "latex": "a_{n+1}",
+      "answers": [
+        {
+          "cards": ["a", "sub", "n", "plus", "one"]
+        }
+      ],
+      "distractors": ["to", "the"]
+    },
+    {
+      "id": "scripts-powers-roots-007",
+      "perspective": "squared / cubed",
+      "latex": "y^3",
+      "answers": [
+        {
+          "cards": ["y", "cubed"]
+        }
+      ],
+      "distractors": ["squared", "three"]
+    },
+    {
+      "id": "scripts-powers-roots-008",
+      "perspective": "squared / cubed",
+      "latex": "x^2",
+      "answers": [
+        {
+          "cards": ["x", "squared"]
+        }
+      ],
+      "distractors": ["cubed", "two"]
+    },
+    {
+      "id": "scripts-powers-roots-009",
+      "perspective": "squared / cubed",
+      "latex": "5^2",
+      "answers": [
+        {
+          "cards": ["five", "squared"]
+        }
+      ],
+      "distractors": ["cubed", "two"]
+    },
+    {
+      "id": "scripts-powers-roots-010",
+      "perspective": "n乗（序数＋power）",
+      "latex": "x^5",
+      "answers": [
+        {
+          "cards": ["x", "to", "the", "fifth", "power"]
+        },
+        {
+          "cards": ["x", "to", "the", "fifth"]
+        }
+      ],
+      "distractors": ["five"]
+    },
+    {
+      "id": "scripts-powers-roots-011",
+      "perspective": "n乗（序数＋power）",
+      "latex": "2^{10}",
+      "answers": [
+        {
+          "cards": ["two", "to", "the", "tenth", "power"]
+        },
+        {
+          "cards": ["two", "to", "the", "tenth"]
+        }
+      ],
+      "distractors": ["ten"]
+    },
+    {
+      "id": "scripts-powers-roots-012",
+      "perspective": "n乗（序数＋power）",
+      "latex": "a^n",
+      "answers": [
+        {
+          "cards": ["a", "to", "the", "nth", "power"]
+        },
+        {
+          "cards": ["a", "to", "the", "nth"]
+        }
+      ],
+      "distractors": ["sub"]
+    },
+    {
+      "id": "scripts-powers-roots-013",
+      "perspective": "負の累乗",
+      "latex": "x^{-2}",
+      "answers": [
+        {
+          "cards": ["x", "to", "the", "minus", "two"]
+        },
+        {
+          "cards": ["x", "to", "the", "negative", "two"]
+        }
+      ],
+      "distractors": ["squared"]
+    },
+    {
+      "id": "scripts-powers-roots-014",
+      "perspective": "負の累乗",
+      "latex": "y^{-1}",
+      "answers": [
+        {
+          "cards": ["y", "to", "the", "minus", "one"]
+        },
+        {
+          "cards": ["y", "to", "the", "negative", "one"]
+        }
+      ],
+      "distractors": ["sub"]
+    },
+    {
+      "id": "scripts-powers-roots-015",
+      "perspective": "平方根・立方根",
+      "latex": "\\sqrt[3]{8}",
+      "answers": [
+        {
+          "cards": ["the", "cube", "root", "of", "eight"]
+        }
+      ],
+      "distractors": ["square", "third"]
+    },
+    {
+      "id": "scripts-powers-roots-016",
+      "perspective": "平方根・立方根",
+      "latex": "\\sqrt{2}",
+      "answers": [
+        {
+          "cards": ["the", "square", "root", "of", "two"]
+        },
+        {
+          "cards": ["root", "two"]
+        }
+      ],
+      "distractors": ["cube"]
+    },
+    {
+      "id": "scripts-powers-roots-017",
+      "perspective": "平方根・立方根",
+      "latex": "\\sqrt[4]{x}",
+      "answers": [
+        {
+          "cards": ["the", "fourth", "root", "of", "x"]
+        }
+      ],
+      "distractors": ["four", "square"]
+    },
+    {
+      "id": "scripts-powers-roots-018",
+      "perspective": "ルート内が式（範囲を示す）",
+      "latex": "\\sqrt{a+b}",
+      "answers": [
+        {
+          "cards": [
+            "the",
+            "square",
+            "root",
+            "of",
+            "the",
+            "sum",
+            "of",
+            "a",
+            "plus",
+            "b"
+          ]
+        },
+        {
+          "cards": [
+            "the",
+            "square",
+            "root",
+            "of",
+            "the",
+            "quantity",
+            "a",
+            "plus",
+            "b"
+          ]
+        }
+      ],
+      "distractors": ["product"]
+    },
+    {
+      "id": "scripts-powers-roots-019",
+      "perspective": "ルート内が式（範囲を示す）",
+      "latex": "\\sqrt{x^2+1}",
+      "answers": [
+        {
+          "cards": [
+            "the",
+            "square",
+            "root",
+            "of",
+            "the",
+            "sum",
+            "of",
+            "x",
+            "squared",
+            "plus",
+            "one"
+          ]
+        },
+        {
+          "cards": [
+            "the",
+            "square",
+            "root",
+            "of",
+            "the",
+            "quantity",
+            "x",
+            "squared",
+            "plus",
+            "one"
+          ]
+        }
+      ],
+      "distractors": ["product", "cubed"]
+    }
+  ]
+}
