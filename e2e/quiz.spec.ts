@@ -184,6 +184,8 @@ test("英字1文字の札は KaTeX の斜体で、ほかの札は KaTeX の立�
     .getByRole("listitem")
     .first();
   expect((await fontOf(reading)).family).not.toMatch(/^KaTeX/);
+});
+
 test("数式の上に、日本語の問題文が出る", async ({ page }) => {
   await page.goto("/quiz");
   const prompt = page.getByText("次の数式を英語で読んでください。", {
