@@ -23,7 +23,6 @@
 ## 根拠
 
 - 動かない原因は、実機でもシミュレーターでも確かめていない。`Pressable` が触れた操作を受け取ること、React Native の `ScrollView` が Gesture Handler の外でスクロールを始めることが、長押しのあとの動きを奪っていると考えた。
-- 旧 API の `Gesture` は Gesture Handler 3 でも使えるが、`ScrollView` との組み合わせは 3 の hooks と `ScrollView` で扱う作りになっている。
 - 直したあとのドラッグの動作は、`pnpm exec expo export --platform ios` でバンドルが作れることまでを確かめた。画面の動作は、手元の確認が要る（[D-0021](D-0021-operation-test-tool.md)）。
 
 ## 影響
