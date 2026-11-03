@@ -1,13 +1,12 @@
 import { useFonts } from "expo-font";
 import { type ComponentRef, type ReactNode, useRef, useState } from "react";
+import { type LayoutRectangle, StyleSheet, Text, View } from "react-native";
 import {
-  type LayoutRectangle,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+  GestureDetector,
+  useExclusiveGestures,
+  usePanGesture,
+  useTapGesture,
+} from "react-native-gesture-handler";
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -226,25 +225,37 @@ function DraggableCard({
   const dy = useSharedValue(0);
   const lifted = useSharedValue(0);
 
-  const pan = Gesture.Pan()
+  const pan = usePanGesture({
     // 少し長く押したときにドラッグを始める。それより短い操作はタップにする。
-    .activateAfterLongPress(250)
-    .onStart(() => {
+    activateAfterLongPress: 250,
+    onActivate: () => {
       lifted.value = 1;
       runOnJS(onDragStart)();
-    })
-    .onUpdate((event) => {
+    },
+    onUpdate: (event) => {
       dx.value = event.translationX;
       dy.value = event.translationY;
-    })
-    .onEnd((event) => {
-      runOnJS(onDrop)({ x: event.absoluteX, y: event.absoluteY });
-    })
-    .onFinalize(() => {
+    },
+    onDeactivate: (event) => {
+      if (!event.canceled) {
+        runOnJS(onDrop)({ x: event.absoluteX, y: event.absoluteY });
+      }
+    },
+    onFinalize: () => {
       lifted.value = 0;
       dx.value = withSpring(0);
       dy.value = withSpring(0);
-    });
+    },
+  });
+  // 長押しの前に指を離したときは、タップとして運ぶ。
+  const tap = useTapGesture({
+    onDeactivate: (event) => {
+      if (!event.canceled) {
+        runOnJS(onTap)();
+      }
+    },
+  });
+  const gesture = useExclusiveGestures(pan, tap);
 
   const style = useAnimatedStyle(() => ({
     transform: [
@@ -257,19 +268,16 @@ function DraggableCard({
   }));
 
   return (
-    <GestureDetector gesture={pan}>
+    <GestureDetector gesture={gesture}>
       <Animated.View
+        accessible
+        accessibilityRole="button"
+        accessibilityLabel={card.text}
+        onAccessibilityTap={onTap}
         onLayout={(event) => onLayout(event.nativeEvent.layout)}
-        style={style}
+        style={[styles.card, toneStyles[tone], style]}
       >
-        <Pressable
-          onPress={onTap}
-          accessibilityRole="button"
-          accessibilityLabel={card.text}
-          style={[styles.card, toneStyles[tone]]}
-        >
-          <CardText card={card} tone={tone} />
-        </Pressable>
+        <CardText card={card} tone={tone} />
       </Animated.View>
     </GestureDetector>
   );
