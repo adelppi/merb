@@ -1,8 +1,9 @@
 import { expect, type Page, test } from "@playwright/test";
 
-// テスト用の問題は e2e/fixtures/questions/ の x^5 の1問。
+// テスト用の問題（e2e/fixtures/questions/）のうち、分類 scripts-powers-roots の x^5 の1問で試す。
 // 正解は「x to the fifth power」と「x to the fifth」、まぎらわしい札は「five」。
 // 問題文は、日本語が「次の数式を英語で読んでください。」、英語が「Read the expression in English.」。
+const quizUrl = "/quiz?category=scripts-powers-roots";
 
 function answerArea(page: Page) {
   return page.getByRole("region", { name: "回答エリア" });
@@ -23,10 +24,8 @@ async function tapFromPool(page: Page, ...texts: string[]) {
   }
 }
 
-test("トップページのリンクから開くと、数式と札が出る", async ({ page }) => {
-  await page.goto("/");
-  await page.getByRole("link", { name: "問題を解く" }).click();
-  await expect(page).toHaveURL(/\/quiz$/);
+test("開くと、数式と札が出る", async ({ page }) => {
+  await page.goto(quizUrl);
   await expect(page.locator(".katex")).toBeVisible();
   await expect(pool(page).getByRole("button")).toHaveCount(6);
   await expect(answerArea(page).getByRole("button")).toHaveCount(0);
@@ -35,7 +34,7 @@ test("トップページのリンクから開くと、数式と札が出る", as
 test("札をタップで運んで正解すると、ほかの読み方と次の問題が出る", async ({
   page,
 }) => {
-  await page.goto("/quiz");
+  await page.goto(quizUrl);
   await tapFromPool(page, "x", "to", "the", "fifth", "power");
   await expect(answerArea(page).getByRole("button")).toHaveText([
     "x",
@@ -65,7 +64,7 @@ test("札をタップで運んで正解すると、ほかの読み方と次の�
 test("間違えたあと、ボタンを押さずに札を運んで答え合わせし直せる", async ({
   page,
 }) => {
-  await page.goto("/quiz");
+  await page.goto(quizUrl);
   await tapFromPool(page, "x", "to", "the", "five");
   await page.getByRole("button", { name: "答え合わせ" }).click();
   await expect(result(page)).toHaveText("不正解");
@@ -92,7 +91,7 @@ test("間違えたあと、ボタンを押さずに札を運んで答え合わ�
 test("続けて不正解になると、答え合わせのたびに「不正解」を出し直す", async ({
   page,
 }) => {
-  await page.goto("/quiz");
+  await page.goto(quizUrl);
   await tapFromPool(page, "x", "five");
   await page.getByRole("button", { name: "答え合わせ" }).click();
   await expect(result(page)).toHaveText("不正解");
@@ -110,7 +109,7 @@ test("続けて不正解になると、答え合わせのたびに「不正解�
 });
 
 test("間違えたあと、答えを見るとすべての読み方が出る", async ({ page }) => {
-  await page.goto("/quiz");
+  await page.goto(quizUrl);
   await tapFromPool(page, "x", "to", "the", "five");
   await page.getByRole("button", { name: "答え合わせ" }).click();
   await page.getByRole("button", { name: "答えを見る" }).click();
@@ -121,7 +120,7 @@ test("間違えたあと、答えを見るとすべての読み方が出る", as
 });
 
 test("札が1枚もなくても答え合わせができる", async ({ page }) => {
-  await page.goto("/quiz");
+  await page.goto(quizUrl);
   await page.getByRole("button", { name: "答え合わせ" }).click();
   await expect(result(page)).toHaveText("不正解");
 });
@@ -131,7 +130,7 @@ test("札置き場の札を、ドラッグで回答エリアへ運べる", async
   isMobile,
 }) => {
   test.skip(isMobile, "タッチのドラッグは Playwright で動かせないため");
-  await page.goto("/quiz");
+  await page.goto(quizUrl);
   await tapFromPool(page, "to");
 
   // 「x」を、回答エリアの「to」の上に落とすと、その前に入る。
@@ -182,7 +181,7 @@ async function fontOf(locator: ReturnType<Page["locator"]>) {
 test("英字1文字の札は KaTeX の斜体で、ほかの札は KaTeX の立体で出る", async ({
   page,
 }) => {
-  await page.goto("/quiz");
+  await page.goto(quizUrl);
   const italic = { family: "KaTeX_Math", style: "italic" };
   const upright = { family: "KaTeX_Main", style: "normal" };
 
@@ -221,7 +220,7 @@ test("英字1文字の札は KaTeX の斜体で、ほかの札は KaTeX の立�
 });
 
 test("数式の上に、日本語の問題文が出る", async ({ page }) => {
-  await page.goto("/quiz");
+  await page.goto(quizUrl);
   const prompt = page.getByText("次の数式を英語で読んでください。", {
     exact: true,
   });
@@ -238,7 +237,7 @@ test("英語を選んでいるときは、英語の問題文が出る", async ({
   await page.addInitScript(() => {
     window.localStorage.setItem("merb.locale", "en");
   });
-  await page.goto("/quiz");
+  await page.goto(quizUrl);
   await expect(
     page.getByText("Read the expression in English.", { exact: true }),
   ).toBeVisible();
@@ -251,7 +250,7 @@ test("英語を選んでいるときは、英語の文言で出る", async ({ pa
   await page.addInitScript(() => {
     window.localStorage.setItem("merb.locale", "en");
   });
-  await page.goto("/quiz");
+  await page.goto(quizUrl);
   await expect(page.getByRole("button", { name: "Check" })).toBeVisible();
   await expect(page.getByRole("region", { name: "Answer area" })).toBeVisible();
   await page.getByRole("button", { name: "Check" }).click();

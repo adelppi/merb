@@ -1,0 +1,50 @@
+import {
+  type CategoryId,
+  categoryIds,
+  type Question,
+  type QuestionFile,
+} from "../questions/schema";
+
+// 選んだ分類を渡す URL のクエリの名前。決まりは docs/specs/category-select.md に書いてある。
+export const categoryParam = "category";
+
+// URL のクエリ category の値を、分類の id の配列にする。
+// 分類の id でないものと重なったものを除き、分類の表の順に並べる。
+export function parseCategories(values: readonly string[]): CategoryId[] {
+  return categoryIds.filter((id) => values.includes(id));
+}
+
+// 問題が1問以上ある分類を、分類の表の順に返す。
+export function availableCategories(
+  files: readonly QuestionFile[],
+): CategoryId[] {
+  return categoryIds.filter((id) =>
+    files.some((file) => file.category === id && file.questions.length > 0),
+  );
+}
+
+// 選んだ分類の問題を返す。分類を1つも選んでいなければ、すべての分類の問題を返す。
+export function selectQuestions(
+  files: readonly QuestionFile[],
+  categories: readonly CategoryId[],
+): Question[] {
+  return files
+    .filter(
+      (file) => categories.length === 0 || categories.includes(file.category),
+    )
+    .flatMap((file) => file.questions);
+}
+
+// 選んだ分類を付けた URL を返す。分類を1つも選んでいなければ、クエリを付けない。
+export function categoriesHref(
+  path: string,
+  categories: readonly CategoryId[],
+): string {
+  if (categories.length === 0) {
+    return path;
+  }
+  const query = new URLSearchParams(
+    categories.map((id) => [categoryParam, id]),
+  );
+  return `${path}?${query}`;
+}

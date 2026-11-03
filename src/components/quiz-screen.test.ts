@@ -12,7 +12,10 @@ function render(locale: "ja" | "en") {
       messages: messages[locale],
       timeZone: "Asia/Tokyo",
       // biome-ignore lint/correctness/noChildrenProp: NextIntlClientProvider の型が children を props で求める
-      children: createElement(QuizScreen, { questions: [] }),
+      children: createElement(QuizScreen, {
+        questions: [],
+        categoriesHref: "/categories?category=numbers",
+      }),
     }),
   );
 }
@@ -21,5 +24,12 @@ describe("QuizScreen", () => {
   it("問題が1問もないときは「問題がありません」と出す", () => {
     expect(render("ja")).toContain("問題がありません");
     expect(render("en")).toContain("No questions");
+  });
+
+  it("分類を選び直すリンクとトップページへ戻るリンクを置く", () => {
+    const html = render("ja");
+    expect(html).toContain('href="/categories?category=numbers"');
+    expect(html).toContain("分類を選び直す");
+    expect(html).toContain('href="/"');
   });
 });

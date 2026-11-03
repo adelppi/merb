@@ -62,6 +62,31 @@
   gap: 0.5rem;
 }
 
+.categories fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  border: none;
+}
+
+.categories label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+}
+
+.categories label:has(input:disabled) {
+  color: #888;
+}
+
+.categories input {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
 /* 「不正解」を出し直すときの動き（docs/specs/quiz.md の「間違えたとき」）。 */
 .retell {
   display: inline-block;

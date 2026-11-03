@@ -8,6 +8,22 @@
     "language": "言語",
     "back": "トップに戻る"
   },
+  "Categories": {
+    "title": "分類を選ぶ",
+    "start": "選んだ分類で始める",
+    "all": "すべての分類から出す",
+    "back": "トップに戻る"
+  },
+  "CategoryNames": {
+    "numbers": "数",
+    "fractions": "分数",
+    "scripts-powers-roots": "添え字・累乗・根号",
+    "arithmetic": "四則演算・括弧",
+    "vectors-functions": "ベクトル・行列・関数",
+    "calculus": "微分・積分・総和",
+    "relations": "等式・不等式・関係記号",
+    "combined": "まとまった数式"
+  },
   "Quiz": {
     "check": "答え合わせ",
     "correct": "正解",
@@ -19,6 +35,7 @@
     "answerArea": "回答エリア",
     "pool": "札置き場",
     "noQuestions": "問題がありません",
+    "changeCategories": "分類を選び直す",
     "back": "トップに戻る"
   }
 }

@@ -8,6 +8,22 @@
     "language": "Language",
     "back": "Back to top"
   },
+  "Categories": {
+    "title": "Choose categories",
+    "start": "Start with selected",
+    "all": "From all categories",
+    "back": "Back to top"
+  },
+  "CategoryNames": {
+    "numbers": "Numbers",
+    "fractions": "Fractions",
+    "scripts-powers-roots": "Suffixes, powers, roots",
+    "arithmetic": "Arithmetic, parentheses",
+    "vectors-functions": "Vectors, matrices, functions",
+    "calculus": "Derivatives, integrals, sums",
+    "relations": "Equations, inequalities, relations",
+    "combined": "Combined formulas"
+  },
   "Quiz": {
     "check": "Check",
     "correct": "Correct",
@@ -19,6 +35,7 @@
     "answerArea": "Answer area",
     "pool": "Cards",
     "noQuestions": "No questions",
+    "changeCategories": "Change categories",
     "back": "Back to top"
   }
 }

@@ -18,12 +18,23 @@ import { CardBoard } from "./card-board";
 import { MathFormula } from "./math-formula";
 import styles from "./quiz.module.css";
 
+type QuizScreenProps = {
+  questions: readonly Question[];
+  // 分類を選び直すリンクの行き先。選んでいる分類を付けた分類を選ぶ画面の URL。
+  categoriesHref: string;
+};
+
 // 1問を解く出題の画面。決まりは docs/specs/quiz.md に書いてある。
-export function QuizScreen({ questions }: { questions: readonly Question[] }) {
+export function QuizScreen({ questions, categoriesHref }: QuizScreenProps) {
   const t = useTranslations("Quiz");
   const locale = parseLocale(useLocale());
   const { state, dispatch, next } = useQuiz(questions);
-  const back = <Link href="/">{t("back")}</Link>;
+  const back = (
+    <div className={styles.actions}>
+      <Link href={categoriesHref}>{t("changeCategories")}</Link>
+      <Link href="/">{t("back")}</Link>
+    </div>
+  );
 
   if (questions.length === 0) {
     return (
