@@ -4,10 +4,8 @@ import { expect, it } from "vitest";
 import { checkQuestionFiles } from "./check";
 import { parsePerspectives } from "./perspectives";
 
-const questionsDir = "content/questions";
-
-// content/questions/ のすべての JSON を、docs/specs/question-format.md の受け入れ条件で検査する。
-it("content/questions/ の問題が仕様に合っている", () => {
+// フォルダのすべての JSON を、docs/specs/question-format.md の受け入れ条件で検査する。
+function check(questionsDir: string): string[] {
   const fileNames = existsSync(questionsDir)
     ? readdirSync(questionsDir).filter((name) => name.endsWith(".json"))
     : [];
@@ -18,5 +16,14 @@ it("content/questions/ の問題が仕様に合っている", () => {
   const perspectives = parsePerspectives(
     readFileSync("content/perspectives.md", "utf8"),
   );
-  expect(checkQuestionFiles(files, perspectives)).toEqual([]);
+  return checkQuestionFiles(files, perspectives);
+}
+
+it("content/questions/ の問題が仕様に合っている", () => {
+  expect(check("content/questions")).toEqual([]);
+});
+
+// Playwright で使うテスト用の問題も、同じ検査にかける（docs/specs/quiz.md）。
+it("e2e/fixtures/questions/ の問題が仕様に合っている", () => {
+  expect(check("e2e/fixtures/questions")).toEqual([]);
 });
