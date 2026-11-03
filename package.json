@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "start": "expo start",
-    "ios": "expo start --ios"
+    "ios": "expo start --ios",
+    "ios:device": "expo run:ios --device"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",
