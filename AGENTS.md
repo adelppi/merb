@@ -19,20 +19,21 @@
 
 - 対象 OS は iOS だけにする。Android はあとで別の Issue で扱う（D-0014）。
 - Next.js の Web 版は削除した（D-0012、Issue #31）。Vercel との連携もやめた（D-0013）。
-- 画面の部品の操作テストと実機に近い操作テストの道具は、画面を作り直す Issue（#35 以降）で決める（D-0015）。
+- 画面の操作テストは Maestro で書き、フローを `maestro/` に置く（D-0021）。React Native Testing Library と `jest-expo` は入れない。画面が見せる状態の判断と、札の運び先の決定は、純粋な関数にして Vitest で確かめる。
 - 数式の描画と札のドラッグの道具は D-0016、文言の切り替え（自作の Context）と言語の保存（AsyncStorage）は D-0019 で決めた。`katex` は、問題の JSON の検査（`src/questions/latex.ts`）と数式の描画に使う。
 
 ソースコードの置き場は次のとおり。理由は `docs/decisions/D-0005-architecture.md` に書いてある。
 
 | 場所 | 中身 |
 |---|---|
-| `src/app/` | Expo Router の画面。薄く保ち、問題を読んで画面の部品に渡すだけにする。`_layout.tsx` が `I18nProvider` を載せる。いまは `index.tsx`（ホーム）、`categories.tsx`（分類を選ぶ）、`settings.tsx`（設定）がある |
+| `src/app/` | Expo Router の画面。薄く保ち、問題を読んで画面の部品に渡すだけにする。`_layout.tsx` が `I18nProvider` を載せる。いまは `index.tsx`（ホーム）、`categories.tsx`（分類を選ぶ）、`quiz.tsx`（出題）、`settings.tsx`（設定）がある |
 | `src/questions/` | 問題の形、札の生成、判定、問題の JSON の検査。純粋な関数で書く。アプリに同梱する問題は `bundled.ts` が読み込む。`content/questions/` に JSON を足したら、`bundled.ts` にも足す |
 | `src/quiz/` | 出題の進行。reducer、札を混ぜる処理、次の問題を選ぶ処理、`useQuiz`。分類の選択の処理（`categories.ts`）もここに置く |
 | `src/i18n/` | 言語の型と値の検査（`locale.ts`）、言語の保存と読み出し（`storage.ts`）、`I18nProvider` と `useI18n()`（`provider.tsx`）。文言のファイルは `src/i18n/messages/` に置く |
 | `src/components/` | 画面の部品と、画面で共有する色（`theme.ts`）。画面ごとのフォルダは作らず、ここに並べる |
 | `content/` | 観点シートと問題の JSON |
 | `src/**/*.test.ts` | Vitest の単体テスト。テストするファイルと同じフォルダに置く |
+| `maestro/` | Maestro の操作テストのフロー（YAML）。シミュレーターの Expo Go に対して手元で実行する |
 | `app.json` | Expo の設定 |
 
 画面の文言は、`useI18n()` が返す `messages` から読む。キーを足すときは、`ja.json` と `en.json` に同じ構造で足す。
@@ -56,7 +57,13 @@ PR を出す前に、次をすべて通す。
 2. `pnpm typecheck`
 3. `pnpm test`
 
-操作テストの道具が決まるまで、操作テストの実行は PR を出す前の確認に入れない。
+Maestro の操作テストは、PR を出す前の確認に入れない。シミュレーターと Expo Go と開発用サーバーが要り、CI もないので、画面の操作を確かめたいときに手元で実行する。実行のしかたは次のとおり。
+
+1. シミュレーターを起動し、Expo Go を入れておく。
+2. `EXPO_NO_TYPESCRIPT_SETUP=1 pnpm exec expo start --port 8099` で開発用サーバーを動かす。
+3. `maestro test maestro/correct.yaml` のように、フローを指定して実行する。フローは、Expo Go を開き直してから、`exp://127.0.0.1:8099/...` のリンクで画面を開く。
+
+Maestro では、札の長押しドラッグを送れない（D-0021）。ドラッグを画面で確かめるには、手で操作する。
 
 Claude Design の iOS デザインは、参照資料として `docs/design/ios/` に置いてある（`docs/decisions/D-0017-design-import.md`）。コードではないので、lint、型検査、テストの対象に入れない。仕様との差は `docs/design/README.md` に書いてある。画面を作るときは、あわせて読む。
 
