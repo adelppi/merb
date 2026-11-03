@@ -48,3 +48,5 @@
 
 - `docs/specs/quiz.md` を新しく書いた。
 - `open-questions.md` に OQ-009 を起票し、解決済みにした。
+
+D-0010 で一部を置き換えた。

@@ -62,22 +62,56 @@ test("札をタップで運んで正解すると、ほかの読み方と次の�
   await expect(pool(page).getByRole("button")).toHaveCount(6);
 });
 
-test("間違えると、もう一度解くか答えを見るかを選べる", async ({ page }) => {
+test("間違えたあと、ボタンを押さずに札を運んで答え合わせし直せる", async ({
+  page,
+}) => {
   await page.goto("/quiz");
   await tapFromPool(page, "x", "to", "the", "five");
   await page.getByRole("button", { name: "答え合わせ" }).click();
   await expect(result(page)).toHaveText("不正解");
-
-  // もう一度解くと、並べた札のまま解き直せる。
-  await page.getByRole("button", { name: "もう一度解く" }).click();
+  await expect(page.getByRole("button", { name: "答え合わせ" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "答えを見る" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "次の問題" })).toHaveCount(0);
   await expect(answerArea(page).getByRole("button")).toHaveText([
     "x",
     "to",
     "the",
     "five",
   ]);
-  await expect(page.getByRole("button", { name: "答え合わせ" })).toBeVisible();
 
+  // ボタンを押さずに札を運べる。並びが変わると「不正解」は消え、「答えを見る」は残る。
+  await answerArea(page).getByRole("button", { name: "five" }).click();
+  await expect(result(page)).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "答えを見る" })).toBeVisible();
+
+  await tapFromPool(page, "fifth", "power");
+  await page.getByRole("button", { name: "答え合わせ" }).click();
+  await expect(result(page)).toHaveText("正解");
+});
+
+test("続けて不正解になると、答え合わせのたびに「不正解」を出し直す", async ({
+  page,
+}) => {
+  await page.goto("/quiz");
+  await tapFromPool(page, "x", "five");
+  await page.getByRole("button", { name: "答え合わせ" }).click();
+  await expect(result(page)).toHaveText("不正解");
+
+  // 並べ直さずに答え合わせをし直すと、「不正解」の文言を作り直して出し直す。
+  const before = await result(page).locator("span").elementHandle();
+  if (!before) {
+    throw new Error("「不正解」の文言が見えない");
+  }
+  await page.getByRole("button", { name: "答え合わせ" }).click();
+  await expect
+    .poll(() => before.evaluate((element) => element.isConnected))
+    .toBe(false);
+  await expect(result(page)).toHaveText("不正解");
+});
+
+test("間違えたあと、答えを見るとすべての読み方が出る", async ({ page }) => {
+  await page.goto("/quiz");
+  await tapFromPool(page, "x", "to", "the", "five");
   await page.getByRole("button", { name: "答え合わせ" }).click();
   await page.getByRole("button", { name: "答えを見る" }).click();
   await expect(

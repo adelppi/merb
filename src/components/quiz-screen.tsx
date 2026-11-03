@@ -6,6 +6,8 @@ import { parseLocale } from "@/i18n/locale";
 import { readingText } from "@/questions/reading";
 import type { Answer, Question } from "@/questions/schema";
 import {
+  canMoveCards,
+  canReveal,
   otherAnswers,
   placedCards,
   poolCards,
@@ -42,7 +44,7 @@ export function QuizScreen({ questions }: { questions: readonly Question[] }) {
       <CardBoard
         placed={placedCards(state)}
         pool={poolCards(state)}
-        locked={state.phase !== "solving"}
+        locked={!canMoveCards(state)}
         answerLabel={t("answerArea")}
         poolLabel={t("pool")}
         onPlace={(id, at) => dispatch({ type: "place", id, at })}
@@ -52,7 +54,6 @@ export function QuizScreen({ questions }: { questions: readonly Question[] }) {
       <Result
         state={state}
         onCheck={() => dispatch({ type: "check" })}
-        onRetry={() => dispatch({ type: "retry" })}
         onReveal={() => dispatch({ type: "reveal" })}
         onNext={next}
       />
@@ -64,13 +65,12 @@ export function QuizScreen({ questions }: { questions: readonly Question[] }) {
 type ResultProps = {
   state: QuizState;
   onCheck: () => void;
-  onRetry: () => void;
   onReveal: () => void;
   onNext: () => void;
 };
 
 // 答え合わせのボタンと、答え合わせをしたあとに出すもの。
-function Result({ state, onCheck, onRetry, onReveal, onNext }: ResultProps) {
+function Result({ state, onCheck, onReveal, onNext }: ResultProps) {
   const t = useTranslations("Quiz");
   const nextButton = (
     <button type="button" onClick={onNext}>
@@ -80,11 +80,27 @@ function Result({ state, onCheck, onRetry, onReveal, onNext }: ResultProps) {
 
   switch (state.phase) {
     case "solving":
+    case "incorrect":
       return (
-        <div className={styles.actions}>
-          <button type="button" onClick={onCheck}>
-            {t("check")}
-          </button>
+        <div>
+          {state.phase === "incorrect" && (
+            <p role="status">
+              {/* 答え合わせのたびに key を変えて作り直し、続けて不正解になっても出し直したことが分かるようにする。 */}
+              <span key={state.checks} className={styles.retell}>
+                {t("incorrect")}
+              </span>
+            </p>
+          )}
+          <div className={styles.actions}>
+            <button type="button" onClick={onCheck}>
+              {t("check")}
+            </button>
+            {canReveal(state) && (
+              <button type="button" onClick={onReveal}>
+                {t("reveal")}
+              </button>
+            )}
+          </div>
         </div>
       );
     case "correct": {
@@ -99,20 +115,6 @@ function Result({ state, onCheck, onRetry, onReveal, onNext }: ResultProps) {
         </div>
       );
     }
-    case "incorrect":
-      return (
-        <div>
-          <p role="status">{t("incorrect")}</p>
-          <div className={styles.actions}>
-            <button type="button" onClick={onRetry}>
-              {t("retry")}
-            </button>
-            <button type="button" onClick={onReveal}>
-              {t("reveal")}
-            </button>
-          </div>
-        </div>
-      );
     case "revealed":
       return (
         <div>
