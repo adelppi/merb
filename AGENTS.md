@@ -17,6 +17,8 @@
 
 技術スタックは `docs/decisions/D-0003-tech-stack.md` のとおり。TypeScript、Next.js の App Router、Vercel を使い、パッケージマネージャーは pnpm にする。
 
+アプリは React Native と Expo のネイティブアプリに切り替える（`docs/decisions/D-0012-native-app.md`）。Web 版（Next.js）はやめる。切り替えが終わるまでは、次の置き場とコマンドの表が Next.js の Web 版を指している。使うライブラリと対象は `docs/open-questions.md` の OQ-015 で決める。
+
 ソースコードの置き場は次のとおり。理由は `docs/decisions/D-0005-architecture.md` に書いてある。
 
 | 場所 | 中身 |
