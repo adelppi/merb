@@ -43,11 +43,24 @@
 
 - 1つ目の基準について。KaTeX の HTML を使うので、問題の JSON の検査（Vitest）で描けた数式は、画面でも同じ HTML で描ける。`src/questions/latex.test.ts` で、同梱したすべての問題（8分類）の `latex` を、画面で使う `renderLatexHtml` で描けることを確かめた。
 - 3つ目の基準について。Gesture Handler はネイティブのタッチ処理を使うので、長押しのあとにドラッグを始め、短い操作をタップとして扱うという仕様（`quiz.md` の「札を運ぶ」の7）を作りやすい。
-- どちらも、Expo SDK 58 の `expo install` で入る版で動く。`expo export --platform ios` で iOS のバンドルを作れた（KaTeX、WebView、Reanimated、Gesture Handler を含む）。
+- どちらも、Expo SDK 58 の `expo install` で入る版を使う。`expo export --platform ios` で iOS のバンドルを作れた（KaTeX、WebView、Reanimated、Gesture Handler を含む）。
+- 札のドラッグは、組んだコードで動くことをまだ確かめていない（下の「確かめていないこと」）。動かないと分かった場合は、新しい記録で決め直す。
 
 ## 試した範囲と、試していない範囲
 
-確かめたことと確かめていないことは、PR の本文に書いた。この記録の時点で、実機の操作は確かめていない点がある。
+確かめたこと
+
+- 型検査、Vitest、`expo export --platform ios`（iOS のバンドルを作れる）。
+- 同梱したすべての問題の `latex` を、画面で使う `renderLatexHtml` で描けること（Vitest）。
+- iOS シミュレーター（iPhone 17 Pro、Expo Go 58.0.7）で試作の画面を開き、`a \pm b` の問題で、WebView の中の KaTeX の数式と、KaTeX の書体の札（英字1文字は斜体、ほかは立体）が出ること。通信に頼る部分はない（CSS と書体はアプリに同梱したものを読む）。
+
+確かめていないこと
+
+- 複雑な数式（分数、積分、和、二項係数など）が、WebView の中で崩れず、高さも合って出ること。シミュレーターで見たのは上の1問だけ。
+- タップで札を運ぶ操作、長押しのドラッグ、回答エリアの並べ替え、札置き場へ戻す操作。シミュレーターに操作を送る手段がなく、動かして確かめていない。コードは書いたが、動くことは確かめていない。
+- 実機での動作と、描画の速さ。
+
+これらは、出題の画面を作る #35 で確かめる。
 
 ## 影響
 
