@@ -38,3 +38,4 @@
 | [D-0017](D-0017-design-import.md) | Claude Design の iOS デザインは docs/design/ios/ に参照資料として置く | 2026-11-03 |
 | [D-0018](D-0018-design-open-questions.md) | デザインの取り込みで残っていた5つの項目（iOS の最低バージョン、Liquid Glass とアイコン、戻るボタン、不正解の札の色、デザインにない状態）を決める | 2026-11-03 |
 | [D-0019](D-0019-i18n-and-locale-storage.md) | 文言の切り替えは自作の Context、言語の保存は AsyncStorage にする | 2026-11-03 |
+| [D-0020](D-0020-category-navigation.md) | 分類を選ぶ画面から出題の画面へは、コンマ区切りのクエリで渡す | 2026-11-03 |

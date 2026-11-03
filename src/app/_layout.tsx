@@ -24,6 +24,18 @@ function RootStack() {
           headerLargeStyle: { backgroundColor: colors.background },
         }}
       />
+      <Stack.Screen
+        name="categories"
+        options={{
+          headerShown: true,
+          title: messages.Categories.title,
+          headerLargeTitle: true,
+          headerBackButtonDisplayMode: "minimal",
+          headerShadowVisible: false,
+          headerStyle: { backgroundColor: colors.background },
+          headerLargeStyle: { backgroundColor: colors.background },
+        }}
+      />
     </Stack>
   );
 }
