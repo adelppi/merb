@@ -1,8 +1,8 @@
 # 1問を解く出題の画面
 
 - 状態: 実装済み
-- Issue: #17、#24
-- 関係する決定: [D-0003](../decisions/D-0003-tech-stack.md)、[D-0004](../decisions/D-0004-question-format.md)、[D-0005](../decisions/D-0005-architecture.md)、[D-0006](../decisions/D-0006-locale-storage.md)、[D-0007](../decisions/D-0007-quiz-screen.md)、[D-0011](../decisions/D-0011-question-prompt.md)
+- Issue: #17、#22、#24
+- 関係する決定: [D-0003](../decisions/D-0003-tech-stack.md)、[D-0004](../decisions/D-0004-question-format.md)、[D-0005](../decisions/D-0005-architecture.md)、[D-0006](../decisions/D-0006-locale-storage.md)、[D-0007](../decisions/D-0007-quiz-screen.md)、[D-0009](../decisions/D-0009-card-font.md)、[D-0011](../decisions/D-0011-question-prompt.md)
 
 ## 目的
 
@@ -24,6 +24,11 @@
 4. 数式は KaTeX で描く。設定は、問題の JSON の検査と同じにする（[問題の JSON の形](question-format.md)の「検査」の節）。
 5. 札置き場には、[出す札](question-format.md#出す札)の決まりで出した札を、混ぜて並べる。問題を出すたびに混ぜ直す。
 6. 問題は、画面を開いたときにブラウザーで選び、札もブラウザーで混ぜる。
+7. 札の文字は、数式と同じ KaTeX の書体で出す。回答エリア、札置き場、ドラッグ中の札で同じ書体にする。
+   - 札の文字列が英字1文字（`A`〜`Z`、`a`〜`z`）のときは、数式の中の文字と同じ斜体で出す。英単語の `a`（`a half` の `a` など）も、英字1文字なので斜体で出す。
+   - ほかの札は、KaTeX の立体で出す。
+   - 書体を変えても、判定と札のボタンの名前は、札の文字列のままにする。
+8. 答えを見せるときの読み方（「ほかの読み方」と「答え」）は、札の書体にせず、画面の文言と同じ書体で出す。
 
 ## 札を運ぶ
 
@@ -83,6 +88,7 @@
 - [x] 英語を選んでいるときは、出題の画面の文言が英語で出る（Playwright）
 - [x] 数式の上に、選んでいる言語の問題文が出る。日本語を選んでいれば日本語の、英語を選んでいれば英語の問題文になる（Playwright）
 - [x] ページはビルドのときに静的に作る
+- [x] 英字1文字の札は KaTeX の斜体で、ほかの札は KaTeX の立体で出る。札のボタンの名前は札の文字列のままになる（Vitest と Playwright）
 
 ## 範囲外
 
@@ -96,3 +102,4 @@
 ## 未解決の項目
 
 - なし。この仕様を書くときに決めたことは [OQ-009](../open-questions.md#oq-009) に起票し、[D-0007](../decisions/D-0007-quiz-screen.md) に記録した。問題文を出すときに決めたことは [OQ-013](../open-questions.md#oq-013) に起票し、[D-0011](../decisions/D-0011-question-prompt.md) に記録した。
+- 札の書体を決めるときに決めたことは [OQ-011](../open-questions.md#oq-011) に起票し、[D-0009](../decisions/D-0009-card-font.md) に記録した。

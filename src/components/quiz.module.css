@@ -36,6 +36,17 @@
   cursor: grab;
 }
 
+/* 札の書体。KaTeX_Main と KaTeX_Math は、katex.min.css が読み込む KaTeX の書体 */
+.word {
+  font-family: KaTeX_Main, "Times New Roman", serif;
+  font-style: normal;
+}
+
+.letter {
+  font-family: KaTeX_Math, "Times New Roman", serif;
+  font-style: italic;
+}
+
 .card:disabled,
 .card[aria-disabled="true"] {
   cursor: default;
