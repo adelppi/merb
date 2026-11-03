@@ -4,6 +4,10 @@
     {
       "id": "scripts-powers-roots-001",
       "perspective": "prime / bar / hat",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\bar{x}",
       "answers": [
         {
@@ -15,6 +19,10 @@
     {
       "id": "scripts-powers-roots-002",
       "perspective": "prime / bar / hat",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\hat{y}",
       "answers": [
         {
@@ -26,6 +34,10 @@
     {
       "id": "scripts-powers-roots-003",
       "perspective": "prime / bar / hat",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "x'",
       "answers": [
         {
@@ -37,6 +49,10 @@
     {
       "id": "scripts-powers-roots-004",
       "perspective": "下付き添字 sub",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "a_n",
       "answers": [
         {
@@ -48,6 +64,10 @@
     {
       "id": "scripts-powers-roots-005",
       "perspective": "下付き添字 sub",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "x_1",
       "answers": [
         {
@@ -62,6 +82,10 @@
     {
       "id": "scripts-powers-roots-006",
       "perspective": "下付き添字 sub",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "a_{n+1}",
       "answers": [
         {
@@ -73,6 +97,10 @@
     {
       "id": "scripts-powers-roots-007",
       "perspective": "squared / cubed",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "y^3",
       "answers": [
         {
@@ -84,6 +112,10 @@
     {
       "id": "scripts-powers-roots-008",
       "perspective": "squared / cubed",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "x^2",
       "answers": [
         {
@@ -95,6 +127,10 @@
     {
       "id": "scripts-powers-roots-009",
       "perspective": "squared / cubed",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "5^2",
       "answers": [
         {
@@ -106,6 +142,10 @@
     {
       "id": "scripts-powers-roots-010",
       "perspective": "n乗（序数＋power）",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "x^5",
       "answers": [
         {
@@ -120,6 +160,10 @@
     {
       "id": "scripts-powers-roots-011",
       "perspective": "n乗（序数＋power）",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "2^{10}",
       "answers": [
         {
@@ -134,6 +178,10 @@
     {
       "id": "scripts-powers-roots-012",
       "perspective": "n乗（序数＋power）",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "a^n",
       "answers": [
         {
@@ -148,6 +196,10 @@
     {
       "id": "scripts-powers-roots-013",
       "perspective": "負の累乗",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "x^{-2}",
       "answers": [
         {
@@ -162,6 +214,10 @@
     {
       "id": "scripts-powers-roots-014",
       "perspective": "負の累乗",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "y^{-1}",
       "answers": [
         {
@@ -176,6 +232,10 @@
     {
       "id": "scripts-powers-roots-015",
       "perspective": "平方根・立方根",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\sqrt[3]{8}",
       "answers": [
         {
@@ -187,6 +247,10 @@
     {
       "id": "scripts-powers-roots-016",
       "perspective": "平方根・立方根",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\sqrt{2}",
       "answers": [
         {
@@ -201,6 +265,10 @@
     {
       "id": "scripts-powers-roots-017",
       "perspective": "平方根・立方根",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\sqrt[4]{x}",
       "answers": [
         {
@@ -212,6 +280,10 @@
     {
       "id": "scripts-powers-roots-018",
       "perspective": "ルート内が式（範囲を示す）",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\sqrt{a+b}",
       "answers": [
         {
@@ -247,6 +319,10 @@
     {
       "id": "scripts-powers-roots-019",
       "perspective": "ルート内が式（範囲を示す）",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\sqrt{x^2+1}",
       "answers": [
         {

@@ -36,6 +36,17 @@
   cursor: grab;
 }
 
+/* 札の書体。KaTeX_Main と KaTeX_Math は、katex.min.css が読み込む KaTeX の書体 */
+.word {
+  font-family: KaTeX_Main, "Times New Roman", serif;
+  font-style: normal;
+}
+
+.letter {
+  font-family: KaTeX_Math, "Times New Roman", serif;
+  font-style: italic;
+}
+
 .card:disabled,
 .card[aria-disabled="true"] {
   cursor: default;
@@ -74,4 +85,41 @@
 .categories input {
   width: 1.25rem;
   height: 1.25rem;
+}
+
+/* 「不正解」を出し直すときの動き（docs/specs/quiz.md の「間違えたとき」）。 */
+.retell {
+  display: inline-block;
+  animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-0.25rem);
+  }
+  40%,
+  80% {
+    transform: translateX(0.25rem);
+  }
+}
+
+/* 動きを減らす設定のときは揺らさず、薄い色から元の色に戻して出す。 */
+@media (prefers-reduced-motion: reduce) {
+  .retell {
+    animation: fade-in 0.3s ease-out;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 1;
+  }
 }

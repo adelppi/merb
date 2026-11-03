@@ -4,6 +4,10 @@
     {
       "id": "combined-001",
       "perspective": "解の公式",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}",
       "answers": [
         {
@@ -32,6 +36,10 @@
     {
       "id": "combined-002",
       "perspective": "二項定理",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "(a+b)^n = \\sum_{k=0}^{n} \\binom{n}{k} a^{n-k} b^k",
       "answers": [
         {
@@ -70,6 +78,10 @@
     {
       "id": "combined-003",
       "perspective": "微分の定義",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "f'(x) = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}",
       "answers": [
         {
@@ -104,6 +116,10 @@
     {
       "id": "combined-004",
       "perspective": "テイラー展開",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "f(x) = \\sum_{n=0}^{\\infty} \\frac{f^{(n)}(a)}{n!} (x-a)^n",
       "answers": [
         {
@@ -141,6 +157,10 @@
     {
       "id": "combined-005",
       "perspective": "オイラーの公式",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "e^{i\\theta} = \\cos\\theta + i\\sin\\theta",
       "answers": [
         {
@@ -164,6 +184,10 @@
     {
       "id": "combined-006",
       "perspective": "オイラーの等式",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "e^{i\\pi} + 1 = 0",
       "answers": [
         {
@@ -175,6 +199,10 @@
     {
       "id": "combined-007",
       "perspective": "フーリエ変換",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "F(\\omega) = \\int_{-\\infty}^{\\infty} f(t) e^{-i\\omega t} \\, dt",
       "answers": [
         {
@@ -210,6 +238,10 @@
     {
       "id": "combined-008",
       "perspective": "ラプラス変換",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "F(s) = \\int_0^{\\infty} f(t) e^{-st} \\, dt",
       "answers": [
         {
@@ -243,6 +275,10 @@
     {
       "id": "combined-009",
       "perspective": "ガウス積分",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "\\int_{-\\infty}^{\\infty} e^{-x^2} \\, dx = \\sqrt{\\pi}",
       "answers": [
         {
@@ -272,6 +308,10 @@
     {
       "id": "combined-010",
       "perspective": "ベイズの定理",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "P(A \\mid B) = \\frac{P(B \\mid A) P(A)}{P(B)}",
       "answers": [
         {
@@ -304,6 +344,10 @@
     {
       "id": "combined-011",
       "perspective": "正規分布",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "f(x) = \\frac{1}{\\sigma\\sqrt{2\\pi}} e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}}",
       "answers": [
         {

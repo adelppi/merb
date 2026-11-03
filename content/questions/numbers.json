@@ -4,6 +4,10 @@
     {
       "id": "numbers-001",
       "perspective": "大きな数で a / one を落とさない",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "100",
       "answers": [
         {
@@ -18,6 +22,10 @@
     {
       "id": "numbers-002",
       "perspective": "大きな数で a / one を落とさない",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "1{,}000",
       "answers": [
         {
@@ -32,6 +40,10 @@
     {
       "id": "numbers-003",
       "perspective": "大きな数で a / one を落とさない",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "100{,}000",
       "answers": [
         {
@@ -46,6 +58,10 @@
     {
       "id": "numbers-004",
       "perspective": "千・百万・十億の単位",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "3{,}000{,}000",
       "answers": [
         {
@@ -57,6 +73,10 @@
     {
       "id": "numbers-005",
       "perspective": "千・百万・十億の単位",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "5{,}000{,}000{,}000",
       "answers": [
         {
@@ -68,6 +88,10 @@
     {
       "id": "numbers-006",
       "perspective": "千・百万・十億の単位",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "40{,}000",
       "answers": [
         {
@@ -79,6 +103,10 @@
     {
       "id": "numbers-007",
       "perspective": "小数は point の後を1桁ずつ読む",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "2.47",
       "answers": [
         {
@@ -90,6 +118,10 @@
     {
       "id": "numbers-008",
       "perspective": "小数は point の後を1桁ずつ読む",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "0.25",
       "answers": [
         {
@@ -101,6 +133,10 @@
     {
       "id": "numbers-009",
       "perspective": "小数は point の後を1桁ずつ読む",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "3.14",
       "answers": [
         {
@@ -112,6 +148,10 @@
     {
       "id": "numbers-010",
       "perspective": "循環小数",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "0.666\\ldots",
       "answers": [
         {
@@ -126,6 +166,10 @@
     {
       "id": "numbers-011",
       "perspective": "循環小数",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "0.333\\ldots",
       "answers": [
         {
@@ -140,6 +184,10 @@
     {
       "id": "numbers-012",
       "perspective": "指数表記（10の累乗）",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "3 \\times 10^4",
       "answers": [
         {
@@ -154,6 +202,10 @@
     {
       "id": "numbers-013",
       "perspective": "指数表記（10の累乗）",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "6 \\times 10^8",
       "answers": [
         {
@@ -168,6 +220,10 @@
     {
       "id": "numbers-014",
       "perspective": "負の指数",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "2 \\times 10^{-5}",
       "answers": [
         {
@@ -182,6 +238,10 @@
     {
       "id": "numbers-015",
       "perspective": "負の指数",
+      "prompt": {
+        "ja": "次の数式を英語で読んでください。",
+        "en": "Read the expression in English."
+      },
       "latex": "1.6 \\times 10^{-19}",
       "answers": [
         {

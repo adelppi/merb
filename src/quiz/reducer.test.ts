@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import type { Question } from "../questions/schema";
 import {
   type Card,
+  canMoveCards,
+  canReveal,
   otherAnswers,
   placedTexts,
   poolCards,
@@ -14,6 +16,10 @@ import {
 const fifthPower: Question = {
   id: "scripts-powers-roots-001",
   perspective: "n乗（序数＋power）",
+  prompt: {
+    ja: "次の数式を英語で読んでください。",
+    en: "Read the expression in English.",
+  },
   latex: "x^5",
   answers: [
     { cards: ["x", "to", "the", "fifth", "power"] },
@@ -109,39 +115,35 @@ describe("答え合わせ", () => {
     expect(run({ type: "check" }).phase).toBe("incorrect");
   });
 
-  it("もう一度解くと、並べた札のまま解いている状態に戻る", () => {
-    const state = run(place(0), place(5), { type: "check" }, { type: "retry" });
-    expect(state.phase).toBe("solving");
-    expect(placedTexts(state)).toEqual(["x", "five"]);
-  });
-
   it("答えを見ると revealed になる", () => {
     const state = run(place(0), { type: "check" }, { type: "reveal" });
     expect(state.phase).toBe("revealed");
   });
 
-  it("答え合わせのあとは、次の操作をするまで札を運べない", () => {
+  it("正解したあとと答えを見たあとは、次の問題を出すまで札を運べない", () => {
     for (const state of [
       run(...correct, { type: "check" }),
-      run(place(0), { type: "check" }),
       run(place(0), { type: "check" }, { type: "reveal" }),
     ]) {
+      expect(canMoveCards(state)).toBe(false);
       expect(quizReducer(state, place(5))).toBe(state);
       expect(quizReducer(state, { type: "unplace", id: 0 })).toBe(state);
       expect(quizReducer(state, { type: "move", id: 0, to: 1 })).toBe(state);
       expect(quizReducer(state, { type: "check" })).toBe(state);
+      expect(quizReducer(state, { type: "reveal" })).toBe(state);
     }
   });
 
-  it("もう一度解くと答えを見るは、間違えたときだけできる", () => {
+  it("答えを見るは、間違えたあとだけできる", () => {
     const solving = run(place(0));
-    expect(quizReducer(solving, { type: "retry" })).toBe(solving);
+    expect(canReveal(solving)).toBe(false);
     expect(quizReducer(solving, { type: "reveal" })).toBe(solving);
     const correctState = run(...correct, { type: "check" });
+    expect(canReveal(correctState)).toBe(false);
     expect(quizReducer(correctState, { type: "reveal" })).toBe(correctState);
   });
 
-  it("次の問題を出すと、札がすべて札置き場に戻り、解いている状態になる", () => {
+  it("次の問題を出すと、間違えたことも忘れ、札がすべて札置き場に戻り、解いている状態になる", () => {
     const state = run(
       ...correct,
       { type: "check" },
@@ -155,5 +157,69 @@ describe("答え合わせ", () => {
     expect(state.phase).toBe("solving");
     expect(state.index).toBe(1);
     expect(state.placed).toEqual([]);
+    expect(state.missed).toBe(false);
+    expect(canReveal(state)).toBe(false);
+  });
+});
+
+describe("間違えたあとに解き直す", () => {
+  const wrong: QuizAction[] = [
+    place(0),
+    place(1),
+    place(2),
+    place(5),
+    { type: "check" },
+  ];
+
+  it("ボタンを押さずに札を運び、もう一度答え合わせができる", () => {
+    const missed = run(...wrong);
+    expect(missed.phase).toBe("incorrect");
+    expect(canMoveCards(missed)).toBe(true);
+
+    // 「five」を戻し、「fifth」と「power」を運んで正解にする。
+    const actions: QuizAction[] = [
+      { type: "unplace", id: 5 },
+      place(3),
+      place(4),
+      { type: "check" },
+    ];
+    const state = actions.reduce(quizReducer, missed);
+    expect(state.phase).toBe("correct");
+    expect(placedTexts(state)).toEqual(["x", "to", "the", "fifth", "power"]);
+  });
+
+  it("札を運んで並びが変わると「不正解」を消し、「答えを見る」は残す", () => {
+    const missed = run(...wrong);
+    for (const action of [
+      place(3),
+      { type: "unplace", id: 5 },
+      { type: "move", id: 5, to: 0 },
+    ] as QuizAction[]) {
+      const state = quizReducer(missed, action);
+      expect(state.phase).toBe("solving");
+      expect(canReveal(state)).toBe(true);
+      expect(quizReducer(state, { type: "reveal" }).phase).toBe("revealed");
+    }
+  });
+
+  it("並びが変わらない操作では「不正解」を消さない", () => {
+    const missed = run(...wrong);
+    expect(quizReducer(missed, { type: "move", id: 5, to: 3 })).toBe(missed);
+    expect(quizReducer(missed, place(0))).toBe(missed);
+  });
+
+  it("並べ直さずに、そのまま答え合わせをし直せる", () => {
+    const state = run(...wrong, { type: "check" });
+    expect(state.phase).toBe("incorrect");
+    expect(placedTexts(state)).toEqual(["x", "to", "the", "five"]);
+  });
+
+  it("答え合わせのたびに、出し直すきっかけの値が変わる", () => {
+    const first = run(...wrong);
+    const second = quizReducer(first, { type: "check" });
+    const third = quizReducer(quizReducer(second, { type: "unplace", id: 5 }), {
+      type: "check",
+    });
+    expect(new Set([first.checks, second.checks, third.checks]).size).toBe(3);
   });
 });

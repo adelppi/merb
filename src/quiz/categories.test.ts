@@ -14,6 +14,7 @@ function file(category: CategoryId, count: number): QuestionFile {
     questions: Array.from({ length: count }, (_, i) => ({
       id: `${category}-00${i + 1}`,
       perspective: "p",
+      prompt: { ja: "問題文", en: "Prompt" },
       latex: "x",
       answers: [{ cards: ["x"] }],
       distractors: [],

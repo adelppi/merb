@@ -10,6 +10,10 @@ describe("loadQuestions", () => {
     const question = (id: string) => ({
       id,
       perspective: "p",
+      prompt: {
+        ja: "次の数式を英語で読んでください。",
+        en: "Read the expression in English.",
+      },
       latex: "x",
       answers: [{ cards: ["x"] }],
       distractors: [],
