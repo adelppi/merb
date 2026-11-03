@@ -6,6 +6,16 @@ export const katexOptions = {
   strict: "error",
 } as const satisfies KatexOptions;
 
+// 出題の画面で数式を描く HTML。検査と同じ設定で、数式を単独の行として描く。
+// 描けなければ例外を投げる。
+export function renderLatexHtml(latex: string): string {
+  return katex.renderToString(latex, {
+    ...katexOptions,
+    displayMode: true,
+    output: "html",
+  });
+}
+
 // KaTeX で描けなければ、そのエラーの文言を返す。描ければ null を返す。
 export function findLatexError(latex: string): string | null {
   try {

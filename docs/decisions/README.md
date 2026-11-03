@@ -34,3 +34,4 @@
 | [D-0013](D-0013-drop-vercel.md) | Vercel との連携をやめる | 2026-11-03 |
 | [D-0014](D-0014-ios-expo-router.md) | 対象 OS は iOS だけにし、画面の移動に Expo Router を使う | 2026-11-03 |
 | [D-0015](D-0015-test-and-toolchain.md) | TypeScript、pnpm、Zod、Biome、Vitest を続けて使い、操作テストの道具は画面ができるときに決める | 2026-11-03 |
+| [D-0016](D-0016-math-and-drag-libs.md) | 数式の描画は WebView の中の KaTeX、札のドラッグは Reanimated と Gesture Handler で組む | 2026-11-03 |
