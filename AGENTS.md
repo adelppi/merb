@@ -57,6 +57,8 @@ PR を出す前に、次をすべて通す。
 
 操作テストの道具が決まるまで、操作テストの実行は PR を出す前の確認に入れない。
 
+Claude Design の iOS デザインは、参照資料として `docs/design/ios/` に置いてある（`docs/decisions/D-0017-design-import.md`）。コードではないので、lint、型検査、テストの対象に入れない。仕様との差は `docs/design/README.md` に書いてある。画面を作るときは、あわせて読む。
+
 ## 日本語の文体（yomiyasu）
 
 このリポジトリで AI が書く日本語は、すべて yomiyasu スキルの規則に従う。スキルの本体は `.claude/skills/yomiyasu/` にあり、Codex は `.agents/skills/yomiyasu`（本体へのシンボリックリンク）から読む。対象は次のとおり。
