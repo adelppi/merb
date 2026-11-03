@@ -1,0 +1,217 @@
+{
+  "category": "numbers",
+  "questions": [
+    {
+      "id": "numbers-001",
+      "perspective": "大きな数で a / one を落とさない",
+      "latex": "100",
+      "answers": [
+        {
+          "cards": ["a", "hundred"]
+        },
+        {
+          "cards": ["one", "hundred"]
+        }
+      ],
+      "distractors": ["hundreds"]
+    },
+    {
+      "id": "numbers-002",
+      "perspective": "大きな数で a / one を落とさない",
+      "latex": "1{,}000",
+      "answers": [
+        {
+          "cards": ["a", "thousand"]
+        },
+        {
+          "cards": ["one", "thousand"]
+        }
+      ],
+      "distractors": ["thousands"]
+    },
+    {
+      "id": "numbers-003",
+      "perspective": "大きな数で a / one を落とさない",
+      "latex": "100{,}000",
+      "answers": [
+        {
+          "cards": ["a", "hundred", "thousand"]
+        },
+        {
+          "cards": ["one", "hundred", "thousand"]
+        }
+      ],
+      "distractors": ["hundreds", "thousands"]
+    },
+    {
+      "id": "numbers-004",
+      "perspective": "千・百万・十億の単位",
+      "latex": "3{,}000{,}000",
+      "answers": [
+        {
+          "cards": ["three", "million"]
+        }
+      ],
+      "distractors": ["millions"]
+    },
+    {
+      "id": "numbers-005",
+      "perspective": "千・百万・十億の単位",
+      "latex": "5{,}000{,}000{,}000",
+      "answers": [
+        {
+          "cards": ["five", "billion"]
+        }
+      ],
+      "distractors": ["billions", "million"]
+    },
+    {
+      "id": "numbers-006",
+      "perspective": "千・百万・十億の単位",
+      "latex": "40{,}000",
+      "answers": [
+        {
+          "cards": ["forty", "thousand"]
+        }
+      ],
+      "distractors": ["four", "ten", "thousands"]
+    },
+    {
+      "id": "numbers-007",
+      "perspective": "小数は point の後を1桁ずつ読む",
+      "latex": "2.47",
+      "answers": [
+        {
+          "cards": ["two", "point", "four", "seven"]
+        }
+      ],
+      "distractors": ["forty-seven"]
+    },
+    {
+      "id": "numbers-008",
+      "perspective": "小数は point の後を1桁ずつ読む",
+      "latex": "0.25",
+      "answers": [
+        {
+          "cards": ["zero", "point", "two", "five"]
+        }
+      ],
+      "distractors": ["twenty-five"]
+    },
+    {
+      "id": "numbers-009",
+      "perspective": "小数は point の後を1桁ずつ読む",
+      "latex": "3.14",
+      "answers": [
+        {
+          "cards": ["three", "point", "one", "four"]
+        }
+      ],
+      "distractors": ["fourteen"]
+    },
+    {
+      "id": "numbers-010",
+      "perspective": "循環小数",
+      "latex": "0.666\\ldots",
+      "answers": [
+        {
+          "cards": ["zero", "point", "six", "recurring"]
+        },
+        {
+          "cards": ["zero", "point", "six", "repeating"]
+        }
+      ],
+      "distractors": ["sixty-six"]
+    },
+    {
+      "id": "numbers-011",
+      "perspective": "循環小数",
+      "latex": "0.333\\ldots",
+      "answers": [
+        {
+          "cards": ["zero", "point", "three", "recurring"]
+        },
+        {
+          "cards": ["zero", "point", "three", "repeating"]
+        }
+      ],
+      "distractors": ["thirty-three"]
+    },
+    {
+      "id": "numbers-012",
+      "perspective": "指数表記（10の累乗）",
+      "latex": "3 \\times 10^4",
+      "answers": [
+        {
+          "cards": ["three", "times", "ten", "to", "the", "fourth"]
+        },
+        {
+          "cards": ["three", "times", "ten", "to", "the", "fourth", "power"]
+        }
+      ],
+      "distractors": ["four"]
+    },
+    {
+      "id": "numbers-013",
+      "perspective": "指数表記（10の累乗）",
+      "latex": "6 \\times 10^8",
+      "answers": [
+        {
+          "cards": ["six", "times", "ten", "to", "the", "eighth"]
+        },
+        {
+          "cards": ["six", "times", "ten", "to", "the", "eighth", "power"]
+        }
+      ],
+      "distractors": ["eight"]
+    },
+    {
+      "id": "numbers-014",
+      "perspective": "負の指数",
+      "latex": "2 \\times 10^{-5}",
+      "answers": [
+        {
+          "cards": ["two", "times", "ten", "to", "the", "minus", "five"]
+        },
+        {
+          "cards": ["two", "times", "ten", "to", "the", "negative", "five"]
+        }
+      ],
+      "distractors": ["positive"]
+    },
+    {
+      "id": "numbers-015",
+      "perspective": "負の指数",
+      "latex": "1.6 \\times 10^{-19}",
+      "answers": [
+        {
+          "cards": [
+            "one",
+            "point",
+            "six",
+            "times",
+            "ten",
+            "to",
+            "the",
+            "minus",
+            "nineteen"
+          ]
+        },
+        {
+          "cards": [
+            "one",
+            "point",
+            "six",
+            "times",
+            "ten",
+            "to",
+            "the",
+            "negative",
+            "nineteen"
+          ]
+        }
+      ],
+      "distractors": ["sixteen", "positive"]
+    }
+  ]
+}

@@ -1,0 +1,320 @@
+{
+  "category": "relations",
+  "questions": [
+    {
+      "id": "relations-001",
+      "perspective": "equals / is / is equal to",
+      "latex": "4 + 3 = 7",
+      "answers": [
+        {
+          "cards": ["four", "plus", "three", "equals", "seven"]
+        },
+        {
+          "cards": ["four", "plus", "three", "is", "seven"]
+        },
+        {
+          "cards": ["four", "plus", "three", "is", "equal", "to", "seven"]
+        }
+      ],
+      "distractors": ["minus"]
+    },
+    {
+      "id": "relations-002",
+      "perspective": "equals / is / is equal to",
+      "latex": "10 - 4 = 6",
+      "answers": [
+        {
+          "cards": ["ten", "minus", "four", "equals", "six"]
+        },
+        {
+          "cards": ["ten", "minus", "four", "is", "six"]
+        },
+        {
+          "cards": ["ten", "minus", "four", "is", "equal", "to", "six"]
+        }
+      ],
+      "distractors": ["plus"]
+    },
+    {
+      "id": "relations-003",
+      "perspective": "余り付きの割り算",
+      "latex": "17 \\div 5 = 3 \\text{ r} 2",
+      "answers": [
+        {
+          "cards": [
+            "seventeen",
+            "divided",
+            "by",
+            "five",
+            "is",
+            "three",
+            "with",
+            "a",
+            "remainder",
+            "of",
+            "two"
+          ]
+        }
+      ],
+      "distractors": ["rest"]
+    },
+    {
+      "id": "relations-004",
+      "perspective": "余り付きの割り算",
+      "latex": "23 \\div 4 = 5 \\text{ r} 3",
+      "answers": [
+        {
+          "cards": [
+            "twenty-three",
+            "divided",
+            "by",
+            "four",
+            "is",
+            "five",
+            "with",
+            "a",
+            "remainder",
+            "of",
+            "three"
+          ]
+        }
+      ],
+      "distractors": ["rest"]
+    },
+    {
+      "id": "relations-005",
+      "perspective": "比例式 is to … as",
+      "latex": "1 : 2 = 3 : 6",
+      "answers": [
+        {
+          "cards": ["one", "is", "to", "two", "as", "three", "is", "to", "six"]
+        }
+      ],
+      "distractors": ["like"]
+    },
+    {
+      "id": "relations-006",
+      "perspective": "比例式 is to … as",
+      "latex": "a : b = c : d",
+      "answers": [
+        {
+          "cards": ["a", "is", "to", "b", "as", "c", "is", "to", "d"]
+        }
+      ],
+      "distractors": ["like"]
+    },
+    {
+      "id": "relations-007",
+      "perspective": "展開式（the quantity）",
+      "latex": "(a+b)^2",
+      "answers": [
+        {
+          "cards": ["the", "quantity", "a", "plus", "b", "squared"]
+        }
+      ],
+      "distractors": ["cubed"]
+    },
+    {
+      "id": "relations-008",
+      "perspective": "展開式（the quantity）",
+      "latex": "(x-1)^3",
+      "answers": [
+        {
+          "cards": ["the", "quantity", "x", "minus", "one", "cubed"]
+        }
+      ],
+      "distractors": ["squared"]
+    },
+    {
+      "id": "relations-009",
+      "perspective": "≠ / > / ≥ / ≫",
+      "latex": "x \\geq 0",
+      "answers": [
+        {
+          "cards": ["x", "is", "greater", "than", "or", "equal", "to", "zero"]
+        }
+      ],
+      "distractors": ["less"]
+    },
+    {
+      "id": "relations-010",
+      "perspective": "≠ / > / ≥ / ≫",
+      "latex": "a \\neq b",
+      "answers": [
+        {
+          "cards": ["a", "is", "not", "equal", "to", "b"]
+        },
+        {
+          "cards": ["a", "does", "not", "equal", "b"]
+        }
+      ],
+      "distractors": ["no"]
+    },
+    {
+      "id": "relations-011",
+      "perspective": "≠ / > / ≥ / ≫",
+      "latex": "y < 3",
+      "answers": [
+        {
+          "cards": ["y", "is", "less", "than", "three"]
+        }
+      ],
+      "distractors": ["greater", "fewer"]
+    },
+    {
+      "id": "relations-012",
+      "perspective": "≠ / > / ≥ / ≫",
+      "latex": "M \\gg m",
+      "answers": [
+        {
+          "cards": ["M", "is", "much", "greater", "than", "m"]
+        }
+      ],
+      "distractors": ["less"]
+    },
+    {
+      "id": "relations-013",
+      "perspective": "≈ / ≡ / ∝",
+      "latex": "y \\propto x",
+      "answers": [
+        {
+          "cards": ["y", "is", "proportional", "to", "x"]
+        }
+      ],
+      "distractors": ["proportion"]
+    },
+    {
+      "id": "relations-014",
+      "perspective": "≈ / ≡ / ∝",
+      "latex": "\\pi \\approx 3.14",
+      "answers": [
+        {
+          "cards": [
+            "pi",
+            "is",
+            "approximately",
+            "equal",
+            "to",
+            "three",
+            "point",
+            "one",
+            "four"
+          ]
+        },
+        {
+          "cards": [
+            "pi",
+            "is",
+            "approximately",
+            "three",
+            "point",
+            "one",
+            "four"
+          ]
+        }
+      ],
+      "distractors": ["fourteen"]
+    },
+    {
+      "id": "relations-015",
+      "perspective": "≈ / ≡ / ∝",
+      "latex": "a \\equiv b \\pmod{n}",
+      "answers": [
+        {
+          "cards": ["a", "is", "congruent", "to", "b", "modulo", "n"]
+        },
+        {
+          "cards": ["a", "is", "congruent", "to", "b", "mod", "n"]
+        }
+      ],
+      "distractors": ["equal"]
+    },
+    {
+      "id": "relations-016",
+      "perspective": "⊥ / ∥",
+      "latex": "l \\parallel m",
+      "answers": [
+        {
+          "cards": ["l", "is", "parallel", "to", "m"]
+        }
+      ],
+      "distractors": ["perpendicular"]
+    },
+    {
+      "id": "relations-017",
+      "perspective": "⊥ / ∥",
+      "latex": "AB \\perp CD",
+      "answers": [
+        {
+          "cards": ["A", "B", "is", "perpendicular", "to", "C", "D"]
+        }
+      ],
+      "distractors": ["parallel"]
+    },
+    {
+      "id": "relations-018",
+      "perspective": "∴ / ∵",
+      "latex": "\\therefore x = 2",
+      "answers": [
+        {
+          "cards": ["therefore", "x", "equals", "two"]
+        },
+        {
+          "cards": ["therefore", "x", "is", "equal", "to", "two"]
+        }
+      ],
+      "distractors": ["because"]
+    },
+    {
+      "id": "relations-019",
+      "perspective": "∴ / ∵",
+      "latex": "\\because y > 0",
+      "answers": [
+        {
+          "cards": ["because", "y", "is", "greater", "than", "zero"]
+        },
+        {
+          "cards": ["since", "y", "is", "greater", "than", "zero"]
+        }
+      ],
+      "distractors": ["therefore"]
+    },
+    {
+      "id": "relations-020",
+      "perspective": "図形（角・合同）",
+      "latex": "\\angle A = \\angle B",
+      "answers": [
+        {
+          "cards": ["angle", "A", "is", "equal", "to", "angle", "B"]
+        },
+        {
+          "cards": ["angle", "A", "equals", "angle", "B"]
+        }
+      ],
+      "distractors": ["angles"]
+    },
+    {
+      "id": "relations-021",
+      "perspective": "図形（角・合同）",
+      "latex": "\\triangle ABC \\cong \\triangle DEF",
+      "answers": [
+        {
+          "cards": [
+            "triangle",
+            "A",
+            "B",
+            "C",
+            "is",
+            "congruent",
+            "to",
+            "triangle",
+            "D",
+            "E",
+            "F"
+          ]
+        }
+      ],
+      "distractors": ["similar"]
+    }
+  ]
+}

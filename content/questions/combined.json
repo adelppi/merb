@@ -1,0 +1,342 @@
+{
+  "category": "combined",
+  "questions": [
+    {
+      "id": "combined-001",
+      "perspective": "解の公式",
+      "latex": "x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}",
+      "answers": [
+        {
+          "cards": [
+            "x",
+            "equals",
+            "negative",
+            "b",
+            "plus or minus",
+            "the square root of",
+            "b",
+            "squared",
+            "minus",
+            "four",
+            "a",
+            "c",
+            "all over",
+            "two",
+            "a"
+          ],
+          "text": "x equals negative b plus or minus the square root of b squared minus four a c, all over two a"
+        }
+      ],
+      "distractors": ["positive", "the cube root of"]
+    },
+    {
+      "id": "combined-002",
+      "perspective": "二項定理",
+      "latex": "(a+b)^n = \\sum_{k=0}^{n} \\binom{n}{k} a^{n-k} b^k",
+      "answers": [
+        {
+          "cards": [
+            "the quantity",
+            "a",
+            "plus",
+            "b",
+            "to the nth power",
+            "equals",
+            "the sum from",
+            "k",
+            "equals",
+            "zero",
+            "to",
+            "n",
+            "of",
+            "n",
+            "choose",
+            "k",
+            "times",
+            "a",
+            "to the",
+            "n",
+            "minus",
+            "k",
+            "times",
+            "b",
+            "to the",
+            "k"
+          ]
+        }
+      ],
+      "distractors": ["the product from", "over"]
+    },
+    {
+      "id": "combined-003",
+      "perspective": "微分の定義",
+      "latex": "f'(x) = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}",
+      "answers": [
+        {
+          "cards": [
+            "f",
+            "prime",
+            "of",
+            "x",
+            "equals",
+            "the limit as",
+            "h",
+            "approaches",
+            "zero",
+            "of",
+            "f",
+            "of",
+            "x",
+            "plus",
+            "h",
+            "minus",
+            "f",
+            "of",
+            "x",
+            "all over",
+            "h"
+          ],
+          "text": "f prime of x equals the limit as h approaches zero of f of x plus h minus f of x, all over h"
+        }
+      ],
+      "distractors": ["bar", "the sum from"]
+    },
+    {
+      "id": "combined-004",
+      "perspective": "テイラー展開",
+      "latex": "f(x) = \\sum_{n=0}^{\\infty} \\frac{f^{(n)}(a)}{n!} (x-a)^n",
+      "answers": [
+        {
+          "cards": [
+            "f",
+            "of",
+            "x",
+            "equals",
+            "the sum from",
+            "n",
+            "equals",
+            "zero",
+            "to",
+            "infinity",
+            "of",
+            "the nth derivative of",
+            "f",
+            "at",
+            "a",
+            "over",
+            "n",
+            "factorial",
+            "times",
+            "the quantity",
+            "x",
+            "minus",
+            "a",
+            "to the nth power"
+          ],
+          "text": "f of x equals the sum from n equals zero to infinity of the nth derivative of f at a over n factorial, times the quantity x minus a to the nth power"
+        }
+      ],
+      "distractors": ["the integral from", "squared"]
+    },
+    {
+      "id": "combined-005",
+      "perspective": "オイラーの公式",
+      "latex": "e^{i\\theta} = \\cos\\theta + i\\sin\\theta",
+      "answers": [
+        {
+          "cards": [
+            "e",
+            "to the",
+            "i",
+            "theta",
+            "equals",
+            "cosine",
+            "theta",
+            "plus",
+            "i",
+            "sine",
+            "theta"
+          ]
+        }
+      ],
+      "distractors": ["tangent", "phi"]
+    },
+    {
+      "id": "combined-006",
+      "perspective": "オイラーの等式",
+      "latex": "e^{i\\pi} + 1 = 0",
+      "answers": [
+        {
+          "cards": ["e", "to the", "i", "pi", "plus", "one", "equals", "zero"]
+        }
+      ],
+      "distractors": ["minus", "theta"]
+    },
+    {
+      "id": "combined-007",
+      "perspective": "フーリエ変換",
+      "latex": "F(\\omega) = \\int_{-\\infty}^{\\infty} f(t) e^{-i\\omega t} \\, dt",
+      "answers": [
+        {
+          "cards": [
+            "F",
+            "of",
+            "omega",
+            "equals",
+            "the integral from",
+            "negative",
+            "infinity",
+            "to",
+            "infinity",
+            "of",
+            "f",
+            "of",
+            "t",
+            "times",
+            "e",
+            "to the",
+            "minus",
+            "i",
+            "omega",
+            "t",
+            "d",
+            "t"
+          ],
+          "text": "F of omega equals the integral from negative infinity to infinity of f of t times e to the minus i omega t, d t"
+        }
+      ],
+      "distractors": ["the sum from", "plus"]
+    },
+    {
+      "id": "combined-008",
+      "perspective": "ラプラス変換",
+      "latex": "F(s) = \\int_0^{\\infty} f(t) e^{-st} \\, dt",
+      "answers": [
+        {
+          "cards": [
+            "F",
+            "of",
+            "s",
+            "equals",
+            "the integral from",
+            "zero",
+            "to",
+            "infinity",
+            "of",
+            "f",
+            "of",
+            "t",
+            "times",
+            "e",
+            "to the",
+            "minus",
+            "s",
+            "t",
+            "d",
+            "t"
+          ],
+          "text": "F of s equals the integral from zero to infinity of f of t times e to the minus s t, d t"
+        }
+      ],
+      "distractors": ["the sum from", "plus"]
+    },
+    {
+      "id": "combined-009",
+      "perspective": "ガウス積分",
+      "latex": "\\int_{-\\infty}^{\\infty} e^{-x^2} \\, dx = \\sqrt{\\pi}",
+      "answers": [
+        {
+          "cards": [
+            "the integral from",
+            "negative",
+            "infinity",
+            "to",
+            "infinity",
+            "of",
+            "e",
+            "to the",
+            "minus",
+            "x",
+            "squared",
+            "d",
+            "x",
+            "equals",
+            "the square root of",
+            "pi"
+          ],
+          "text": "the integral from negative infinity to infinity of e to the minus x squared, d x, equals the square root of pi"
+        }
+      ],
+      "distractors": ["cubed", "the cube root of"]
+    },
+    {
+      "id": "combined-010",
+      "perspective": "ベイズの定理",
+      "latex": "P(A \\mid B) = \\frac{P(B \\mid A) P(A)}{P(B)}",
+      "answers": [
+        {
+          "cards": [
+            "P",
+            "of",
+            "A",
+            "given",
+            "B",
+            "equals",
+            "P",
+            "of",
+            "B",
+            "given",
+            "A",
+            "times",
+            "P",
+            "of",
+            "A",
+            "all over",
+            "P",
+            "of",
+            "B"
+          ],
+          "text": "P of A given B equals P of B given A times P of A, all over P of B"
+        }
+      ],
+      "distractors": ["and"]
+    },
+    {
+      "id": "combined-011",
+      "perspective": "正規分布",
+      "latex": "f(x) = \\frac{1}{\\sigma\\sqrt{2\\pi}} e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}}",
+      "answers": [
+        {
+          "cards": [
+            "f",
+            "of",
+            "x",
+            "equals",
+            "one",
+            "over",
+            "sigma",
+            "times",
+            "the square root of",
+            "two",
+            "pi",
+            "times",
+            "e",
+            "to the",
+            "minus",
+            "the quantity",
+            "x",
+            "minus",
+            "mu",
+            "squared",
+            "over",
+            "two",
+            "sigma",
+            "squared"
+          ],
+          "text": "f of x equals one over sigma times the square root of two pi, times e to the minus the quantity x minus mu squared over two sigma squared"
+        }
+      ],
+      "distractors": ["nu", "plus"]
+    }
+  ]
+}

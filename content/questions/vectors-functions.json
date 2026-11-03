@@ -1,0 +1,272 @@
+{
+  "category": "vectors-functions",
+  "questions": [
+    {
+      "id": "vectors-functions-001",
+      "perspective": "内積 dot・外積 cross",
+      "latex": "\\mathbf{a} \\cdot \\mathbf{b}",
+      "answers": [
+        {
+          "cards": ["a", "dot", "b"]
+        }
+      ],
+      "distractors": ["cross", "times"]
+    },
+    {
+      "id": "vectors-functions-002",
+      "perspective": "内積 dot・外積 cross",
+      "latex": "\\mathbf{u} \\times \\mathbf{v}",
+      "answers": [
+        {
+          "cards": ["u", "cross", "v"]
+        }
+      ],
+      "distractors": ["dot", "times"]
+    },
+    {
+      "id": "vectors-functions-003",
+      "perspective": "行列式",
+      "latex": "\\det A",
+      "answers": [
+        {
+          "cards": ["determinant", "A"]
+        },
+        {
+          "cards": ["the", "determinant", "of", "A"]
+        }
+      ],
+      "distractors": ["inverse"]
+    },
+    {
+      "id": "vectors-functions-004",
+      "perspective": "行列式",
+      "latex": "\\det M",
+      "answers": [
+        {
+          "cards": ["determinant", "M"]
+        },
+        {
+          "cards": ["the", "determinant", "of", "M"]
+        }
+      ],
+      "distractors": ["transpose"]
+    },
+    {
+      "id": "vectors-functions-005",
+      "perspective": "関数 f of x",
+      "latex": "g(t)",
+      "answers": [
+        {
+          "cards": ["g", "of", "t"]
+        }
+      ],
+      "distractors": ["times"]
+    },
+    {
+      "id": "vectors-functions-006",
+      "perspective": "関数 f of x",
+      "latex": "f(x+1)",
+      "answers": [
+        {
+          "cards": ["f", "of", "x", "plus", "one"]
+        }
+      ],
+      "distractors": ["times"]
+    },
+    {
+      "id": "vectors-functions-007",
+      "perspective": "関数 f of x",
+      "latex": "h(2)",
+      "answers": [
+        {
+          "cards": ["h", "of", "two"]
+        }
+      ],
+      "distractors": ["times"]
+    },
+    {
+      "id": "vectors-functions-008",
+      "perspective": "逆関数",
+      "latex": "f^{-1}(x)",
+      "answers": [
+        {
+          "cards": ["the", "inverse", "of", "f", "of", "x"]
+        },
+        {
+          "cards": ["f", "inverse", "of", "x"]
+        }
+      ],
+      "distractors": ["reciprocal"]
+    },
+    {
+      "id": "vectors-functions-009",
+      "perspective": "逆関数",
+      "latex": "g^{-1}(y)",
+      "answers": [
+        {
+          "cards": ["the", "inverse", "of", "g", "of", "y"]
+        },
+        {
+          "cards": ["g", "inverse", "of", "y"]
+        }
+      ],
+      "distractors": ["reciprocal"]
+    },
+    {
+      "id": "vectors-functions-010",
+      "perspective": "対数の種類（natural / common / binary）",
+      "latex": "\\ln 5",
+      "answers": [
+        {
+          "cards": ["the", "natural", "log", "of", "five"]
+        },
+        {
+          "cards": ["the", "natural", "logarithm", "of", "five"]
+        }
+      ],
+      "distractors": ["common"]
+    },
+    {
+      "id": "vectors-functions-011",
+      "perspective": "対数の種類（natural / common / binary）",
+      "latex": "\\log_{10} x",
+      "answers": [
+        {
+          "cards": ["the", "common", "log", "of", "x"]
+        },
+        {
+          "cards": ["log", "base", "ten", "of", "x"]
+        }
+      ],
+      "distractors": ["natural", "binary"]
+    },
+    {
+      "id": "vectors-functions-012",
+      "perspective": "対数の種類（natural / common / binary）",
+      "latex": "\\log_2 8",
+      "answers": [
+        {
+          "cards": ["the", "binary", "log", "of", "eight"]
+        },
+        {
+          "cards": ["log", "base", "two", "of", "eight"]
+        }
+      ],
+      "distractors": ["natural", "common"]
+    },
+    {
+      "id": "vectors-functions-013",
+      "perspective": "極限",
+      "latex": "\\lim_{x \\to 0} f(x)",
+      "answers": [
+        {
+          "cards": [
+            "the",
+            "limit",
+            "of",
+            "f",
+            "of",
+            "x",
+            "as",
+            "x",
+            "approaches",
+            "zero"
+          ]
+        },
+        {
+          "cards": [
+            "the",
+            "limit",
+            "as",
+            "x",
+            "approaches",
+            "zero",
+            "of",
+            "f",
+            "of",
+            "x"
+          ]
+        }
+      ],
+      "distractors": ["approach"]
+    },
+    {
+      "id": "vectors-functions-014",
+      "perspective": "極限",
+      "latex": "\\lim_{n \\to \\infty} a_n",
+      "answers": [
+        {
+          "cards": [
+            "the",
+            "limit",
+            "of",
+            "a",
+            "sub",
+            "n",
+            "as",
+            "n",
+            "approaches",
+            "infinity"
+          ]
+        },
+        {
+          "cards": [
+            "the",
+            "limit",
+            "as",
+            "n",
+            "approaches",
+            "infinity",
+            "of",
+            "a",
+            "sub",
+            "n"
+          ]
+        }
+      ],
+      "distractors": ["approach"]
+    },
+    {
+      "id": "vectors-functions-015",
+      "perspective": "三角・逆三角関数",
+      "latex": "\\sin^{-1} x",
+      "answers": [
+        {
+          "cards": ["inverse", "sine", "x"]
+        },
+        {
+          "cards": ["inverse", "sine", "of", "x"]
+        }
+      ],
+      "distractors": ["minus"]
+    },
+    {
+      "id": "vectors-functions-016",
+      "perspective": "三角・逆三角関数",
+      "latex": "\\cos \\theta",
+      "answers": [
+        {
+          "cards": ["cosine", "theta"]
+        },
+        {
+          "cards": ["cosine", "of", "theta"]
+        }
+      ],
+      "distractors": ["sine"]
+    },
+    {
+      "id": "vectors-functions-017",
+      "perspective": "三角・逆三角関数",
+      "latex": "\\tan^{-1} y",
+      "answers": [
+        {
+          "cards": ["inverse", "tangent", "y"]
+        },
+        {
+          "cards": ["inverse", "tangent", "of", "y"]
+        }
+      ],
+      "distractors": ["minus"]
+    }
+  ]
+}
