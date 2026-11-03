@@ -1,6 +1,7 @@
 # 1問を解く出題の画面
 
 - 状態: 実装済み
+- 注記: Next.js の Web 版は削除済み（#31）。この仕様の画面と、ブラウザー、URL、Playwright に関する記述に対応するコードは、いまはない。出題の進行（`src/quiz/`）と問題の読み込み・判定（`src/questions/`）は残してある。画面は React Native で作り直す（#35）。そのときこの仕様を書き換える。
 - Issue: #17、#19、#22、#23、#24
 - 関係する決定: [D-0003](../decisions/D-0003-tech-stack.md)、[D-0004](../decisions/D-0004-question-format.md)、[D-0005](../decisions/D-0005-architecture.md)、[D-0006](../decisions/D-0006-locale-storage.md)、[D-0007](../decisions/D-0007-quiz-screen.md)、[D-0008](../decisions/D-0008-category-select.md)、[D-0009](../decisions/D-0009-card-font.md)、[D-0010](../decisions/D-0010-retry-without-button.md)、[D-0011](../decisions/D-0011-question-prompt.md)
 

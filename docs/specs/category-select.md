@@ -1,6 +1,7 @@
 # 出題の範囲を分類から選ぶ画面
 
 - 状態: 実装済み
+- 注記: Next.js の Web 版は削除済み（#31）。この仕様の画面と、ブラウザー、URL に関する記述に対応するコードは、いまはない。分類の一覧を作る処理（`src/quiz/categories.ts`）は残してある。画面は React Native で作り直す（#36）。そのときこの仕様を書き換える。
 - Issue: #19
 - 関係する決定: [D-0003](../decisions/D-0003-tech-stack.md)、[D-0004](../decisions/D-0004-question-format.md)、[D-0006](../decisions/D-0006-locale-storage.md)、[D-0007](../decisions/D-0007-quiz-screen.md)、[D-0008](../decisions/D-0008-category-select.md)
 
