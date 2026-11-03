@@ -1,7 +1,6 @@
 import { SymbolView } from "expo-symbols";
 import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,
   useReducedMotion,
@@ -78,13 +77,7 @@ export function QuizView({ state, dispatch, next }: Props) {
 
   return (
     <View style={styles.screen}>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={[
-          styles.content,
-          { paddingBottom: bottom + 52 + 40 },
-        ]}
-      >
+      <View style={styles.content}>
         <Text style={styles.prompt}>{state.question.prompt[locale]}</Text>
         <View style={styles.math}>
           <MathView latex={state.question.latex} color={colors.text} />
@@ -101,7 +94,7 @@ export function QuizView({ state, dispatch, next }: Props) {
           onUnplace={(id) => dispatch({ type: "unplace", id })}
           onMove={(id, to) => dispatch({ type: "move", id, to })}
         />
-      </ScrollView>
+      </View>
       <View style={[styles.footer, { paddingBottom: bottom }]}>
         {view.showReveal ? (
           <View style={styles.button}>

@@ -13,10 +13,17 @@ const placed = [
 const base = { answerRect, poolRect, placed };
 
 describe("resolveDrop", () => {
-  it("札置き場の札を回答エリアの札の上に落とすと、その札の前に入れる", () => {
+  it("札置き場の札を回答エリアの札の左半分に落とすと、その札の前に入れる", () => {
+    // 8 は x が 80 から 140 まで。中心は 110
     expect(
       resolveDrop({ ...base, id: 1, from: "pool", point: { x: 100, y: 30 } }),
     ).toEqual({ type: "place", id: 1, at: 1 });
+  });
+
+  it("札置き場の札を回答エリアの札の右半分に落とすと、その札の後ろに入れる", () => {
+    expect(
+      resolveDrop({ ...base, id: 1, from: "pool", point: { x: 120, y: 30 } }),
+    ).toEqual({ type: "place", id: 1, at: 2 });
   });
 
   it("札置き場の札を回答エリアの札のないところに落とすと、末尾に入れる", () => {
@@ -25,14 +32,37 @@ describe("resolveDrop", () => {
     ).toEqual({ type: "place", id: 1, at: 3 });
   });
 
-  it("回答エリアの札を別の札の上に落とすと、その札の位置へ移す", () => {
+  it("同じ行の、札の隙間に落とすと、その隙間に入れる", () => {
+    expect(
+      resolveDrop({ ...base, id: 1, from: "pool", point: { x: 75, y: 30 } }),
+    ).toEqual({ type: "place", id: 1, at: 1 });
+  });
+
+  it("下の行に札があるときは、上の行の右の空きに落とすと、その行の末尾に入れる", () => {
+    const wrapped = [
+      { id: 7, rect: { x: 10, y: 10, width: 60, height: 44 } },
+      { id: 8, rect: { x: 80, y: 10, width: 60, height: 44 } },
+      { id: 9, rect: { x: 10, y: 62, width: 60, height: 44 } },
+    ];
+    expect(
+      resolveDrop({
+        ...base,
+        placed: wrapped,
+        id: 1,
+        from: "pool",
+        point: { x: 250, y: 30 },
+      }),
+    ).toEqual({ type: "place", id: 1, at: 2 });
+  });
+
+  it("回答エリアの札を前の札の左半分に落とすと、その札の位置へ移す", () => {
     expect(
       resolveDrop({ ...base, id: 9, from: "answer", point: { x: 20, y: 30 } }),
     ).toEqual({ type: "move", id: 9, to: 0 });
   });
 
-  it("回答エリアの札を後ろの札の上に落とすと、抜いたあとの並びでの位置へ移す", () => {
-    // 7 を抜くと並びは 8、9。9 の上に落とすと 9 の前、つまり 1 番目へ移る
+  it("回答エリアの札を後ろの札の左半分に落とすと、抜いたあとの並びでの位置へ移す", () => {
+    // 7 を抜くと並びは 8、9。9 の左半分に落とすと 9 の前、つまり 1 番目へ移る
     expect(
       resolveDrop({ ...base, id: 7, from: "answer", point: { x: 160, y: 30 } }),
     ).toEqual({ type: "move", id: 7, to: 1 });

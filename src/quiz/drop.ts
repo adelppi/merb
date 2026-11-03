@@ -35,8 +35,20 @@ type Input = {
   placed: { id: number; rect: Rect }[];
 };
 
+// 回答エリアの札のうち、指より前にある札の数を返す。入れる位置の番号になる。
+// 上の行にある札と、同じ行で中心が指より左にある札を、前にある札とみなす。
+function slotIndex(others: { rect: Rect }[], point: Point): number {
+  return others.filter(({ rect }) => {
+    if (rect.y + rect.height <= point.y) {
+      return true;
+    }
+    const inRow = point.y >= rect.y;
+    return inRow && rect.x + rect.width / 2 < point.x;
+  }).length;
+}
+
 // 落とした位置から、札をどう運ぶかを返す。何も変えないときは null を返す。
-// 回答エリアの札の上に落とすとその札の前へ、札のないところに落とすと末尾へ入れる。
+// 入れる位置は、指に対する札の並びで決める（slotIndex）。ドラッグした札は並びから除く。
 // 札置き場の中では並べ替えず、札置き場の札を札置き場に落としても何も変えない。
 export function resolveDrop({
   id,
@@ -48,8 +60,7 @@ export function resolveDrop({
 }: Input): DropAction | null {
   if (contains(answerRect, point)) {
     const others = placed.filter((card) => card.id !== id);
-    const target = others.findIndex((card) => contains(card.rect, point));
-    const at = target < 0 ? others.length : target;
+    const at = slotIndex(others, point);
     return from === "pool"
       ? { type: "place", id, at }
       : { type: "move", id, to: at };

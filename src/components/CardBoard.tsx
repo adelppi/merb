@@ -1,5 +1,11 @@
 import { useFonts } from "expo-font";
-import { type ComponentRef, type ReactNode, useRef, useState } from "react";
+import {
+  type ComponentRef,
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { type LayoutRectangle, StyleSheet, Text, View } from "react-native";
 import {
   GestureDetector,
@@ -8,12 +14,19 @@ import {
   useTapGesture,
 } from "react-native-gesture-handler";
 import Animated, {
+  LinearTransition,
   runOnJS,
+  type SharedValue,
   useAnimatedStyle,
   useSharedValue,
-  withSpring,
+  withTiming,
 } from "react-native-reanimated";
-import { type DropArea, type Point, resolveDrop } from "../quiz/drop";
+import {
+  type DropAction,
+  type DropArea,
+  type Point,
+  resolveDrop,
+} from "../quiz/drop";
 import type { Card } from "../quiz/reducer";
 import { colors } from "./theme";
 
@@ -51,8 +64,29 @@ type Props = {
 
 const emptyRect: LayoutRectangle = { x: 0, y: 0, width: 0, height: 0 };
 
-// 札置き場と回答エリア。タップで札を運び、長押ししてドラッグでも運ぶ。
-// 札の位置は onLayout で集め、落とした位置と照らして運び先を決める（src/quiz/drop.ts）。
+// 札を動かしている間の状態。action は、いま指を離したときの運び先。
+type Drag = {
+  id: number;
+  from: DropArea;
+  // 持ち上げた札の、元の場所での位置と大きさ
+  frame: LayoutRectangle;
+  action: DropAction | null;
+};
+
+// 空きの枠を出す位置。回答エリアで、持ち上げた札を除いた並びの何番目か。
+function slotOf(action: DropAction | null): number | null {
+  if (action?.type === "place") return action.at;
+  if (action?.type === "move") return action.to;
+  return null;
+}
+
+function sameAction(a: DropAction | null, b: DropAction | null): boolean {
+  return a?.type === b?.type && slotOf(a) === slotOf(b);
+}
+
+// 札置き場と回答エリア。札を動かし、落とした位置へ運ぶ。
+// 動かしている間は、落ちる位置に空きの枠を出し、ほかの札はその位置を空けて動く。
+// 運び先は、動かし始めたときの札の位置を元に決める（src/quiz/drop.ts）。
 export function CardBoard({
   pool,
   placed,
@@ -66,36 +100,87 @@ export function CardBoard({
   onMove,
 }: Props) {
   const [fontsLoaded] = useFonts(fonts);
-  const [dragFrom, setDragFrom] = useState<DropArea | null>(null);
+  const [drag, setDrag] = useState<Drag | null>(null);
   const areaRects = useRef<Record<DropArea, LayoutRectangle>>({
     pool: emptyRect,
     answer: emptyRect,
   });
   const cardRects = useRef(new Map<number, LayoutRectangle>());
   const boardRef = useRef<ComponentRef<typeof View>>(null);
+  // 動かし始めたときの盤面の位置（画面全体の座標）と、札の位置
+  const boardOrigin = useRef<Point | null>(null);
+  const frozen = useRef<Omit<
+    Parameters<typeof resolveDrop>[0],
+    "id" | "from" | "point"
+  > | null>(null);
+  const current = useRef<Drag | null>(null);
+  const dragDx = useSharedValue(0);
+  const dragDy = useSharedValue(0);
 
-  // 札 id を from から point（盤面の中の座標）に落としたときの処理。
-  function drop(id: number, from: DropArea, point: Point) {
-    setDragFrom(null);
-    const origin = areaRects.current.answer;
-    const action = resolveDrop({
-      id,
-      from,
-      point,
-      answerRect: areaRects.current.answer,
+  function actionAt(windowPoint: Point): DropAction | null {
+    const origin = boardOrigin.current;
+    const base = frozen.current;
+    const dragging = current.current;
+    if (!origin || !base || !dragging) {
+      return null;
+    }
+    return resolveDrop({
+      ...base,
+      id: dragging.id,
+      from: dragging.from,
+      point: { x: windowPoint.x - origin.x, y: windowPoint.y - origin.y },
+    });
+  }
+
+  function startDrag(card: Card, from: DropArea) {
+    const answer = areaRects.current.answer;
+    boardOrigin.current = null;
+    boardRef.current?.measureInWindow((x, y) => {
+      boardOrigin.current = { x, y };
+    });
+    frozen.current = {
+      answerRect: answer,
       poolRect: areaRects.current.pool,
-      placed: placed.flatMap((card) => {
-        const rect = cardRects.current.get(card.id);
+      placed: placed.flatMap((item) => {
+        const rect = cardRects.current.get(item.id);
         return rect
           ? [
               {
-                id: card.id,
-                rect: { ...rect, x: origin.x + rect.x, y: origin.y + rect.y },
+                id: item.id,
+                rect: { ...rect, x: answer.x + rect.x, y: answer.y + rect.y },
               },
             ]
           : [];
       }),
-    });
+    };
+    const next: Drag = {
+      id: card.id,
+      from,
+      frame: cardRects.current.get(card.id) ?? emptyRect,
+      action: null,
+    };
+    current.current = next;
+    setDrag(next);
+  }
+
+  function moveDrag(windowPoint: Point) {
+    const dragging = current.current;
+    if (!dragging) return;
+    const action = actionAt(windowPoint);
+    if (sameAction(dragging.action, action)) {
+      dragging.action = action;
+      return;
+    }
+    const next = { ...dragging, action };
+    current.current = next;
+    setDrag(next);
+  }
+
+  // 指を離したとき。
+  function endDrag(windowPoint: Point) {
+    const action = actionAt(windowPoint);
+    current.current = null;
+    setDrag(null);
     if (action?.type === "place") {
       onPlace(action.id, action.at);
     } else if (action?.type === "move") {
@@ -103,6 +188,11 @@ export function CardBoard({
     } else if (action?.type === "unplace") {
       onUnplace(action.id);
     }
+  }
+
+  function cancelDrag() {
+    current.current = null;
+    setDrag(null);
   }
 
   if (!fontsLoaded) {
@@ -126,21 +216,25 @@ export function CardBoard({
         key={card.id}
         card={card}
         tone={tone}
+        testID={area === "answer" ? "answer-card" : "pool-card"}
+        frame={drag?.id === card.id ? drag.frame : null}
+        dx={dragDx}
+        dy={dragDy}
         onLayout={(rect) => cardRects.current.set(card.id, rect)}
         onTap={() => (area === "pool" ? onPlace(card.id) : onUnplace(card.id))}
-        onDragStart={() => setDragFrom(area)}
-        onDrop={(windowPoint) => {
-          // 指を離した位置は画面全体の座標なので、盤面の中の座標に直す。
-          boardRef.current?.measureInWindow((x, y) => {
-            drop(card.id, area, {
-              x: windowPoint.x - x,
-              y: windowPoint.y - y,
-            });
-          });
-        }}
+        onDragStart={() => startDrag(card, area)}
+        onDragMove={moveDrag}
+        onDrop={endDrag}
+        onCancel={cancelDrag}
       />
     );
   }
+
+  // 札の並びは、動かしている間も変えない。並びを変えると、持ち上げた札の View が付け替えられ、
+  // ドラッグが途切れる。落ちる位置の空きは、各札の前に置いた枠の幅を広げて作る。
+  const slot = slotOf(drag?.action ?? null);
+  const lifted = [...placed, ...pool].find((card) => card.id === drag?.id);
+  let slotIndex = 0;
 
   return (
     <View ref={boardRef} collapsable={false}>
@@ -149,9 +243,25 @@ export function CardBoard({
         onLayout={(event) => {
           areaRects.current.answer = event.nativeEvent.layout;
         }}
-        style={[styles.answer, dragFrom === "answer" && styles.raised]}
+        style={[styles.answer]}
       >
-        {placed.map((card) => renderCard(card, "answer"))}
+        {placed.flatMap((card) => {
+          if (card.id === drag?.id) {
+            return [renderCard(card, "answer")];
+          }
+          const index = slotIndex++;
+          return [
+            <Slot
+              key={`slot-${index}`}
+              size={slot === index ? drag?.frame : null}
+            />,
+            renderCard(card, "answer"),
+          ];
+        })}
+        <Slot
+          key={`slot-${slotIndex}`}
+          size={slot === slotIndex ? drag?.frame : null}
+        />
       </View>
       {between}
       {movable ? (
@@ -160,12 +270,47 @@ export function CardBoard({
           onLayout={(event) => {
             areaRects.current.pool = event.nativeEvent.layout;
           }}
-          style={[styles.pool, dragFrom === "pool" && styles.raised]}
+          style={[styles.pool]}
         >
           {pool.map((card) => renderCard(card, "pool"))}
         </View>
       ) : null}
+      {drag && lifted ? (
+        <Ghost
+          card={lifted}
+          tone={
+            drag.from === "pool" ? "pool" : placedGreen ? "green" : "indigo"
+          }
+          rect={{
+            ...drag.frame,
+            x: areaRects.current[drag.from].x + drag.frame.x,
+            y: areaRects.current[drag.from].y + drag.frame.y,
+          }}
+          dx={dragDx}
+          dy={dragDy}
+        />
+      ) : null}
     </View>
+  );
+}
+
+// 札が落ちる位置を示す空きの枠。size が null のときは、幅を 0 にして場所を取らない。
+function Slot({ size }: { size: LayoutRectangle | null | undefined }) {
+  const shown = useSharedValue(0);
+  const visible = size ? 1 : 0;
+  useEffect(() => {
+    shown.value = withTiming(visible, { duration: 120 });
+  }, [visible, shown]);
+  const style = useAnimatedStyle(() => ({ opacity: 0.45 * shown.value }));
+  return (
+    <Animated.View
+      pointerEvents="none"
+      style={[
+        styles.slot,
+        size ? { width: size.width, height: size.height } : styles.slotHidden,
+        style,
+      ]}
+    />
   );
 }
 
@@ -206,48 +351,61 @@ function CardText({ card, tone }: { card: Card; tone: Tone }) {
 }
 
 type CardProps = FaceProps & {
+  // 操作テストが札を探すための識別子
+  testID: string;
+  // 持ち上げているときの、元の場所での位置と大きさ。持ち上げていなければ null。
+  frame: LayoutRectangle | null;
+  // 指の動き。持ち上げた札の見た目（Ghost）が、この値に合わせて動く。
+  dx: SharedValue<number>;
+  dy: SharedValue<number>;
   onTap: () => void;
   onDragStart: () => void;
+  // 指の位置（画面全体の座標）を渡す。
+  onDragMove: (windowPoint: Point) => void;
   // 指を離した位置（画面全体の座標）を渡す。
   onDrop: (windowPoint: Point) => void;
+  onCancel: () => void;
 };
 
-// 札1枚。ドラッグ中は、指に合わせて札自身が動く。離したら元の位置へ戻り、運び先は親が決める。
+// 札1枚。持ち上げると、元の場所では場所を取らず、見えなくなる。
+// 指に付いて動く見た目は Ghost が出す。ドラッグ中に zIndex を変えたり、札の View を並べ替えたりすると、
+// ジェスチャーが途切れるので、この札の View は動かさない。
 function DraggableCard({
   card,
   tone,
+  testID,
+  frame,
+  dx,
+  dy,
   onLayout,
   onTap,
   onDragStart,
+  onDragMove,
   onDrop,
+  onCancel,
 }: CardProps) {
-  const dx = useSharedValue(0);
-  const dy = useSharedValue(0);
-  const lifted = useSharedValue(0);
-
   const pan = usePanGesture({
-    // 少し長く押したときにドラッグを始める。それより短い操作はタップにする。
-    activateAfterLongPress: 250,
+    // 少し動かしたらドラッグを始める。動かさずに離した操作はタップにする。
+    minDistance: 6,
     onActivate: () => {
-      lifted.value = 1;
+      dx.value = 0;
+      dy.value = 0;
       runOnJS(onDragStart)();
     },
     onUpdate: (event) => {
       dx.value = event.translationX;
       dy.value = event.translationY;
+      runOnJS(onDragMove)({ x: event.absoluteX, y: event.absoluteY });
     },
     onDeactivate: (event) => {
-      if (!event.canceled) {
+      if (event.canceled) {
+        runOnJS(onCancel)();
+      } else {
         runOnJS(onDrop)({ x: event.absoluteX, y: event.absoluteY });
       }
     },
-    onFinalize: () => {
-      lifted.value = 0;
-      dx.value = withSpring(0);
-      dy.value = withSpring(0);
-    },
   });
-  // 長押しの前に指を離したときは、タップとして運ぶ。
+  // 動かさずに離したときは、タップとして運ぶ。
   const tap = useTapGesture({
     onDeactivate: (event) => {
       if (!event.canceled) {
@@ -257,29 +415,76 @@ function DraggableCard({
   });
   const gesture = useExclusiveGestures(pan, tap);
 
-  const style = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: dx.value },
-      { translateY: dy.value },
-      { scale: lifted.value ? 1.08 : 1 },
-    ],
-    zIndex: lifted.value ? 20 : 0,
-    opacity: lifted.value ? 0.9 : 1,
-  }));
-
   return (
     <GestureDetector gesture={gesture}>
       <Animated.View
         accessible
+        testID={testID}
         accessibilityRole="button"
         accessibilityLabel={card.text}
         onAccessibilityTap={onTap}
         onLayout={(event) => onLayout(event.nativeEvent.layout)}
-        style={[styles.card, toneStyles[tone], style]}
+        layout={LinearTransition.duration(180)}
+        style={[
+          styles.card,
+          toneStyles[tone],
+          frame && {
+            position: "absolute",
+            left: frame.x,
+            top: frame.y,
+            width: frame.width,
+            height: frame.height,
+            opacity: 0,
+          },
+        ]}
       >
         <CardText card={card} tone={tone} />
       </Animated.View>
     </GestureDetector>
+  );
+}
+
+// 指に付いて動く、持ち上げた札の見た目。盤面の最後に置き、いちばん手前に出す。
+function Ghost({
+  card,
+  tone,
+  rect,
+  dx,
+  dy,
+}: {
+  card: Card;
+  tone: Tone;
+  // 盤面の中での、持ち上げた札の元の位置と大きさ
+  rect: LayoutRectangle;
+  dx: SharedValue<number>;
+  dy: SharedValue<number>;
+}) {
+  const style = useAnimatedStyle(() => ({
+    transform: [
+      { translateX: dx.value },
+      { translateY: dy.value },
+      { scale: 1.08 },
+    ],
+  }));
+  return (
+    <Animated.View
+      pointerEvents="none"
+      style={[
+        styles.card,
+        toneStyles[tone],
+        styles.ghost,
+        {
+          position: "absolute",
+          left: rect.x,
+          top: rect.y,
+          width: rect.width,
+          height: rect.height,
+        },
+        style,
+      ]}
+    >
+      <CardText card={card} tone={tone} />
+    </Animated.View>
   );
 }
 
@@ -289,8 +494,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     alignContent: "flex-start",
-    gap: 8,
     padding: 12,
+    paddingRight: 4,
+    paddingBottom: 4,
     borderRadius: 22,
     backgroundColor: colors.answerArea,
   },
@@ -299,12 +505,34 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     alignContent: "flex-start",
-    gap: 8,
     marginTop: 16,
-    paddingHorizontal: 2,
+    paddingLeft: 2,
   },
-  raised: { zIndex: 10 },
+  ghost: {
+    margin: 0,
+    shadowColor: "#000000",
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+  },
+  slot: {
+    marginRight: 8,
+    marginBottom: 8,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderStyle: "dashed",
+    borderColor: colors.indigo,
+  },
+  slotHidden: {
+    width: 0,
+    height: 0,
+    marginRight: 0,
+    marginBottom: 0,
+    borderWidth: 0,
+  },
   card: {
+    marginRight: 8,
+    marginBottom: 8,
     height: 44,
     paddingHorizontal: 16,
     borderRadius: 12,

@@ -1,0 +1,30 @@
+# 札のドラッグ（docs/specs/quiz.md の受け入れ条件）。
+# numbers-001 は、正解が「a hundred」と「one hundred」、まぎらわしい札が「hundreds」。
+# 札を指で動かして回答エリアへ落とし、回答エリアの先頭に札が入ることを確かめる。
+# ドラッグの途中の見た目（空きの枠と、札が避けるアニメーション）は、この流れでは確かめない。
+appId: host.exp.Exponent
+---
+- stopApp
+- launchApp
+- openLink: exp://127.0.0.1:8099
+- extendedWaitUntil:
+    visible: "merb"
+    timeout: 90000
+- openLink: exp://127.0.0.1:8099/--/quiz?categories=numbers&question=numbers-001
+- extendedWaitUntil:
+    visible: "答え合わせ"
+    timeout: 60000
+# 札置き場の先頭の札を、回答エリアへドラッグする。回答エリアの先頭に、札が入る
+- swipe:
+    start: 14%,40%
+    end: 40%,28%
+    duration: 1000
+- assertVisible:
+    id: "answer-card"
+# 回答エリアの札を、札置き場へドラッグして戻す
+- swipe:
+    start: 14%,26%
+    end: 40%,40%
+    duration: 1000
+- assertNotVisible:
+    id: "answer-card"
