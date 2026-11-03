@@ -12,13 +12,7 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useI18n } from "../i18n/provider";
 import type { Answer } from "../questions/schema";
-import {
-  otherAnswers,
-  placedCards,
-  poolCards,
-  type QuizAction,
-  type QuizState,
-} from "../quiz/reducer";
+import { otherAnswers, type QuizAction, type QuizState } from "../quiz/reducer";
 import { quizView } from "../quiz/view";
 import { CardBoard } from "./CardBoard";
 import { MathView } from "./MathView";
@@ -83,8 +77,9 @@ export function QuizView({ state, dispatch, next }: Props) {
           <MathView latex={state.question.latex} color={colors.text} />
         </View>
         <CardBoard
-          pool={poolCards(state)}
-          placed={placedCards(state)}
+          key={state.index}
+          cards={state.cards}
+          placedIds={state.placed}
           movable={view.showPool}
           placedGreen={view.placedGreen}
           answerLabel={messages.Quiz.answerArea}
