@@ -36,3 +36,4 @@
 | [D-0015](D-0015-test-and-toolchain.md) | TypeScript、pnpm、Zod、Biome、Vitest を続けて使い、操作テストの道具は画面ができるときに決める | 2026-11-03 |
 | [D-0016](D-0016-math-and-drag-libs.md) | 数式の描画は WebView の中の KaTeX、札のドラッグは Reanimated と Gesture Handler で組む | 2026-11-03 |
 | [D-0017](D-0017-design-import.md) | Claude Design の iOS デザインは docs/design/ios/ に参照資料として置く | 2026-11-03 |
+| [D-0018](D-0018-design-open-questions.md) | デザインの取り込みで残っていた5つの項目（iOS の最低バージョン、Liquid Glass とアイコン、戻るボタン、不正解の札の色、デザインにない状態）を決める | 2026-11-03 |
