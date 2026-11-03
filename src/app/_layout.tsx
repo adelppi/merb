@@ -17,11 +17,11 @@ function RootStack() {
         options={{
           headerShown: true,
           title: messages.Settings.title,
-          headerLargeTitle: true,
+          headerLargeTitleEnabled: true,
+          headerTransparent: true,
           headerBackButtonDisplayMode: "minimal",
           headerShadowVisible: false,
-          headerStyle: { backgroundColor: colors.background },
-          headerLargeStyle: { backgroundColor: colors.background },
+          headerLargeTitleShadowVisible: false,
         }}
       />
       <Stack.Screen
@@ -29,11 +29,11 @@ function RootStack() {
         options={{
           headerShown: true,
           title: messages.Categories.title,
-          headerLargeTitle: true,
+          headerLargeTitleEnabled: true,
+          headerTransparent: true,
           headerBackButtonDisplayMode: "minimal",
           headerShadowVisible: false,
-          headerStyle: { backgroundColor: colors.background },
-          headerLargeStyle: { backgroundColor: colors.background },
+          headerLargeTitleShadowVisible: false,
         }}
       />
       <Stack.Screen
