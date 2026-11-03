@@ -19,9 +19,3 @@ export const localeNames: Record<Locale, string> = {
 export function parseLocale(value: unknown): Locale {
   return locales.find((locale) => locale === value) ?? defaultLocale;
 }
-
-// ページを描く前に <head> で動かすスクリプト。既定と違う言語を保存しているときは、
-// <html> の lang を先に変え、文言が差し替わるまで本文を隠す。
-export const localeScript = `try{var l=localStorage.getItem(${JSON.stringify(
-  storageKey,
-)});if(${JSON.stringify(locales.filter((locale) => locale !== defaultLocale))}.indexOf(l)>=0){var d=document.documentElement;d.lang=l;d.style.visibility="hidden"}}catch(e){}`;

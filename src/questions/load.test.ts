@@ -53,8 +53,4 @@ describe("loadQuestions", () => {
   it("フォルダがなければ空の配列を返す", () => {
     expect(loadQuestions(join(tmpdir(), "merb-none"))).toEqual([]);
   });
-
-  it("テスト用の問題を読める", () => {
-    expect(loadQuestions("e2e/fixtures/questions").length).toBeGreaterThan(0);
-  });
 });

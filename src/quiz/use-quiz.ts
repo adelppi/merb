@@ -1,5 +1,3 @@
-"use client";
-
 import { useCallback, useEffect, useReducer } from "react";
 import type { Question } from "../questions/schema";
 import { dealShuffled } from "./deal";
