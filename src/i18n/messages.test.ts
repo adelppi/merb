@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { categoryIds } from "@/questions/schema";
 import en from "./messages/en.json";
 import ja from "./messages/ja.json";
 
@@ -15,5 +16,13 @@ function keys(value: unknown, prefix = ""): string[] {
 describe("文言のファイル", () => {
   it("日本語と英語が同じキーを持つ", () => {
     expect(keys(en)).toEqual(keys(ja));
+  });
+
+  it("8つの分類すべての名前がある", () => {
+    for (const messages of [ja, en]) {
+      expect(Object.keys(messages.CategoryNames).sort()).toEqual(
+        [...categoryIds].sort(),
+      );
+    }
   });
 });

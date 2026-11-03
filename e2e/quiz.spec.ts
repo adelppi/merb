@@ -1,7 +1,8 @@
 import { expect, type Page, test } from "@playwright/test";
 
-// テスト用の問題は e2e/fixtures/questions/ の x^5 の1問。
+// テスト用の問題（e2e/fixtures/questions/）のうち、分類 scripts-powers-roots の x^5 の1問で試す。
 // 正解は「x to the fifth power」と「x to the fifth」、まぎらわしい札は「five」。
+const quizUrl = "/quiz?category=scripts-powers-roots";
 
 function answerArea(page: Page) {
   return page.getByRole("region", { name: "回答エリア" });
@@ -22,10 +23,8 @@ async function tapFromPool(page: Page, ...texts: string[]) {
   }
 }
 
-test("トップページのリンクから開くと、数式と札が出る", async ({ page }) => {
-  await page.goto("/");
-  await page.getByRole("link", { name: "問題を解く" }).click();
-  await expect(page).toHaveURL(/\/quiz$/);
+test("開くと、数式と札が出る", async ({ page }) => {
+  await page.goto(quizUrl);
   await expect(page.locator(".katex")).toBeVisible();
   await expect(pool(page).getByRole("button")).toHaveCount(6);
   await expect(answerArea(page).getByRole("button")).toHaveCount(0);
@@ -34,7 +33,7 @@ test("トップページのリンクから開くと、数式と札が出る", as
 test("札をタップで運んで正解すると、ほかの読み方と次の問題が出る", async ({
   page,
 }) => {
-  await page.goto("/quiz");
+  await page.goto(quizUrl);
   await tapFromPool(page, "x", "to", "the", "fifth", "power");
   await expect(answerArea(page).getByRole("button")).toHaveText([
     "x",
@@ -62,7 +61,7 @@ test("札をタップで運んで正解すると、ほかの読み方と次の�
 });
 
 test("間違えると、もう一度解くか答えを見るかを選べる", async ({ page }) => {
-  await page.goto("/quiz");
+  await page.goto(quizUrl);
   await tapFromPool(page, "x", "to", "the", "five");
   await page.getByRole("button", { name: "答え合わせ" }).click();
   await expect(result(page)).toHaveText("不正解");
@@ -86,7 +85,7 @@ test("間違えると、もう一度解くか答えを見るかを選べる", as
 });
 
 test("札が1枚もなくても答え合わせができる", async ({ page }) => {
-  await page.goto("/quiz");
+  await page.goto(quizUrl);
   await page.getByRole("button", { name: "答え合わせ" }).click();
   await expect(result(page)).toHaveText("不正解");
 });
@@ -96,7 +95,7 @@ test("札置き場の札を、ドラッグで回答エリアへ運べる", async
   isMobile,
 }) => {
   test.skip(isMobile, "タッチのドラッグは Playwright で動かせないため");
-  await page.goto("/quiz");
+  await page.goto(quizUrl);
   await tapFromPool(page, "to");
 
   // 「x」を、回答エリアの「to」の上に落とすと、その前に入る。
@@ -137,7 +136,7 @@ test("英語を選んでいるときは、英語の文言で出る", async ({ pa
   await page.addInitScript(() => {
     window.localStorage.setItem("merb.locale", "en");
   });
-  await page.goto("/quiz");
+  await page.goto(quizUrl);
   await expect(page.getByRole("button", { name: "Check" })).toBeVisible();
   await expect(page.getByRole("region", { name: "Answer area" })).toBeVisible();
   await page.getByRole("button", { name: "Check" }).click();

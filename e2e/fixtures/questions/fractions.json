@@ -1,0 +1,12 @@
+{
+  "category": "fractions",
+  "questions": [
+    {
+      "id": "fractions-001",
+      "perspective": "序数を使う読み方",
+      "latex": "\\frac{1}{5}",
+      "answers": [{ "cards": ["one", "fifth"] }, { "cards": ["a", "fifth"] }],
+      "distractors": ["five"]
+    }
+  ]
+}

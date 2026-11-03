@@ -10,7 +10,7 @@ export function HomeContent() {
       <h1>merb</h1>
       <ul>
         <li>
-          <Link href="/quiz">{t("start")}</Link>
+          <Link href="/categories">{t("start")}</Link>
         </li>
         <li>
           <Link href="/settings">{t("settings")}</Link>

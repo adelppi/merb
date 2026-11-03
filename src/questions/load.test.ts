@@ -2,7 +2,7 @@ import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { loadQuestions } from "./load";
+import { loadQuestionFiles, loadQuestions } from "./load";
 
 describe("loadQuestions", () => {
   it("フォルダのすべての JSON を読み、すべての問題を返す", () => {
@@ -33,6 +33,10 @@ describe("loadQuestions", () => {
       "fractions-001",
       "numbers-001",
       "numbers-002",
+    ]);
+    expect(loadQuestionFiles(dir).map((f) => f.category)).toEqual([
+      "fractions",
+      "numbers",
     ]);
   });
 
