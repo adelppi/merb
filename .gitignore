@@ -15,3 +15,6 @@
 .expo/
 dist/
 expo-env.d.ts
+
+# claude code
+.claude/worktrees/
