@@ -133,6 +133,58 @@ async function dragTo(
   await page.mouse.up();
 }
 
+// 札の書体。font-family の先頭と font-style を返す。
+async function fontOf(locator: ReturnType<Page["locator"]>) {
+  return locator.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      family: style.fontFamily.split(",")[0].trim().replaceAll('"', ""),
+      style: style.fontStyle,
+    };
+  });
+}
+
+test("英字1文字の札は KaTeX の斜体で、ほかの札は KaTeX の立体で出る", async ({
+  page,
+}) => {
+  await page.goto("/quiz");
+  const italic = { family: "KaTeX_Math", style: "italic" };
+  const upright = { family: "KaTeX_Main", style: "normal" };
+
+  // 札置き場の札。ボタンの名前は札の文字列のまま。
+  const x = pool(page).getByRole("button", { name: "x", exact: true });
+  expect(await fontOf(x)).toEqual(italic);
+  for (const text of ["to", "the", "fifth", "power", "five"]) {
+    const card = pool(page).getByRole("button", { name: text, exact: true });
+    expect(await fontOf(card)).toEqual(upright);
+  }
+
+  // 回答エリアに運んでも、同じ書体で出る。
+  await tapFromPool(page, "x", "to");
+  expect(
+    await fontOf(answerArea(page).getByRole("button", { name: "x" })),
+  ).toEqual(italic);
+  expect(
+    await fontOf(answerArea(page).getByRole("button", { name: "to" })),
+  ).toEqual(upright);
+
+  // KaTeX の書体が読み込める。
+  const loaded = await page.evaluate(async () => [
+    (await document.fonts.load("italic 16px KaTeX_Math")).length,
+    (await document.fonts.load("16px KaTeX_Main")).length,
+  ]);
+  expect(loaded.every((count) => count > 0)).toBe(true);
+
+  // 答えを見せるときの読み方は、札の書体にしない。
+  await page.getByRole("button", { name: "答え合わせ" }).click();
+  await page.getByRole("button", { name: "答えを見る" }).click();
+  const reading = page
+    .getByRole("region", { name: "答え" })
+    .getByRole("listitem")
+    .first();
+  expect((await fontOf(reading)).family).not.toMatch(/^KaTeX/);
+});
+
 test("英語を選んでいるときは、英語の文言で出る", async ({ page }) => {
   await page.addInitScript(() => {
     window.localStorage.setItem("merb.locale", "en");

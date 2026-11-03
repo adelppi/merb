@@ -20,7 +20,9 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import "katex/dist/katex.min.css";
 import { useRef, useState } from "react";
+import { isLetterCard } from "@/questions/letter";
 import type { Card } from "@/quiz/reducer";
 import styles from "./quiz.module.css";
 
@@ -143,7 +145,9 @@ export function CardBoard({
       </Area>
       {/* 札は落とした先にすぐ並べるので、落としたときのアニメーションはしない。 */}
       <DragOverlay dropAnimation={null}>
-        {active ? <span className={styles.card}>{active.text}</span> : null}
+        {active ? (
+          <span className={cardClass(active, false)}>{active.text}</span>
+        ) : null}
       </DragOverlay>
     </DndContext>
   );
@@ -157,6 +161,17 @@ const collisionDetection: CollisionDetection = (args) => {
   );
   return card ? [card] : collisions;
 };
+
+// 札の文字は KaTeX の書体で出す。英字1文字の札は数式の文字と同じ斜体に、ほかの札は立体にする（docs/specs/quiz.md の「画面」）。
+function cardClass(card: Card, isDragging: boolean): string {
+  return [
+    styles.card,
+    isLetterCard(card.text) ? styles.letter : styles.word,
+    isDragging ? styles.dragging : null,
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
 
 function cardKey(id: number): string {
   return `card-${id}`;
@@ -203,7 +218,7 @@ function PoolCard({ card, locked, onTap }: CardProps) {
       {...listeners}
       disabled={locked}
       onClick={onTap}
-      className={isDragging ? `${styles.card} ${styles.dragging}` : styles.card}
+      className={cardClass(card, isDragging)}
     >
       {card.text}
     </button>
@@ -232,7 +247,7 @@ function PlacedCard({ card, locked, onTap }: CardProps) {
       disabled={locked}
       onClick={onTap}
       style={{ transform: CSS.Translate.toString(transform), transition }}
-      className={isDragging ? `${styles.card} ${styles.dragging}` : styles.card}
+      className={cardClass(card, isDragging)}
     >
       {card.text}
     </button>
