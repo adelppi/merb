@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { parseLocale } from "@/i18n/locale";
 import { readingText } from "@/questions/reading";
 import type { Answer, Question } from "@/questions/schema";
 import {
@@ -18,6 +19,7 @@ import styles from "./quiz.module.css";
 // 1問を解く出題の画面。決まりは docs/specs/quiz.md に書いてある。
 export function QuizScreen({ questions }: { questions: readonly Question[] }) {
   const t = useTranslations("Quiz");
+  const locale = parseLocale(useLocale());
   const { state, dispatch, next } = useQuiz(questions);
   const back = <Link href="/">{t("back")}</Link>;
 
@@ -35,6 +37,7 @@ export function QuizScreen({ questions }: { questions: readonly Question[] }) {
 
   return (
     <main className={styles.screen}>
+      <p>{state.question.prompt[locale]}</p>
       <MathFormula latex={state.question.latex} />
       <CardBoard
         placed={placedCards(state)}

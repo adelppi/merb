@@ -2,6 +2,7 @@ import { expect, type Page, test } from "@playwright/test";
 
 // テスト用の問題は e2e/fixtures/questions/ の x^5 の1問。
 // 正解は「x to the fifth power」と「x to the fifth」、まぎらわしい札は「five」。
+// 問題文は、日本語が「次の数式を英語で読んでください。」、英語が「Read the expression in English.」。
 
 function answerArea(page: Page) {
   return page.getByRole("region", { name: "回答エリア" });
@@ -132,6 +133,33 @@ async function dragTo(
   await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2, { steps: 10 });
   await page.mouse.up();
 }
+
+test("数式の上に、日本語の問題文が出る", async ({ page }) => {
+  await page.goto("/quiz");
+  const prompt = page.getByText("次の数式を英語で読んでください。", {
+    exact: true,
+  });
+  await expect(prompt).toBeVisible();
+  await expect(page.getByText("Read the expression in English.")).toHaveCount(
+    0,
+  );
+  const promptBox = await prompt.boundingBox();
+  const formulaBox = await page.locator(".katex").boundingBox();
+  expect(promptBox?.y).toBeLessThan(formulaBox?.y ?? 0);
+});
+
+test("英語を選んでいるときは、英語の問題文が出る", async ({ page }) => {
+  await page.addInitScript(() => {
+    window.localStorage.setItem("merb.locale", "en");
+  });
+  await page.goto("/quiz");
+  await expect(
+    page.getByText("Read the expression in English.", { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText("次の数式を英語で読んでください。")).toHaveCount(
+    0,
+  );
+});
 
 test("英語を選んでいるときは、英語の文言で出る", async ({ page }) => {
   await page.addInitScript(() => {
