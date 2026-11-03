@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "merb",
+    "slug": "merb",
+    "version": "0.1.0",
+    "scheme": "merb",
+    "orientation": "portrait",
+    "platforms": ["ios"],
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": false
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

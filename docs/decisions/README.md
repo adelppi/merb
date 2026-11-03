@@ -32,3 +32,5 @@
 | [D-0011](D-0011-question-prompt.md) | 問題ごとに日本語と英語の問題文を持ち、出題の画面に出す | 2026-11-03 |
 | [D-0012](D-0012-native-app.md) | ネイティブアプリにし、Web 版をやめる | 2026-11-03 |
 | [D-0013](D-0013-drop-vercel.md) | Vercel との連携をやめる | 2026-11-03 |
+| [D-0014](D-0014-ios-expo-router.md) | 対象 OS は iOS だけにし、画面の移動に Expo Router を使う | 2026-11-03 |
+| [D-0015](D-0015-test-and-toolchain.md) | TypeScript、pnpm、Zod、Biome、Vitest を続けて使い、操作テストの道具は画面ができるときに決める | 2026-11-03 |

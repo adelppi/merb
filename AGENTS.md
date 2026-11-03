@@ -15,35 +15,39 @@
 
 ## コードを書くとき
 
-技術スタックは `docs/decisions/D-0003-tech-stack.md` のとおり。TypeScript、Next.js の App Router、Vercel を使い、パッケージマネージャーは pnpm にする。
+技術スタックは次のとおり。TypeScript、React Native、Expo（SDK 58）、Expo Router を使い、パッケージマネージャーは pnpm にする。問題の JSON の検査は Zod、lint と整形は Biome、単体テストは Vitest で行う。経緯は `docs/decisions/` の D-0003、D-0012、D-0014、D-0015 にある。
 
-アプリは React Native と Expo のネイティブアプリに切り替える（`docs/decisions/D-0012-native-app.md`）。Next.js の Web 版は削除した（Issue #31）。Expo の雛形は Issue #32 で作るので、いまは画面も、画面を動かすコマンドもない。使うライブラリと対象は `docs/open-questions.md` の OQ-015 で決める。
-
-削除した範囲と残した範囲は次のとおり。
-
-- 削除した: `src/app/`、`src/components/`、`e2e/`、Next.js と Playwright の設定（`next.config.ts`、`playwright.config.ts`）、`next`、`next-intl`、`@dnd-kit/*`、`@playwright/test`、`react-dom` への依存、言語を保存する処理（`src/i18n/storage.ts`）。
-- 残した: `src/questions/`、`src/quiz/`、`content/`、`src/i18n/` のうち言語の型と値の検査（`locale.ts`）と文言のファイル（`messages.ts`、`messages/`）。`katex` は、問題の JSON の検査（`src/questions/latex.ts`）が使うので残した。
+- 対象 OS は iOS だけにする。Android はあとで別の Issue で扱う（D-0014）。
+- Next.js の Web 版は削除した（D-0012、Issue #31）。Vercel との連携もやめた（D-0013）。
+- 画面の部品の操作テストと実機に近い操作テストの道具は、画面を作り直す Issue（#35 以降）で決める（D-0015）。
+- 数式の描画と札のドラッグの道具は #33、文言の切り替えと言語の保存は #37 で決める（OQ-015）。それまで `katex` は、問題の JSON の検査（`src/questions/latex.ts`）のために残す。
 
 ソースコードの置き場は次のとおり。理由は `docs/decisions/D-0005-architecture.md` に書いてある。
 
 | 場所 | 中身 |
 |---|---|
-| `src/questions/` | 問題の形、札の生成、判定、問題の JSON の検査。純粋な関数で書く |
+| `src/app/` | Expo Router の画面。薄く保ち、問題を読んで画面の部品に渡すだけにする。いまは `_layout.tsx` と、問題の数を出すだけの `index.tsx` がある |
+| `src/questions/` | 問題の形、札の生成、判定、問題の JSON の検査。純粋な関数で書く。アプリに同梱する問題は `bundled.ts` が読み込む。`content/questions/` に JSON を足したら、`bundled.ts` にも足す |
 | `src/quiz/` | 出題の進行。reducer、札を混ぜる処理、次の問題を選ぶ処理、`useQuiz` |
 | `src/i18n/` | 言語の型と値の検査（`locale.ts`）。文言のファイルは `src/i18n/messages/` に置く |
 | `content/` | 観点シートと問題の JSON |
 | `src/**/*.test.ts` | Vitest の単体テスト。テストするファイルと同じフォルダに置く |
+| `app.json` | Expo の設定 |
 
-画面の部品の置き場は、Expo の雛形づくり（#32）と画面の作り直し（#35〜#37）で決める。
+画面の部品（`src/components/` など）の置き場は、画面の作り直し（#35〜#37）で決める。
 
-使うコマンドは次のとおり。`package.json` に同じ名前でスクリプトを用意してある。`pnpm dev`、`pnpm build`、`pnpm test:e2e` は、Expo の雛形づくり（#32）まで用意しない。
+使うコマンドは次のとおり。`package.json` に同じ名前でスクリプトを用意してある。
 
 | コマンド | すること |
 |---|---|
 | `pnpm install` | 依存するパッケージを入れる |
+| `pnpm start` | Expo の開発用サーバーを起動する |
+| `pnpm ios` | 開発用サーバーを起動し、iOS のシミュレーターで開く（Xcode が要る） |
 | `pnpm lint` | Biome で lint と整形を検査する |
 | `pnpm typecheck` | TypeScript の型を検査する |
 | `pnpm test` | Vitest で単体テストと問題の JSON の検査を実行する |
+
+実機やシミュレーターがない環境では、`pnpm exec expo export --platform ios` で iOS のバンドルが作れることを確かめる。Expo の設定と依存の版の検査には `pnpm dlx expo-doctor` を使える。
 
 PR を出す前に、次をすべて通す。
 
@@ -51,7 +55,7 @@ PR を出す前に、次をすべて通す。
 2. `pnpm typecheck`
 3. `pnpm test`
 
-`pnpm test:e2e` と `pnpm build` は、Expo の雛形づくり（#32）まで対象がないので通さない。
+操作テストの道具が決まるまで、操作テストの実行は PR を出す前の確認に入れない。
 
 ## 日本語の文体（yomiyasu）
 
