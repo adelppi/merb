@@ -1,10 +1,25 @@
 {
   "Home": {
+    "start": "Solve questions",
     "settings": "Settings"
   },
   "Settings": {
     "title": "Settings",
     "language": "Language",
+    "back": "Back to top"
+  },
+  "Quiz": {
+    "check": "Check",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "retry": "Try again",
+    "reveal": "Show answer",
+    "next": "Next question",
+    "otherReadings": "Other readings",
+    "answer": "Answer",
+    "answerArea": "Answer area",
+    "pool": "Cards",
+    "noQuestions": "No questions",
     "back": "Back to top"
   }
 }

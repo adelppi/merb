@@ -8,7 +8,14 @@ export function HomeContent() {
   return (
     <main>
       <h1>merb</h1>
-      <Link href="/settings">{t("settings")}</Link>
+      <ul>
+        <li>
+          <Link href="/quiz">{t("start")}</Link>
+        </li>
+        <li>
+          <Link href="/settings">{t("settings")}</Link>
+        </li>
+      </ul>
     </main>
   );
 }

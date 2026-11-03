@@ -1,0 +1,15 @@
+{
+  "category": "scripts-powers-roots",
+  "questions": [
+    {
+      "id": "scripts-powers-roots-001",
+      "perspective": "n乗（序数＋power）",
+      "latex": "x^5",
+      "answers": [
+        { "cards": ["x", "to", "the", "fifth", "power"] },
+        { "cards": ["x", "to", "the", "fifth"] }
+      ],
+      "distractors": ["five"]
+    }
+  ]
+}

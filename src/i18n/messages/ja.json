@@ -1,10 +1,25 @@
 {
   "Home": {
+    "start": "問題を解く",
     "settings": "設定"
   },
   "Settings": {
     "title": "設定",
     "language": "言語",
+    "back": "トップに戻る"
+  },
+  "Quiz": {
+    "check": "答え合わせ",
+    "correct": "正解",
+    "incorrect": "不正解",
+    "retry": "もう一度解く",
+    "reveal": "答えを見る",
+    "next": "次の問題",
+    "otherReadings": "ほかの読み方",
+    "answer": "答え",
+    "answerArea": "回答エリア",
+    "pool": "札置き場",
+    "noQuestions": "問題がありません",
     "back": "トップに戻る"
   }
 }
