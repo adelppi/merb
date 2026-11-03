@@ -41,6 +41,7 @@ function RootStack() {
         options={{
           headerShown: true,
           title: "",
+          gestureEnabled: false,
           headerBackButtonDisplayMode: "minimal",
           headerShadowVisible: false,
           headerStyle: { backgroundColor: colors.background },
