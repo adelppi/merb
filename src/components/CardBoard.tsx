@@ -1,5 +1,6 @@
 import { useFonts } from "expo-font";
 import {
+  memo,
   type ReactNode,
   useCallback,
   useEffect,
@@ -17,6 +18,7 @@ import Animated, {
   type AnimatedRef,
   measure,
   type SharedValue,
+  useAnimatedReaction,
   useAnimatedRef,
   useAnimatedStyle,
   useDerivedValue,
@@ -35,6 +37,7 @@ import {
   type Pos,
   ROW_HEIGHT,
   toggleOrders,
+  warmUpBoard,
 } from "../quiz/board";
 import type { Card } from "../quiz/reducer";
 import { colors } from "./theme";
@@ -56,7 +59,9 @@ export function cardFontFamily(text: string): string {
 // 回答エリアの余白と、動かし始める距離
 const AREA_PADDING = 12;
 const DRAG_DISTANCE = 6;
-const MOVE_DURATION = 220;
+// 札が位置を変える時間と、札の色が変わる時間
+const MOVE_DURATION = 160;
+const COLOR_DURATION = 100;
 
 type Props = {
   // 混ぜたあとの札。札置き場の元の位置は、この順で決まる。
@@ -121,7 +126,8 @@ function useBoard(count: number): Board {
   const layout = useDerivedValue(() =>
     layoutAnswer(orders.value, widths.value, contentWidth.value),
   );
-  return {
+  // 共有値は作り直されないので、最初の入れ物を使い続ける。札の部品の memo が効くようにするため。
+  return useRef({
     orders,
     widths,
     bank,
@@ -138,7 +144,7 @@ function useBoard(count: number): Board {
     grabX: useSharedValue(0),
     grabY: useSharedValue(0),
     ready: useSharedValue(false),
-  };
+  }).current;
 }
 
 export function CardBoard(props: Props) {
@@ -172,6 +178,9 @@ function Loaded({
   const measured = useRef(0);
   const boardWidth = useRef(0);
   const answerColor = placedGreen ? colors.green : colors.indigo;
+  // 札の部品を再描画しないよう、commit は作り直さず、最新の値をここから読む。
+  const latest = useRef({ cards, onPlace, onUnplace, onMove });
+  latest.current = { cards, onPlace, onUnplace, onMove };
 
   // 札置き場の枠の位置と幅から、札の幅と元の位置、回答エリアの高さを決める。
   const measureSlots = useCallback(() => {
@@ -196,10 +205,12 @@ function Loaded({
     requestAnimationFrame(() => {
       board.ready.value = true;
     });
+    scheduleOnUI(warmUpBoard, cards.length);
   }, [board, cards.length]);
 
   const commit = useCallback(
     (type: "place" | "unplace" | "move", index: number, at: number) => {
+      const { cards, onPlace, onUnplace, onMove } = latest.current;
       const id = cards[index]?.id;
       if (id === undefined) {
         return;
@@ -212,7 +223,7 @@ function Loaded({
         onMove(id, at);
       }
     },
-    [cards, onPlace, onUnplace, onMove],
+    [],
   );
 
   useEffect(() => {
@@ -328,21 +339,19 @@ function Face({
   answerColor: string;
   lifted?: boolean;
 }) {
-  const style = useAnimatedStyle(() => {
-    const placed = (board.orders.value[index] ?? -1) >= 0;
-    return {
-      backgroundColor: withTiming(placed ? answerColor : colors.surface, {
-        duration: 150,
-      }),
-      shadowOpacity: lifted ? 0.3 : placed ? 0 : 0.12,
-    };
-  });
-  const textStyle = useAnimatedStyle(() => {
-    const placed = (board.orders.value[index] ?? -1) >= 0;
-    return {
-      color: withTiming(placed ? "#ffffff" : colors.text, { duration: 150 }),
-    };
-  });
+  // 札の並びが変わるたびではなく、この札が運ばれたときだけ色を動かす。
+  const placed = useDerivedValue(() => (board.orders.value[index] ?? -1) >= 0);
+  const style = useAnimatedStyle(() => ({
+    backgroundColor: withTiming(placed.value ? answerColor : colors.surface, {
+      duration: COLOR_DURATION,
+    }),
+    shadowOpacity: lifted ? 0.3 : placed.value ? 0 : 0.12,
+  }));
+  const textStyle = useAnimatedStyle(() => ({
+    color: withTiming(placed.value ? "#ffffff" : colors.text, {
+      duration: COLOR_DURATION,
+    }),
+  }));
   return (
     <Animated.View
       style={[styles.card, styles.face, lifted && styles.lifted, style]}
@@ -377,8 +386,9 @@ function useTarget(index: number, board: Board) {
   return { targetX, targetY };
 }
 
-// 札1枚。位置は、動かしていなければ目標の位置へ動き、動かしていれば指に付いて動く。
-function Word({
+// 札1枚。動かしている間は Ghost が指に付いて動き、この札は隠す。
+// 位置のアニメーションは目標の位置が変わった札でだけ始め、動かない札に計算をさせない。
+const Word = memo(function Word({
   index,
   card,
   board,
@@ -402,22 +412,35 @@ function Word({
   ) => void;
 }) {
   const { targetX, targetY } = useTarget(index, board);
-  const x = useDerivedValue(() => {
-    if (board.active.value === index) {
-      return board.dragX.value;
-    }
-    return board.ready.value
-      ? withTiming(targetX.value, { duration: MOVE_DURATION })
-      : targetX.value;
-  });
-  const y = useDerivedValue(() => {
-    if (board.active.value === index) {
-      return board.dragY.value;
-    }
-    return board.ready.value
-      ? withTiming(targetY.value, { duration: MOVE_DURATION })
-      : targetY.value;
-  });
+  const x = useSharedValue(0);
+  const y = useSharedValue(0);
+  useAnimatedReaction(
+    () => ({
+      active: board.active.value === index,
+      ready: board.ready.value,
+      x: targetX.value,
+      y: targetY.value,
+    }),
+    (now, previous) => {
+      if (now.active) {
+        return;
+      }
+      if (!now.ready) {
+        x.value = now.x;
+        y.value = now.y;
+        return;
+      }
+      if (previous?.active) {
+        // 指を離した位置から、目標の位置へ動かす。
+        x.value = board.dragX.value;
+        y.value = board.dragY.value;
+      } else if (previous && previous.x === now.x && previous.y === now.y) {
+        return;
+      }
+      x.value = withTiming(now.x, { duration: MOVE_DURATION });
+      y.value = withTiming(now.y, { duration: MOVE_DURATION });
+    },
+  );
 
   // 運んだことを reducer へ知らせる。before と after は、運ぶ前と運んだあとの並び。
   function report(before: Orders, after: Orders) {
@@ -534,10 +557,10 @@ function Word({
       </Animated.View>
     </GestureDetector>
   );
-}
+});
 
 // 動かしている札の見た目。ほかの札より手前に出すため、盤面の最後に置く。
-function Ghost({
+const Ghost = memo(function Ghost({
   index,
   card,
   board,
@@ -573,28 +596,35 @@ function Ghost({
       />
     </Animated.View>
   );
-}
+});
 
-// 動かしている札が入る位置を示す、点線の空きの枠。
-function Marker({ index, board }: { index: number; board: Board }) {
+// 動かしている札が入る位置を示す、点線の空きの枠。動かしている札の枠だけをアニメーションで動かす。
+const Marker = memo(function Marker({
+  index,
+  board,
+}: {
+  index: number;
+  board: Board;
+}) {
   const style = useAnimatedStyle(() => {
-    const placed = (board.orders.value[index] ?? -1) >= 0;
+    const shown =
+      board.active.value === index && (board.orders.value[index] ?? -1) >= 0;
     const position = board.layout.value[index] ?? { x: 0, y: 0 };
+    const moveX = AREA_PADDING + position.x;
+    const moveY = AREA_PADDING + position.y;
     return {
       width: board.widths.value[index] ?? 0,
-      opacity: withTiming(board.active.value === index && placed ? 0.5 : 0, {
-        duration: 120,
-      }),
+      opacity: shown ? 0.5 : 0,
       transform: [
         {
-          translateX: withTiming(AREA_PADDING + position.x, {
-            duration: MOVE_DURATION,
-          }),
+          translateX: shown
+            ? withTiming(moveX, { duration: MOVE_DURATION })
+            : moveX,
         },
         {
-          translateY: withTiming(AREA_PADDING + position.y, {
-            duration: MOVE_DURATION,
-          }),
+          translateY: shown
+            ? withTiming(moveY, { duration: MOVE_DURATION })
+            : moveY,
         },
       ],
     };
@@ -605,7 +635,7 @@ function Marker({ index, board }: { index: number; board: Board }) {
       style={[styles.layer, styles.marker, style]}
     />
   );
-}
+});
 
 const styles = StyleSheet.create({
   answer: {

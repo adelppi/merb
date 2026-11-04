@@ -1,6 +1,6 @@
 import { Asset } from "expo-asset";
 import { EncodingType, readAsStringAsync } from "expo-file-system/legacy";
-import { useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 import { WebView } from "react-native-webview";
 import { renderLatexHtml } from "../questions/latex";
@@ -60,7 +60,10 @@ window.addEventListener("load",post);
 type Props = { latex: string; color?: string };
 
 // 問題の latex を KaTeX で描く。WebView の中で描き、高さを数式に合わせる。
-export function MathView({ latex, color = "#000000" }: Props) {
+export const MathView = memo(function MathView({
+  latex,
+  color = "#000000",
+}: Props) {
   const [css, setCss] = useState<string | null>(null);
   const [height, setHeight] = useState(48);
 
@@ -98,4 +101,4 @@ export function MathView({ latex, color = "#000000" }: Props) {
       />
     </View>
   );
-}
+});

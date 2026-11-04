@@ -192,3 +192,14 @@ export function maxRows(widths: number[], contentWidth: number): number {
     countRows(narrow, widths, contentWidth),
   );
 }
+
+// UI スレッドで、札を運ぶ計算を1回ずつ実行する。結果は使わない。
+// ワークレットは最初に実行するときに読み込まれるので、指で触る前に済ませ、最初の札がもたつかないようにする。
+export function warmUpBoard(count: number) {
+  "worklet";
+  const empty = ordersFromList(count, []);
+  const placed = toggleOrders(empty, 0);
+  const widths = empty.map(() => 60);
+  const dragged = dragOrders(placed, widths, 300, 0, { x: 0, y: 0 }, true);
+  moveOf(empty, dragged, 0);
+}
