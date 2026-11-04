@@ -37,6 +37,12 @@
         "projectId": "7e8fc0d8-815b-44db-a387-defcdbc3ce89"
       }
     },
-    "owner": "adelppi"
+    "owner": "adelppi",
+    "updates": {
+      "url": "https://u.expo.dev/7e8fc0d8-815b-44db-a387-defcdbc3ce89"
+    },
+    "runtimeVersion": {
+      "policy": "fingerprint"
+    }
   }
 }
