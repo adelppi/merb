@@ -2,6 +2,14 @@
 
 App Store への提出と、公開後の修正の手順を書く。理由は [D-0031](decisions/D-0031-release-policy.md) にある。
 
+## 最初の提出の前に
+
+最初の提出の前に、次を1回だけ行う。
+
+1. App Store Connect で、アプリの ID を `com.adelppi.merb`、名前を `merb` にしてアプリを作る。
+2. 作ったアプリの「Apple ID」の数字を、`eas.json` の `submit.production.ios.ascAppId` に書く。
+3. `eas credentials --platform ios` を実行し、Apple ID でログインして、署名の証明書と提出用の API キーを用意する。
+
 ## 配信のしかたの選び方
 
 | 変更 | 配信のしかた |
