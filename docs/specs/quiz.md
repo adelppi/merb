@@ -1,7 +1,7 @@
 # 1問を解く出題の画面
 
 - 状態: 合意
-- Issue: #17、#19、#22、#23、#24、#35
+- Issue: #17、#19、#22、#23、#24、#35、#59
 - 関係する決定: [D-0004](../decisions/D-0004-question-format.md)、[D-0007](../decisions/D-0007-quiz-screen.md)、[D-0009](../decisions/D-0009-card-font.md)、[D-0010](../decisions/D-0010-retry-without-button.md)、[D-0011](../decisions/D-0011-question-prompt.md)、[D-0012](../decisions/D-0012-native-app.md)、[D-0014](../decisions/D-0014-ios-expo-router.md)、[D-0016](../decisions/D-0016-math-and-drag-libs.md)、[D-0018](../decisions/D-0018-design-open-questions.md)、[D-0019](../decisions/D-0019-i18n-and-locale-storage.md)、[D-0020](../decisions/D-0020-category-navigation.md)、[D-0021](../decisions/D-0021-operation-test-tool.md)
 - デザイン: [docs/design/](../design/README.md) の出題の4つの状態（2a 解答中、2b 不正解、2c 正解、2d 答えを見た後）
 
@@ -54,6 +54,8 @@
 12. この画面は、スクロールできない。
 
 ## 答え合わせ
+
+間違えた問題の記録と再挑戦は [mistakes.md](mistakes.md) に書く。
 
 1. 答え合わせは、「答え合わせ」のボタンを押したときにする。回答エリアに札が1枚もなくても押せる。
 2. 判定は、[問題の JSON の形](question-format.md)の「判定」の節のとおりにする。札が1枚もなければ不正解にする。
@@ -129,6 +131,7 @@
 
 - 分類を選ぶ画面（[出題の範囲を分類から選ぶ画面](category-select.md)）
 - 問題の JSON の中身を作ること
+- 間違えた問題の記録と再挑戦（[mistakes.md](mistakes.md)）
 - 解いた問題の数や正解の数を数えること（`vision.md` の「やらないこと」の「進捗の管理」と「ゲーム性」）
 - ダークモード（デザインに画面がない）
 
