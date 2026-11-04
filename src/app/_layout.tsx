@@ -7,6 +7,7 @@ import {
 } from "../components/headerOptions";
 import { colors } from "../components/theme";
 import { I18nProvider, useI18n } from "../i18n/provider";
+import { MistakesProvider } from "../mistakes/provider";
 
 function RootStack() {
   const { messages } = useI18n();
@@ -52,7 +53,9 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <I18nProvider>
-        <RootStack />
+        <MistakesProvider>
+          <RootStack />
+        </MistakesProvider>
       </I18nProvider>
     </GestureHandlerRootView>
   );
