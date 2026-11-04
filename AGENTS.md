@@ -35,6 +35,7 @@
 | `content/` | 観点シートと問題の JSON |
 | `src/**/*.test.ts` | Vitest の単体テスト。テストするファイルと同じフォルダに置く |
 | `maestro/` | Maestro の操作テストのフロー（YAML）。シミュレーターの Expo Go に対して手元で実行する |
+| `assets/` | アプリのアイコン（`merb.icon`）と起動画面の画像 |
 | `app.json` | Expo の設定 |
 
 画面の文言は、`useI18n()` が返す `messages` から読む。キーを足すときは、`ja.json` と `en.json` に同じ構造で足す。

@@ -6,12 +6,26 @@
     "scheme": "merb",
     "orientation": "portrait",
     "platforms": ["ios"],
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "ios": {
+      "icon": "./assets/merb.icon",
       "supportsTablet": false,
       "bundleIdentifier": "com.adelppi.merb"
     },
-    "plugins": ["expo-router", "expo-asset", "expo-font"],
+    "plugins": [
+      "expo-router",
+      "expo-asset",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-sigma.png",
+          "imageWidth": 120,
+          "resizeMode": "contain",
+          "backgroundColor": "#f2f2f7"
+        }
+      ]
+    ],
     "experiments": {
       "typedRoutes": true
     }
