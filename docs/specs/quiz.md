@@ -1,7 +1,7 @@
 # 1問を解く出題の画面
 
 - 状態: 合意
-- Issue: #17、#19、#22、#23、#24、#35、#58、#59、#62、#63
+- Issue: #17、#19、#22、#23、#24、#35、#58、#59、#62、#63、#64
 - 関係する決定: [D-0004](../decisions/D-0004-question-format.md)、[D-0007](../decisions/D-0007-quiz-screen.md)、[D-0009](../decisions/D-0009-card-font.md)、[D-0010](../decisions/D-0010-retry-without-button.md)、[D-0011](../decisions/D-0011-question-prompt.md)、[D-0012](../decisions/D-0012-native-app.md)、[D-0014](../decisions/D-0014-ios-expo-router.md)、[D-0016](../decisions/D-0016-math-and-drag-libs.md)、[D-0018](../decisions/D-0018-design-open-questions.md)、[D-0019](../decisions/D-0019-i18n-and-locale-storage.md)、[D-0020](../decisions/D-0020-category-navigation.md)、[D-0021](../decisions/D-0021-operation-test-tool.md)、[D-0025](../decisions/D-0025-wrong-cards-red.md)、[D-0027](../decisions/D-0027-prominent-glass.md)、[D-0028](../decisions/D-0028-drop-row.md)
 - デザイン: [docs/design/](../design/README.md) の出題の4つの状態（2a 解答中、2b 不正解、2c 正解、2d 答えを見た後）
 
@@ -50,8 +50,9 @@
 8. 札は、VoiceOver でボタンとして読み上げる。ダブルタップは、タップと同じに運ぶ。ドラッグだけでしかできない運び方はない。
 9. ドラッグしている間、持ち上げた札は、ほかの札より手前で指に付いて動く。回答エリアでは、札が入る位置に点線の空きの枠を出し、その位置にある札は、枠を空けるようにアニメーションで動く。指が札置き場の側にあるときは、枠を出さない。
 10. 札置き場には、札ごとの元の位置に、灰色の枠を置く。札が回答エリアにある間も、枠は元の位置に残る。札置き場の札の並びと位置は、問題を出したときから変わらない。
-11. 回答エリアは、札をすべて並べても収まる高さに固定する。札の数や並べ方が変わっても、高さは変わらない。
-12. この画面は、スクロールできない。
+11. 札が位置を変えるアニメーションは 0.16 秒、札の色が変わるアニメーションは 0.1 秒にする。
+12. 回答エリアは、札をすべて並べても収まる高さに固定する。札の数や並べ方が変わっても、高さは変わらない。
+13. この画面は、スクロールできない。
 
 ## 答え合わせ
 
