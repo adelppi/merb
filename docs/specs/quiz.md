@@ -108,7 +108,7 @@
 - [x] 札を並べて答え合わせをすると、正解なら「正解」と、ほかの読み方と、「次の問題」が出て、札置き場は出ない（Vitest: `quizView`。Maestro: `correct`）
 - [x] 間違えて答え合わせをすると、「不正解」と、「答え合わせ」と「答えを見る」のボタンが出て、「次の問題」のボタンは出ない（Vitest: `quizView`。Maestro: `incorrect`）
 - [x] 間違えたあと、ボタンを押さずに札を運び、もう一度答え合わせができる（Vitest: reducer。Maestro: `incorrect`）
-- [ ] 不正解のとき、間違った札だけが赤になり、ほかの札は藍のままになる（Vitest: 間違った位置を返す関数と `quizView`。画面で確かめる）
+- [x] 不正解のとき、間違った札だけが赤になり、ほかの札は藍のままになる（Vitest: 間違った位置を返す関数と `quizView`。画面で確かめる）
 - [x] 間違えたあとに札を運んで並びが変わると、「不正解」の表示が消え、「答えを見る」のボタンは残る（Vitest: `quizView`。Maestro: `incorrect`）
 - [x] 続けて不正解になると、答え合わせのたびに「不正解」を出し直す（Vitest: reducer の答え合わせの回数。Maestro: `incorrect`。揺れの動きは目で確かめる）
 - [x] 「答えを見る」で、すべての読み方が出て、「不正解」と札置き場は出ない（Vitest: `quizView`。Maestro: `reveal`）

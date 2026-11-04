@@ -82,6 +82,7 @@ export function QuizView({ state, dispatch, next }: Props) {
           placedIds={state.placed}
           movable={view.showPool}
           placedGreen={view.placedGreen}
+          wrongIds={view.wrongIds}
           answerLabel={messages.Quiz.answerArea}
           poolLabel={messages.Quiz.pool}
           between={status}
