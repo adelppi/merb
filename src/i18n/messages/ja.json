@@ -1,6 +1,5 @@
 {
   "Home": {
-    "start": "問題を解く",
     "mistakes": "間違えた問題",
     "settings": "設定"
   },
@@ -12,7 +11,8 @@
   "Categories": {
     "title": "分類を選ぶ",
     "start": "選んだ分類で始める",
-    "all": "すべての分類から出す",
+    "selectAll": "すべて選択",
+    "deselectAll": "すべて解除",
     "back": "トップに戻る"
   },
   "CategoryNames": {

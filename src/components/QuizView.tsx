@@ -97,6 +97,7 @@ export function QuizView({ state, dispatch, next }: Props) {
             <PillButton
               label={messages.Quiz.reveal}
               variant="glass"
+              symbol="eye"
               onPress={() => dispatch({ type: "reveal" })}
             />
           </View>
@@ -106,6 +107,7 @@ export function QuizView({ state, dispatch, next }: Props) {
             <PillButton
               label={messages.Quiz.check}
               variant="prominent"
+              symbol="checkmark"
               onPress={() => dispatch({ type: "check" })}
             />
           </View>
@@ -115,6 +117,7 @@ export function QuizView({ state, dispatch, next }: Props) {
             <PillButton
               label={messages.Quiz.next}
               variant="prominent"
+              symbol="arrow.right"
               onPress={next}
             />
           </View>

@@ -1,9 +1,15 @@
-import { useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { SymbolView } from "expo-symbols";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useI18n } from "../i18n/provider";
 import { type CategoryId, categoryIds } from "../questions/schema";
-import { canStart, toggleCategory } from "../quiz/categories";
+import {
+  canStart,
+  isAllSelected,
+  toggleAllCategories,
+  toggleCategory,
+} from "../quiz/categories";
+import { useSelection } from "../quiz/selection-provider";
 import { CategoryRow } from "./CategoryRow";
 import { PillButton } from "./PillButton";
 import { colors } from "./theme";
@@ -11,15 +17,26 @@ import { colors } from "./theme";
 type Props = {
   // 問題が1問以上ある分類。これにない分類は選べない。
   available: readonly CategoryId[];
-  onStart: (selected: CategoryId[]) => void;
-  onStartAll: () => void;
+  // 間違えた問題の記録があるか。ないときは「間違えた問題」を押せない。
+  hasMistakes: boolean;
+  onStart: (selected: readonly CategoryId[]) => void;
+  onRetry: () => void;
 };
 
-// 分類を選ぶ画面の本体。選んだ分類はこの部品の state が持つ。大見出しと戻るボタンは _layout.tsx のヘッダーで出す。
-export function CategorySelect({ available, onStart, onStartAll }: Props) {
+// ホームの本体。分類の一覧と下のボタンを出す。選んだ分類は SelectionProvider が持つ。大見出しと歯車は _layout.tsx のヘッダーで出す。
+export function CategorySelect({
+  available,
+  hasMistakes,
+  onStart,
+  onRetry,
+}: Props) {
   const { messages } = useI18n();
   const insets = useSafeAreaInsets();
-  const [selected, setSelected] = useState<CategoryId[]>([]);
+  const { selected, change } = useSelection();
+  const allSelected = isAllSelected(selected, available);
+  const toggleAllLabel = allSelected
+    ? messages.Categories.deselectAll
+    : messages.Categories.selectAll;
   const bottom = Math.max(insets.bottom, 16);
   const footerHeight = 16 + 52 + 10 + 52 + bottom;
   return (
@@ -28,6 +45,29 @@ export function CategorySelect({ available, onStart, onStartAll }: Props) {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{ paddingBottom: footerHeight + 16 }}
       >
+        <View style={styles.listHeader}>
+          <Text accessibilityRole="header" style={styles.listTitle}>
+            {messages.Categories.title}
+          </Text>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={toggleAllLabel}
+            onPress={() =>
+              change((current) => toggleAllCategories(current, available))
+            }
+            style={({ pressed }) => [
+              styles.toggleAll,
+              pressed && styles.pressed,
+            ]}
+          >
+            <SymbolView
+              name={allSelected ? "xmark.circle" : "checkmark.circle"}
+              size={16}
+              tintColor={colors.indigo}
+            />
+            <Text style={styles.toggleAllLabel}>{toggleAllLabel}</Text>
+          </Pressable>
+        </View>
         <View style={styles.group}>
           {categoryIds.map((id, index) => (
             <View key={id}>
@@ -37,9 +77,7 @@ export function CategorySelect({ available, onStart, onStartAll }: Props) {
                 selected={selected.includes(id)}
                 disabled={!available.includes(id)}
                 onPress={() =>
-                  setSelected((current) =>
-                    toggleCategory(current, id, available),
-                  )
+                  change((current) => toggleCategory(current, id, available))
                 }
               />
             </View>
@@ -50,13 +88,16 @@ export function CategorySelect({ available, onStart, onStartAll }: Props) {
         <PillButton
           label={messages.Categories.start}
           variant="prominent"
+          symbol="play.fill"
           disabled={!canStart(selected)}
           onPress={() => onStart(selected)}
         />
         <PillButton
-          label={messages.Categories.all}
+          label={messages.Home.mistakes}
           variant="glass"
-          onPress={onStartAll}
+          symbol="arrow.counterclockwise"
+          disabled={!hasMistakes}
+          onPress={onRetry}
         />
       </View>
     </View>
@@ -65,9 +106,27 @@ export function CategorySelect({ available, onStart, onStartAll }: Props) {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.background },
+  listHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    minHeight: 44,
+    paddingLeft: 36,
+    paddingRight: 28,
+  },
+  listTitle: { flexShrink: 1, fontSize: 13, color: colors.secondaryText },
+  // 文字のボタンでも、指で押せるよう高さを 44 にする。
+  toggleAll: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    height: 44,
+    paddingHorizontal: 8,
+  },
+  pressed: { opacity: 0.5 },
+  toggleAllLabel: { fontSize: 15, color: colors.indigo },
   group: {
     marginHorizontal: 16,
-    marginTop: 4,
     backgroundColor: colors.surface,
     borderRadius: 26,
     overflow: "hidden",

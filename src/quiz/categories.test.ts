@@ -4,8 +4,10 @@ import {
   availableCategories,
   canStart,
   categoriesHref,
+  isAllSelected,
   parseCategories,
   selectQuestions,
+  toggleAllCategories,
   toggleCategory,
 } from "./categories";
 import { pickNextIndex } from "./next";
@@ -151,6 +153,41 @@ describe("toggleCategory", () => {
     expect(toggleCategory(["numbers"], "relations", available)).toEqual([
       "numbers",
     ]);
+  });
+});
+
+describe("toggleAllCategories", () => {
+  const available = availableCategories(files);
+
+  it("問題がある分類をすべて選ぶ。問題がない分類は選ばない", () => {
+    expect(toggleAllCategories([], available)).toEqual([
+      "numbers",
+      "fractions",
+      "calculus",
+    ]);
+    expect(toggleAllCategories(["calculus"], available)).toEqual([
+      "numbers",
+      "fractions",
+      "calculus",
+    ]);
+  });
+
+  it("すべて選んでいるときは、すべて外す", () => {
+    expect(toggleAllCategories(available, available)).toEqual([]);
+  });
+});
+
+describe("isAllSelected", () => {
+  const available = availableCategories(files);
+
+  it("問題がある分類をすべて選んでいるかを返す", () => {
+    expect(isAllSelected([], available)).toBe(false);
+    expect(isAllSelected(["numbers"], available)).toBe(false);
+    expect(isAllSelected(available, available)).toBe(true);
+  });
+
+  it("問題がある分類がなければ、すべて選んだことにしない", () => {
+    expect(isAllSelected([], [])).toBe(false);
   });
 });
 

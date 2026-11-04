@@ -1,0 +1,35 @@
+# すべて選択と解除の切り替えと、選んだ分類をアプリを開き直しても残す流れ。
+appId: host.exp.Exponent
+---
+- stopApp
+- launchApp
+- openLink: exp://127.0.0.1:8099
+- extendedWaitUntil:
+    visible: "選んだ分類で始める"
+    timeout: 90000
+# 前の実行の保存が残っていてもよいよう、すべて選んだ状態にそろえる
+- runFlow:
+    when:
+      visible: "すべて選択"
+    commands:
+      - tapOn: "すべて選択"
+- assertVisible: "すべて解除"
+# 選んだ行の読み上げの名前には状態が続くので、前方一致にする
+- tapOn: "数.*"
+- assertVisible: "すべて選択"
+- tapOn: "数.*"
+- assertVisible: "すべて解除"
+- tapOn: "すべて解除"
+- assertVisible: "すべて選択"
+- tapOn: "分数"
+# 開き直しても「分数」を選んでいるので、「選んだ分類で始める」を押せる
+- stopApp
+- launchApp
+- openLink: exp://127.0.0.1:8099
+- extendedWaitUntil:
+    visible: "選んだ分類で始める"
+    timeout: 90000
+- tapOn: "選んだ分類で始める"
+- extendedWaitUntil:
+    visible: "答え合わせ"
+    timeout: 30000

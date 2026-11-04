@@ -1,16 +1,19 @@
-# 出題の画面の戻るボタンで、選んだ分類を残したまま分類を選ぶ画面へ戻る流れ。
+# 出題の画面の戻るボタンで、選んだ分類を残したままホームへ戻る流れ。
 appId: host.exp.Exponent
 ---
 - stopApp
 - launchApp
 - openLink: exp://127.0.0.1:8099
 - extendedWaitUntil:
-    visible: "merb"
-    timeout: 90000
-- openLink: exp://127.0.0.1:8099/--/categories
-- extendedWaitUntil:
     visible: "選んだ分類で始める"
-    timeout: 30000
+    timeout: 90000
+# 前の実行の保存が残っていてもよいよう、どの分類も選んでいない状態にそろえる
+- runFlow:
+    when:
+      visible: "すべて選択"
+    commands:
+      - tapOn: "すべて選択"
+- tapOn: "すべて解除"
 - tapOn: "数"
 - tapOn: "選んだ分類で始める"
 - extendedWaitUntil:
@@ -20,7 +23,7 @@ appId: host.exp.Exponent
 - tapOn:
     point: 9%,9%
 - extendedWaitUntil:
-    visible: "すべての分類から出す"
+    visible: "すべて選択"
     timeout: 10000
 # 選んだ分類が残っているので、「選んだ分類で始める」を押せる
 - tapOn: "選んだ分類で始める"

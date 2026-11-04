@@ -33,7 +33,7 @@
    - ほかの札は、KaTeX の立体で出す。
    - 書体を変えても、判定と札の読み上げ用の名前は、札の文字列のままにする。
 9. 答えを見せるときの読み方（「ほかの読み方」と「答え」）は、札の書体にせず、画面の文言と同じ書体で出す。読み上げの言語は英語にする。
-10. 下のボタンは、「答え合わせ」と「次の問題」を藍の目立つボタンに、「答えを見る」を控えめなボタンにする。藍の目立つボタンは、iOS 26 以上では藍に色付けした Liquid Glass、それより前の iOS では藍の背景で出す（[D-0027](../decisions/D-0027-prominent-glass.md)）。控えめなボタンは、iOS 26 以上では Liquid Glass、それより前の iOS では半透明の背景で出す（[D-0018](../decisions/D-0018-design-open-questions.md)）。アイコンを使うときは SF Symbols にする。
+10. 下のボタンは、「答え合わせ」と「次の問題」を藍の目立つボタンに、「答えを見る」を控えめなボタンにする。アイコンは SF Symbols で、「答え合わせ」は `checkmark`、「答えを見る」は `eye`、「次の問題」は `arrow.right` にする（[D-0030](../decisions/D-0030-merge-home-categories.md)）。藍の目立つボタンは、iOS 26 以上では藍に色付けした Liquid Glass、それより前の iOS では藍の背景で出す（[D-0027](../decisions/D-0027-prominent-glass.md)）。控えめなボタンは、iOS 26 以上では Liquid Glass、それより前の iOS では半透明の背景で出す（[D-0018](../decisions/D-0018-design-open-questions.md)）。アイコンを使うときは SF Symbols にする。
 11. 背景の色と、藍、緑、赤の色は、デザインの値にそろえる（`src/components/theme.ts`）。
 
 ## 札を運ぶ
