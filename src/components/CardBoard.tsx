@@ -67,6 +67,8 @@ type Props = {
   movable: boolean;
   // 回答エリアの札を緑で出すか（正解のとき）。それ以外は藍で出す。
   placedGreen: boolean;
+  // 赤で出す回答エリアの札の id（不正解のとき、間違った札）
+  wrongIds: number[];
   // 回答エリアの読み上げ用の名前と、札置き場の読み上げ用の名前
   answerLabel: string;
   poolLabel: string;
@@ -153,6 +155,7 @@ function Loaded({
   placedIds,
   movable,
   placedGreen,
+  wrongIds,
   answerLabel,
   poolLabel,
   between,
@@ -265,7 +268,7 @@ function Loaded({
             board={board}
             boardRef={boardRef}
             movable={movable}
-            answerColor={answerColor}
+            answerColor={wrongIds.includes(card.id) ? colors.red : answerColor}
             testID={placedIds.includes(card.id) ? "answer-card" : "pool-card"}
             onCommit={commit}
           />
@@ -276,7 +279,7 @@ function Loaded({
             index={index}
             card={card}
             board={board}
-            answerColor={answerColor}
+            answerColor={wrongIds.includes(card.id) ? colors.red : answerColor}
           />
         ))}
       </View>

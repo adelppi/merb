@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { dealCards, judge } from "./cards";
+import { dealCards, judge, wrongPositions } from "./cards";
 import type { Question } from "./schema";
 
 const fifthPower: Question = {
@@ -90,5 +90,40 @@ describe("judge", () => {
     // dealCards で出した札のうち power と five が余るが、正解になる。
     expect(dealCards(fifthPower)).toContain("power");
     expect(judge(["x", "to", "the", "fifth"], fifthPower)).toBe(true);
+  });
+});
+
+describe("wrongPositions", () => {
+  const question: Question = {
+    id: "t-1",
+    perspective: "テスト",
+    prompt: { ja: "問題", en: "Question" },
+    latex: "x",
+    answers: [{ cards: ["a", "b", "c"] }, { cards: ["x", "y"] }],
+    distractors: [],
+  };
+
+  it("正解なら間違った札はない", () => {
+    expect(wrongPositions(["x", "y"], question)).toEqual([]);
+  });
+
+  it("位置ごとに違う札だけを返す", () => {
+    expect(wrongPositions(["a", "c", "b"], question)).toEqual([1, 2]);
+  });
+
+  it("最も近い読み方と比べる", () => {
+    expect(wrongPositions(["x", "z"], question)).toEqual([1]);
+  });
+
+  it("読み方より後ろに並んだ札は間違いにする", () => {
+    expect(wrongPositions(["x", "y", "z"], question)).toEqual([2]);
+  });
+
+  it("違いが同じなら先の読み方と比べる", () => {
+    expect(wrongPositions(["q"], question)).toEqual([0]);
+  });
+
+  it("札が1枚もなければ空を返す", () => {
+    expect(wrongPositions([], question)).toEqual([]);
   });
 });
