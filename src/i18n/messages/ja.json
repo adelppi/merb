@@ -1,6 +1,7 @@
 {
   "Home": {
     "start": "問題を解く",
+    "mistakes": "間違えた問題",
     "settings": "設定"
   },
   "Settings": {

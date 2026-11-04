@@ -29,6 +29,7 @@
 | `src/app/` | Expo Router の画面。薄く保ち、問題を読んで画面の部品に渡すだけにする。`_layout.tsx` が `I18nProvider` を載せる。いまは `index.tsx`（ホーム）、`categories.tsx`（分類を選ぶ）、`quiz.tsx`（出題）、`settings.tsx`（設定）がある |
 | `src/questions/` | 問題の形、札の生成、判定、問題の JSON の検査。純粋な関数で書く。アプリに同梱する問題は `bundled.ts` が読み込む。`content/questions/` に JSON を足したら、`bundled.ts` にも足す |
 | `src/quiz/` | 出題の進行。reducer、札を混ぜる処理、次の問題を選ぶ処理、`useQuiz`。分類の選択の処理（`categories.ts`）もここに置く |
+| `src/mistakes/` | 間違えた問題の id の記録。追加と削除の処理、再挑戦で出す問題の選び方、AsyncStorage への保存と読み出し（`storage.ts`）、`MistakesProvider` と `useMistakes()`（`provider.tsx`） |
 | `src/i18n/` | 言語の型と値の検査（`locale.ts`）、言語の保存と読み出し（`storage.ts`）、`I18nProvider` と `useI18n()`（`provider.tsx`）。文言のファイルは `src/i18n/messages/` に置く |
 | `src/components/` | 画面の部品と、画面で共有する色（`theme.ts`）。画面ごとのフォルダは作らず、ここに並べる |
 | `content/` | 観点シートと問題の JSON |

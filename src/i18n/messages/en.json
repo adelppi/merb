@@ -1,6 +1,7 @@
 {
   "Home": {
     "start": "Solve questions",
+    "mistakes": "Missed questions",
     "settings": "Settings"
   },
   "Settings": {
