@@ -76,18 +76,31 @@ export function countRows(
 }
 
 // 指より前にある札の数。入る位置の番号になる。
-// 上の行にある札と、同じ行で中心が指より左にある札を、前にある札とみなす。
+// y 座標が指に最も近い行を指のある行とし、それより上の行の札と、その行で中心が指より左にある札を、前にある札とみなす。
 // rects は、指を除いた回答エリアの札の位置と幅。finger は回答エリアの余白の内側での指の位置。
+// ownY は、ドラッグしている札がいる行の y 座標。回答エリアの外から運んできた札にはない。
 export function slotIndex(
   rects: { x: number; y: number; width: number }[],
   finger: Pos,
+  ownY?: number,
 ): number {
   "worklet";
+  let row = ownY;
+  for (const rect of rects) {
+    if (
+      row === undefined ||
+      Math.abs(rect.y + CARD_HEIGHT / 2 - finger.y) <
+        Math.abs(row + CARD_HEIGHT / 2 - finger.y)
+    ) {
+      row = rect.y;
+    }
+  }
   let count = 0;
   for (const rect of rects) {
-    if (rect.y + CARD_HEIGHT <= finger.y) {
-      count += 1;
-    } else if (finger.y >= rect.y && rect.x + rect.width / 2 < finger.x) {
+    if (
+      rect.y < (row as number) ||
+      (rect.y === row && rect.x + rect.width / 2 < finger.x)
+    ) {
       count += 1;
     }
   }
@@ -120,6 +133,7 @@ export function dragOrders(
       width: widths[index] ?? 0,
     })),
     finger,
+    orders[dragged] === -1 ? undefined : positions[dragged].y,
   );
   if (orders[dragged] === at) {
     return orders;

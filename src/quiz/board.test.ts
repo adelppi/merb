@@ -62,8 +62,29 @@ describe("slotIndex", () => {
     expect(slotIndex(wrapped, { x: 190, y: 20 })).toBe(2);
   });
 
-  it("札の下に指があると、末尾に入る", () => {
-    expect(slotIndex(rects, { x: 10, y: 90 })).toBe(2);
+  it("札の下に指があっても、x 座標で入る位置が決まる", () => {
+    expect(slotIndex(rects, { x: 10, y: 90 })).toBe(0);
+    expect(slotIndex(rects, { x: 80, y: 90 })).toBe(1);
+    expect(slotIndex(rects, { x: 190, y: 90 })).toBe(2);
+  });
+
+  it("札の上に指があっても、x 座標で入る位置が決まる", () => {
+    expect(slotIndex(rects, { x: 80, y: -10 })).toBe(1);
+    expect(slotIndex(rects, { x: 190, y: -10 })).toBe(2);
+  });
+
+  it("行の間に指があると、近い行で決まる", () => {
+    const wrapped = [
+      ...rects,
+      { x: 0, y: 104, width: 60 },
+      { x: 68, y: 104, width: 60 },
+    ];
+    expect(slotIndex(wrapped, { x: 80, y: 40 })).toBe(1);
+    expect(slotIndex(wrapped, { x: 80, y: 130 })).toBe(3);
+  });
+
+  it("ドラッグしている札だけの行に指があると、上の行の札をすべて数える", () => {
+    expect(slotIndex(rects, { x: 10, y: 70 }, 52)).toBe(2);
   });
 
   it("札が1枚もないと、先頭に入る", () => {
@@ -114,6 +135,38 @@ describe("dragOrders", () => {
     expect(dragOrders(orders, widths, contentWidth, 2, finger, false)).toBe(
       orders,
     );
+  });
+});
+
+describe("dragOrders の行の決め方", () => {
+  it("回答エリアの札の下で指を動かすと、x 座標で入る位置が変わる", () => {
+    const orders = [0, 1, -1];
+    const next = dragOrders(
+      orders,
+      [60, 60, 60],
+      300,
+      2,
+      { x: 10, y: 90 },
+      true,
+    );
+    expect(next).toEqual([1, 2, 0]);
+  });
+
+  it("札を押し出しても、指を動かさなければ並びが行き来しない", () => {
+    const widths = [100, 100, 100, 100];
+    const contentWidth = 320;
+    const finger = { x: 60, y: 70 };
+    const first = dragOrders(
+      [0, 1, 2, -1],
+      widths,
+      contentWidth,
+      3,
+      finger,
+      true,
+    );
+    const second = dragOrders(first, widths, contentWidth, 3, finger, true);
+    const third = dragOrders(second, widths, contentWidth, 3, finger, true);
+    expect(third).toEqual(second);
   });
 });
 
