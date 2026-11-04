@@ -1,8 +1,8 @@
 # 1問を解く出題の画面
 
 - 状態: 合意
-- Issue: #17、#19、#22、#23、#24、#35、#58、#59
-- 関係する決定: [D-0004](../decisions/D-0004-question-format.md)、[D-0007](../decisions/D-0007-quiz-screen.md)、[D-0009](../decisions/D-0009-card-font.md)、[D-0010](../decisions/D-0010-retry-without-button.md)、[D-0011](../decisions/D-0011-question-prompt.md)、[D-0012](../decisions/D-0012-native-app.md)、[D-0014](../decisions/D-0014-ios-expo-router.md)、[D-0016](../decisions/D-0016-math-and-drag-libs.md)、[D-0018](../decisions/D-0018-design-open-questions.md)、[D-0019](../decisions/D-0019-i18n-and-locale-storage.md)、[D-0020](../decisions/D-0020-category-navigation.md)、[D-0021](../decisions/D-0021-operation-test-tool.md)、[D-0025](../decisions/D-0025-wrong-cards-red.md)
+- Issue: #17、#19、#22、#23、#24、#35、#58、#59、#62
+- 関係する決定: [D-0004](../decisions/D-0004-question-format.md)、[D-0007](../decisions/D-0007-quiz-screen.md)、[D-0009](../decisions/D-0009-card-font.md)、[D-0010](../decisions/D-0010-retry-without-button.md)、[D-0011](../decisions/D-0011-question-prompt.md)、[D-0012](../decisions/D-0012-native-app.md)、[D-0014](../decisions/D-0014-ios-expo-router.md)、[D-0016](../decisions/D-0016-math-and-drag-libs.md)、[D-0018](../decisions/D-0018-design-open-questions.md)、[D-0019](../decisions/D-0019-i18n-and-locale-storage.md)、[D-0020](../decisions/D-0020-category-navigation.md)、[D-0021](../decisions/D-0021-operation-test-tool.md)、[D-0025](../decisions/D-0025-wrong-cards-red.md)、[D-0027](../decisions/D-0027-prominent-glass.md)
 - デザイン: [docs/design/](../design/README.md) の出題の4つの状態（2a 解答中、2b 不正解、2c 正解、2d 答えを見た後）
 
 ## 目的
@@ -33,7 +33,7 @@
    - ほかの札は、KaTeX の立体で出す。
    - 書体を変えても、判定と札の読み上げ用の名前は、札の文字列のままにする。
 9. 答えを見せるときの読み方（「ほかの読み方」と「答え」）は、札の書体にせず、画面の文言と同じ書体で出す。読み上げの言語は英語にする。
-10. 下のボタンは、「答え合わせ」と「次の問題」を藍の目立つボタンに、「答えを見る」を控えめなボタンにする。控えめなボタンは、iOS 26 以上では Liquid Glass、それより前の iOS では半透明の背景で出す（[D-0018](../decisions/D-0018-design-open-questions.md)）。アイコンを使うときは SF Symbols にする。
+10. 下のボタンは、「答え合わせ」と「次の問題」を藍の目立つボタンに、「答えを見る」を控えめなボタンにする。藍の目立つボタンは、iOS 26 以上では藍に色付けした Liquid Glass、それより前の iOS では藍の背景で出す（[D-0027](../decisions/D-0027-prominent-glass.md)）。控えめなボタンは、iOS 26 以上では Liquid Glass、それより前の iOS では半透明の背景で出す（[D-0018](../decisions/D-0018-design-open-questions.md)）。アイコンを使うときは SF Symbols にする。
 11. 背景の色と、藍、緑、赤の色は、デザインの値にそろえる（`src/components/theme.ts`）。
 
 ## 札を運ぶ
