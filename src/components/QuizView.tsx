@@ -71,7 +71,7 @@ export function QuizView({ state, dispatch, next }: Props) {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.content}>
+      <View style={[styles.content, { marginBottom: 16 + 52 + bottom }]}>
         <Text style={styles.prompt}>{state.question.prompt[locale]}</Text>
         <View style={styles.math}>
           <MathView latex={state.question.latex} color={colors.text} />
@@ -199,7 +199,8 @@ function Readings({ title, readings }: { title: string; readings: string[] }) {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.background },
-  content: { paddingHorizontal: 16 },
+  // 下のボタンの分を空ける。盤面は残りの高さに収まるよう札を縮める。
+  content: { flex: 1, paddingHorizontal: 16 },
   prompt: {
     paddingHorizontal: 4,
     paddingTop: 8,

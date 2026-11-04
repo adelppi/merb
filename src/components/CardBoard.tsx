@@ -4,10 +4,11 @@ import {
   type ReactNode,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
-import { type LayoutRectangle, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import {
   GestureDetector,
   useExclusiveGestures,
@@ -27,15 +28,14 @@ import Animated, {
 } from "react-native-reanimated";
 import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 import {
-  CARD_GAP,
+  AREA_PADDING,
   CARD_HEIGHT,
   dragOrders,
+  fitBoard,
   layoutAnswer,
-  maxRows,
   moveOf,
   type Orders,
   type Pos,
-  ROW_HEIGHT,
   toggleOrders,
   warmUpBoard,
 } from "../quiz/board";
@@ -56,9 +56,12 @@ export function cardFontFamily(text: string): string {
   return /^[A-Za-z]$/.test(text) ? "KaTeX_Math" : "KaTeX_Main";
 }
 
-// 回答エリアの余白と、動かし始める距離
-const AREA_PADDING = 12;
+// 動かし始める距離
 const DRAG_DISTANCE = 6;
+// 札の角丸、左右の余白、文字の大きさ。札を縮めるときは、割合を掛ける。
+const CARD_RADIUS = 12;
+const CARD_PADDING = 16;
+const CARD_FONT_SIZE = 18;
 // 札が位置を変える時間と、札の色が変わる時間
 const MOVE_DURATION = 160;
 const COLOR_DURATION = 100;
@@ -98,6 +101,8 @@ type Board = {
   layout: SharedValue<Pos[]>;
   // 回答エリアの余白の内側の幅
   contentWidth: SharedValue<number>;
+  // 札を縮める割合
+  scale: SharedValue<number>;
   // 札置き場の上端（盤面の中での位置）と、回答エリアの下端
   poolTop: SharedValue<number>;
   answerBottom: SharedValue<number>;
@@ -123,8 +128,9 @@ function useBoard(count: number): Board {
     Array.from({ length: count }, () => ({ x: 0, y: 0 })),
   );
   const contentWidth = useSharedValue(0);
+  const scale = useSharedValue(1);
   const layout = useDerivedValue(() =>
-    layoutAnswer(orders.value, widths.value, contentWidth.value),
+    layoutAnswer(orders.value, widths.value, contentWidth.value, scale.value),
   );
   // 共有値は作り直されないので、最初の入れ物を使い続ける。札の部品の memo が効くようにするため。
   return useRef({
@@ -133,6 +139,7 @@ function useBoard(count: number): Board {
     bank,
     layout,
     contentWidth,
+    scale,
     poolTop: useSharedValue(0),
     answerBottom: useSharedValue(0),
     active: useSharedValue(-1),
@@ -171,42 +178,40 @@ function Loaded({
 }: Props) {
   const board = useBoard(cards.length);
   const boardRef = useAnimatedRef<View>();
-  const [answerHeight, setAnswerHeight] = useState(
-    AREA_PADDING * 2 + ROW_HEIGHT * 2 - CARD_GAP,
-  );
-  const slots = useRef<LayoutRectangle[]>([]);
-  const measured = useRef(0);
-  const boardWidth = useRef(0);
+  // 縮める前の札の幅。見えない札で測る。
+  const [natural, setNatural] = useState<number[] | null>(null);
+  const measuring = useRef<number[]>([]);
+  // 盤面に使える幅と高さ
+  const [space, setSpace] = useState({ width: 0, height: 0 });
   const answerColor = placedGreen ? colors.green : colors.indigo;
   // 札の部品を再描画しないよう、commit は作り直さず、最新の値をここから読む。
   const latest = useRef({ cards, onPlace, onUnplace, onMove });
   latest.current = { cards, onPlace, onUnplace, onMove };
 
-  // 札置き場の枠の位置と幅から、札の幅と元の位置、回答エリアの高さを決める。
-  const measureSlots = useCallback(() => {
-    if (measured.current < cards.length || boardWidth.current === 0) {
+  const fit = useMemo(
+    () =>
+      natural === null || space.width === 0
+        ? null
+        : fitBoard(natural, space.width, space.height),
+    [natural, space],
+  );
+  const scale = fit?.scale ?? 1;
+
+  useEffect(() => {
+    if (fit === null) {
       return;
     }
-    const contentWidth = boardWidth.current - AREA_PADDING * 2;
-    board.widths.value = slots.current.map((rect) => rect.width);
-    board.bank.value = slots.current.map((rect) => ({ x: rect.x, y: rect.y }));
-    board.contentWidth.value = contentWidth;
-    const rows = Math.max(
-      2,
-      maxRows(
-        slots.current.map((rect) => rect.width),
-        contentWidth,
-      ),
-    );
-    const height = AREA_PADDING * 2 + rows * ROW_HEIGHT - CARD_GAP;
-    board.answerBottom.value = height;
-    setAnswerHeight(height);
+    board.scale.value = fit.scale;
+    board.widths.value = fit.widths;
+    board.bank.value = fit.bank;
+    board.contentWidth.value = fit.contentWidth;
+    board.answerBottom.value = fit.answerHeight;
     // 札が初めの位置へ飛んでくるように見えないよう、次の描画まで待ってから見せる。
     requestAnimationFrame(() => {
       board.ready.value = true;
     });
     scheduleOnUI(warmUpBoard, cards.length);
-  }, [board, cards.length]);
+  }, [board, fit, cards.length]);
 
   const commit = useCallback(
     (type: "place" | "unplace" | "move", index: number, at: number) => {
@@ -226,98 +231,121 @@ function Loaded({
     [],
   );
 
-  useEffect(() => {
-    measureSlots();
-  }, [measureSlots]);
-
   return (
     <View
-      ref={boardRef}
-      collapsable={false}
+      style={styles.space}
       onLayout={(event) => {
-        boardWidth.current = event.nativeEvent.layout.width;
-        measureSlots();
+        const { width, height } = event.nativeEvent.layout;
+        setSpace({ width, height });
       }}
     >
-      <View
-        accessibilityLabel={answerLabel}
-        style={[styles.answer, { height: answerHeight }]}
-      />
-      {between}
-      {movable ? (
+      <View ref={boardRef} collapsable={false}>
         <View
-          accessibilityLabel={poolLabel}
-          onLayout={(event) => {
-            board.poolTop.value = event.nativeEvent.layout.y;
-          }}
-          style={styles.pool}
+          pointerEvents="none"
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+          style={styles.measure}
         >
+          {natural === null
+            ? cards.map((card, index) => (
+                <MeasureCard
+                  key={card.id}
+                  card={card}
+                  onWidth={(width) => {
+                    measuring.current[index] = width;
+                    const widths = measuring.current;
+                    if (cards.every((_, i) => widths[i] !== undefined)) {
+                      setNatural(widths.slice());
+                    }
+                  }}
+                />
+              ))
+            : null}
+        </View>
+        <View
+          accessibilityLabel={answerLabel}
+          style={[styles.answer, { height: fit?.answerHeight ?? 0 }]}
+        />
+        {between}
+        {movable ? (
+          <View
+            accessibilityLabel={poolLabel}
+            onLayout={(event) => {
+              board.poolTop.value = event.nativeEvent.layout.y;
+            }}
+            style={[styles.pool, { height: fit?.poolHeight ?? 0 }]}
+          >
+            {fit?.bank.map((position, index) => (
+              <View
+                key={cards[index]?.id}
+                style={[
+                  styles.slot,
+                  {
+                    left: position.x,
+                    top: position.y,
+                    width: fit.widths[index],
+                    height: CARD_HEIGHT * scale,
+                    borderRadius: CARD_RADIUS * scale,
+                  },
+                ]}
+              />
+            ))}
+          </View>
+        ) : null}
+        <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
           {cards.map((card, index) => (
-            <Slot
+            <Marker key={card.id} index={index} board={board} scale={scale} />
+          ))}
+          {cards.map((card, index) => (
+            <Word
               key={card.id}
+              index={index}
               card={card}
-              onLayout={(rect) => {
-                if (!slots.current[index]) {
-                  measured.current += 1;
-                }
-                slots.current[index] = rect;
-                measureSlots();
-              }}
+              board={board}
+              scale={scale}
+              boardRef={boardRef}
+              movable={movable}
+              answerColor={
+                wrongIds.includes(card.id) ? colors.red : answerColor
+              }
+              testID={placedIds.includes(card.id) ? "answer-card" : "pool-card"}
+              onCommit={commit}
+            />
+          ))}
+          {cards.map((card, index) => (
+            <Ghost
+              key={card.id}
+              index={index}
+              card={card}
+              board={board}
+              scale={scale}
+              answerColor={
+                wrongIds.includes(card.id) ? colors.red : answerColor
+              }
             />
           ))}
         </View>
-      ) : null}
-      <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
-        {cards.map((card, index) => (
-          <Marker key={card.id} index={index} board={board} />
-        ))}
-        {cards.map((card, index) => (
-          <Word
-            key={card.id}
-            index={index}
-            card={card}
-            board={board}
-            boardRef={boardRef}
-            movable={movable}
-            answerColor={wrongIds.includes(card.id) ? colors.red : answerColor}
-            testID={placedIds.includes(card.id) ? "answer-card" : "pool-card"}
-            onCommit={commit}
-          />
-        ))}
-        {cards.map((card, index) => (
-          <Ghost
-            key={card.id}
-            index={index}
-            card={card}
-            board={board}
-            answerColor={wrongIds.includes(card.id) ? colors.red : answerColor}
-          />
-        ))}
       </View>
     </View>
   );
 }
 
-// 札置き場の、札ごとの元の位置に置く灰色の枠。札と同じ大きさになるよう、見えない文字を入れる。
-function Slot({
+// 札の縮める前の幅を測るための、見えない札。
+function MeasureCard({
   card,
-  onLayout,
+  onWidth,
 }: {
   card: Card;
-  onLayout: (rect: LayoutRectangle) => void;
+  onWidth: (width: number) => void;
 }) {
   return (
     <View
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants"
-      onLayout={(event) => onLayout(event.nativeEvent.layout)}
-      style={[styles.card, styles.slot]}
+      onLayout={(event) => onWidth(event.nativeEvent.layout.width)}
+      style={styles.measureCard}
     >
       <Text
-        style={[
-          styles.cardText,
-          { fontFamily: cardFontFamily(card.text), opacity: 0 },
-        ]}
+        numberOfLines={1}
+        style={[styles.cardText, { fontFamily: cardFontFamily(card.text) }]}
       >
         {card.text}
       </Text>
@@ -330,12 +358,14 @@ function Face({
   index,
   card,
   board,
+  scale,
   answerColor,
   lifted,
 }: {
   index: number;
   card: Card;
   board: Board;
+  scale: number;
   answerColor: string;
   lifted?: boolean;
 }) {
@@ -354,12 +384,26 @@ function Face({
   }));
   return (
     <Animated.View
-      style={[styles.card, styles.face, lifted && styles.lifted, style]}
+      style={[
+        styles.card,
+        {
+          height: CARD_HEIGHT * scale,
+          paddingHorizontal: CARD_PADDING * scale,
+          borderRadius: CARD_RADIUS * scale,
+        },
+        styles.face,
+        lifted && styles.lifted,
+        style,
+      ]}
     >
       <Animated.Text
+        numberOfLines={1}
+        ellipsizeMode="clip"
         style={[
-          styles.cardText,
-          { fontFamily: cardFontFamily(card.text) },
+          {
+            fontFamily: cardFontFamily(card.text),
+            fontSize: CARD_FONT_SIZE * scale,
+          },
           textStyle,
         ]}
       >
@@ -392,6 +436,7 @@ const Word = memo(function Word({
   index,
   card,
   board,
+  scale,
   boardRef,
   movable,
   answerColor,
@@ -401,6 +446,7 @@ const Word = memo(function Word({
   index: number;
   card: Card;
   board: Board;
+  scale: number;
   boardRef: AnimatedRef<View>;
   movable: boolean;
   answerColor: string;
@@ -498,6 +544,7 @@ const Word = memo(function Word({
         index,
         { x: fingerX - AREA_PADDING, y: fingerY - AREA_PADDING },
         fingerY < board.answerBottom.value,
+        board.scale.value,
       );
       if (after !== before) {
         board.orders.value = after;
@@ -546,12 +593,13 @@ const Word = memo(function Word({
         accessibilityRole="button"
         accessibilityLabel={card.text}
         onAccessibilityTap={() => scheduleOnUI(toggle)}
-        style={[styles.layer, style]}
+        style={[styles.layer, { height: CARD_HEIGHT * scale }, style]}
       >
         <Face
           index={index}
           card={card}
           board={board}
+          scale={scale}
           answerColor={answerColor}
         />
       </Animated.View>
@@ -564,11 +612,13 @@ const Ghost = memo(function Ghost({
   index,
   card,
   board,
+  scale,
   answerColor,
 }: {
   index: number;
   card: Card;
   board: Board;
+  scale: number;
   answerColor: string;
 }) {
   const style = useAnimatedStyle(() => ({
@@ -585,12 +635,13 @@ const Ghost = memo(function Ghost({
       pointerEvents="none"
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
-      style={[styles.layer, style]}
+      style={[styles.layer, { height: CARD_HEIGHT * scale }, style]}
     >
       <Face
         index={index}
         card={card}
         board={board}
+        scale={scale}
         answerColor={answerColor}
         lifted
       />
@@ -602,9 +653,11 @@ const Ghost = memo(function Ghost({
 const Marker = memo(function Marker({
   index,
   board,
+  scale,
 }: {
   index: number;
   board: Board;
+  scale: number;
 }) {
   const style = useAnimatedStyle(() => {
     const shown =
@@ -632,41 +685,41 @@ const Marker = memo(function Marker({
   return (
     <Animated.View
       pointerEvents="none"
-      style={[styles.layer, styles.marker, style]}
+      style={[
+        styles.layer,
+        styles.marker,
+        { height: CARD_HEIGHT * scale, borderRadius: CARD_RADIUS * scale },
+        style,
+      ]}
     />
   );
 });
 
 const styles = StyleSheet.create({
+  // 盤面に使える場所。問題文と数式の下から、下のボタンの上まで広がる。
+  space: { flex: 1 },
   answer: {
     borderRadius: 22,
     backgroundColor: colors.answerArea,
   },
   pool: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignContent: "flex-start",
-    minHeight: 60,
     marginTop: 16,
-    paddingLeft: 2,
   },
   // 盤面の上に絶対位置で置く札や枠。位置は transform で決める。
   layer: {
     position: "absolute",
     left: 0,
     top: 0,
-    height: CARD_HEIGHT,
   },
-  card: {
-    height: CARD_HEIGHT,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    justifyContent: "center",
+  measure: { position: "absolute", opacity: 0 },
+  measureCard: {
+    position: "absolute",
+    paddingHorizontal: CARD_PADDING,
   },
-  cardText: { fontSize: 18 },
+  card: { justifyContent: "center" },
+  cardText: { fontSize: CARD_FONT_SIZE },
   slot: {
-    marginRight: CARD_GAP,
-    marginBottom: CARD_GAP,
+    position: "absolute",
     backgroundColor: colors.separator,
   },
   face: {
@@ -679,7 +732,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
   },
   marker: {
-    borderRadius: 12,
     borderWidth: 2,
     borderStyle: "dashed",
     borderColor: colors.indigo,

@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
+  boardHeight,
   dragOrders,
+  fitBoard,
   layoutAnswer,
   maxRows,
   moveOf,
@@ -167,6 +169,58 @@ describe("dragOrders の行の決め方", () => {
     const second = dragOrders(first, widths, contentWidth, 3, finger, true);
     const third = dragOrders(second, widths, contentWidth, 3, finger, true);
     expect(third).toEqual(second);
+  });
+});
+
+describe("fitBoard", () => {
+  const few = [60, 60, 60, 60];
+  const many = Array.from({ length: 28 }, () => 80);
+
+  it("収まるときは縮めない", () => {
+    const fit = fitBoard(few, 361, 500);
+    expect(fit.scale).toBe(1);
+    expect(fit.widths).toEqual(few);
+  });
+
+  it("収まらないときは、収まるまで縮める", () => {
+    const fit = fitBoard(many, 361, 500);
+    expect(fit.scale).toBeLessThan(1);
+    expect(boardHeight(fit)).toBeLessThanOrEqual(500);
+  });
+
+  it("収まる中で、いちばん大きい割合を選ぶ", () => {
+    const fit = fitBoard(many, 361, 500);
+    const larger = fitBoard(many, 361, boardHeight(fit) - 1);
+    expect(larger.scale).toBeLessThan(fit.scale);
+  });
+
+  it("下限でも収まらないときは、下限の割合で返す", () => {
+    expect(fitBoard(many, 361, 100).scale).toBeCloseTo(0.6);
+  });
+
+  it("札置き場の札は、盤面の幅の中で折り返す", () => {
+    const fit = fitBoard(many, 361, 500);
+    fit.bank.forEach((pos, index) => {
+      expect(pos.x + fit.widths[index]).toBeLessThanOrEqual(361);
+    });
+    expect(fit.bank.at(-1)?.y).toBeGreaterThan(0);
+  });
+
+  it("札置き場の札の置き方は、回答エリアとは別に、順に並べる", () => {
+    const fit = fitBoard(few, 361, 500);
+    expect(fit.bank.map((pos) => pos.y)).toEqual([0, 0, 0, 0]);
+    expect(fit.bank[1].x).toBe(2 + 60 + 8);
+  });
+});
+
+describe("札を縮めたときの配置", () => {
+  it("行の高さと間隔も同じ割合で縮める", () => {
+    const positions = layoutAnswer([0, 1, 2], [100, 100, 100], 210, 0.5);
+    expect(positions).toEqual([
+      { x: 0, y: 0 },
+      { x: 104, y: 0 },
+      { x: 0, y: 26 },
+    ]);
   });
 });
 
