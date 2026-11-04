@@ -9,6 +9,7 @@ merb の開発で使うドキュメントの一覧と、それぞれの役割を
 | [vision.md](vision.md) | 誰のためのアプリか、責務、やること、やらないこと | 合意したうえで書き換える |
 | [workflow.md](workflow.md) | Issue から PR までの進め方と、仕様とコードをそろえる決まり | 合意したうえで書き換える |
 | [specs/](specs/README.md) | 機能ごとの仕様。コードはこの仕様に合わせる | 機能を変える PR で書き換える |
+| [release.md](release.md) | App Store への提出と、公開後の修正の手順 | 手順を変える PR で書き換える |
 | [open-questions.md](open-questions.md) | まだ決まっていない要件や疑問 | 追記し、解決したら状態を変える |
 | [design/](design/README.md) | Claude Design のデザインの参照資料と、仕様との差 | デザインを取り込むときに書き換える |
 | [decisions/](decisions/README.md) | 決めたことの理由、背景、ほかの選択肢、根拠 | 追記だけ。消さない |
