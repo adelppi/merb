@@ -1,10 +1,16 @@
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import {
+  backHeaderOptions,
+  iconHeaderItem,
+  largeTitleHeaderOptions,
+} from "../components/headerOptions";
 import { colors } from "../components/theme";
 import { I18nProvider, useI18n } from "../i18n/provider";
 
 function RootStack() {
   const { messages } = useI18n();
+  const router = useRouter();
   return (
     <Stack
       screenOptions={{
@@ -13,39 +19,30 @@ function RootStack() {
       }}
     >
       <Stack.Screen
-        name="settings"
+        name="index"
         options={{
-          headerShown: true,
-          title: messages.Settings.title,
-          headerLargeTitleEnabled: true,
-          headerTransparent: true,
-          headerBackButtonDisplayMode: "minimal",
-          headerShadowVisible: false,
-          headerLargeTitleShadowVisible: false,
+          ...largeTitleHeaderOptions("merb", "Times New Roman"),
+          // ホームは最初の画面なので、戻るボタンはない。
+          unstable_headerRightItems: () => [
+            iconHeaderItem({
+              symbol: "gearshape",
+              label: messages.Home.settings,
+              onPress: () => router.push("/settings"),
+            }),
+          ],
         }}
+      />
+      <Stack.Screen
+        name="settings"
+        options={largeTitleHeaderOptions(messages.Settings.title)}
       />
       <Stack.Screen
         name="categories"
-        options={{
-          headerShown: true,
-          title: messages.Categories.title,
-          headerLargeTitleEnabled: true,
-          headerTransparent: true,
-          headerBackButtonDisplayMode: "minimal",
-          headerShadowVisible: false,
-          headerLargeTitleShadowVisible: false,
-        }}
+        options={largeTitleHeaderOptions(messages.Categories.title)}
       />
       <Stack.Screen
         name="quiz"
-        options={{
-          headerShown: true,
-          title: "",
-          gestureEnabled: false,
-          headerBackButtonDisplayMode: "minimal",
-          headerShadowVisible: false,
-          headerStyle: { backgroundColor: colors.background },
-        }}
+        options={{ ...backHeaderOptions(), gestureEnabled: false }}
       />
     </Stack>
   );
