@@ -2,7 +2,7 @@
   "expo": {
     "name": "merb",
     "slug": "merb",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "scheme": "merb",
     "orientation": "portrait",
     "platforms": ["ios"],
@@ -10,7 +10,10 @@
     "ios": {
       "icon": "./assets/merb.icon",
       "supportsTablet": false,
-      "bundleIdentifier": "com.adelppi.merb"
+      "bundleIdentifier": "com.adelppi.merb",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "plugins": [
       "expo-router",
@@ -28,6 +31,12 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7e8fc0d8-815b-44db-a387-defcdbc3ce89"
+      }
+    },
+    "owner": "adelppi"
   }
 }
