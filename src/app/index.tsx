@@ -1,28 +1,20 @@
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SymbolView } from "expo-symbols";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { GlassCircleButton } from "../components/GlassCircleButton";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { colors } from "../components/theme";
 import { useI18n } from "../i18n/provider";
 
-// ホーム。右上の歯車で設定、下の「問題を解く」で分類を選ぶ画面へ移る。
+// ホーム。大見出しと右上の歯車は、_layout.tsx のヘッダーで出す。下の「問題を解く」で分類を選ぶ画面へ移る。
 export default function Home() {
   const { messages } = useI18n();
   const router = useRouter();
   return (
-    <SafeAreaView style={styles.screen}>
-      <View style={styles.top}>
-        <GlassCircleButton
-          symbol="gearshape"
-          label={messages.Home.settings}
-          onPress={() => router.push("/settings")}
-        />
-      </View>
-      <Text accessibilityRole="header" style={styles.title}>
-        merb
-      </Text>
+    <View style={styles.screen}>
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={styles.scroll}
+      />
       <View style={styles.bottom}>
         <Pressable
           accessibilityRole="button"
@@ -39,28 +31,13 @@ export default function Home() {
         </Pressable>
       </View>
       <StatusBar style="auto" />
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.background },
-  top: {
-    height: 44,
-    paddingHorizontal: 16,
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
-  title: {
-    paddingHorizontal: 20,
-    paddingTop: 4,
-    fontFamily: "Times New Roman",
-    fontSize: 34,
-    fontWeight: "700",
-    lineHeight: 41,
-    color: colors.text,
-  },
+  scroll: { flex: 1 },
   bottom: {
     position: "absolute",
     left: 0,

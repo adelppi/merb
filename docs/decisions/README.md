@@ -42,3 +42,4 @@
 | [D-0021](D-0021-operation-test-tool.md) | 操作テストは Maestro で手元から実行し、画面の判断は純粋な関数にして Vitest で確かめる | 2026-11-03 |
 | [D-0022](D-0022-drag-with-gesture-handler-v3.md) | 札のタップとドラッグは Gesture Handler 3 の hooks で組み、出題の画面のスクロールも Gesture Handler の ScrollView にする | 2026-11-03 |
 | [D-0023](D-0023-drag-rework.md) | 札の位置を UI スレッドで決める作りに組み直し、動かし始めの判定を長押しから移動量に変える | 2026-11-03 |
+| [D-0024](D-0024-native-header-home.md) | ホームも Stack のネイティブヘッダーで見出しとボタンを出し、ヘッダーの設定を1か所にまとめる | 2026-11-04 |
