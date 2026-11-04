@@ -1,6 +1,5 @@
 {
   "Home": {
-    "start": "Solve questions",
     "mistakes": "Missed questions",
     "settings": "Settings"
   },
@@ -12,7 +11,8 @@
   "Categories": {
     "title": "Choose categories",
     "start": "Start with selected",
-    "all": "From all categories",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All",
     "back": "Back to top"
   },
   "CategoryNames": {

@@ -34,6 +34,25 @@ export function toggleCategory(
   );
 }
 
+// 問題がある分類をすべて選んでいるか。
+export function isAllSelected(
+  selected: readonly CategoryId[],
+  available: readonly CategoryId[],
+): boolean {
+  return available.length > 0 && available.every((id) => selected.includes(id));
+}
+
+// 「すべて選択」と「すべて解除」のボタンを押したときの、選んだ分類を返す。
+export function toggleAllCategories(
+  selected: readonly CategoryId[],
+  available: readonly CategoryId[],
+): CategoryId[] {
+  if (isAllSelected(selected, available)) {
+    return [];
+  }
+  return categoryIds.filter((id) => available.includes(id));
+}
+
 // 「選んだ分類で始める」を押せるか。分類を1つ以上選んでいるときだけ押せる。
 export function canStart(selected: readonly CategoryId[]): boolean {
   return selected.length > 0;

@@ -9,7 +9,7 @@ type Props = {
   // prominent は藍に色付けしたガラス（iOS 26 より前は藍）のボタン、glass は控えめなガラス（iOS 26 より前は半透明）のボタン。
   variant: "prominent" | "glass";
   // 文字の左に出す SF Symbols の名前
-  symbol?: Extract<SymbolViewProps["name"], string>;
+  symbol: Extract<SymbolViewProps["name"], string>;
   height?: number;
   disabled?: boolean;
   onPress: () => void;
@@ -26,16 +26,18 @@ export function PillButton({
 }: Props) {
   const prominent = variant === "prominent";
   const pill = [styles.pill, { height, borderRadius: height / 2 }];
+  let symbolColor: string = prominent ? "#ffffff" : colors.indigo;
+  if (disabled) {
+    symbolColor = colors.disabledText;
+  }
   const text = (
     <>
-      {symbol ? (
-        <SymbolView
-          name={symbol}
-          size={16}
-          tintColor="#ffffff"
-          weight="semibold"
-        />
-      ) : null}
+      <SymbolView
+        name={symbol}
+        size={16}
+        tintColor={symbolColor}
+        weight="semibold"
+      />
       <Text
         style={[
           styles.label,

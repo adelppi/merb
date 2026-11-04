@@ -8,6 +8,7 @@ import {
 import { colors } from "../components/theme";
 import { I18nProvider, useI18n } from "../i18n/provider";
 import { MistakesProvider } from "../mistakes/provider";
+import { SelectionProvider } from "../quiz/selection-provider";
 
 function RootStack() {
   const { messages } = useI18n();
@@ -38,10 +39,6 @@ function RootStack() {
         options={largeTitleHeaderOptions(messages.Settings.title)}
       />
       <Stack.Screen
-        name="categories"
-        options={largeTitleHeaderOptions(messages.Categories.title)}
-      />
-      <Stack.Screen
         name="quiz"
         options={{ ...backHeaderOptions(), gestureEnabled: false }}
       />
@@ -54,7 +51,9 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <I18nProvider>
         <MistakesProvider>
-          <RootStack />
+          <SelectionProvider>
+            <RootStack />
+          </SelectionProvider>
         </MistakesProvider>
       </I18nProvider>
     </GestureHandlerRootView>

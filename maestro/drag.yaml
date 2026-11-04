@@ -8,7 +8,7 @@ appId: host.exp.Exponent
 - launchApp
 - openLink: exp://127.0.0.1:8099
 - extendedWaitUntil:
-    visible: "merb"
+    visible: "選んだ分類で始める"
     timeout: 90000
 - openLink: exp://127.0.0.1:8099/--/quiz?categories=numbers&question=numbers-001
 - extendedWaitUntil:
