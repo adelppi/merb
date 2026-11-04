@@ -1,8 +1,7 @@
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { SymbolView } from "expo-symbols";
 import { useMemo } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { PillButton } from "../components/PillButton";
 import { colors } from "../components/theme";
 import { useI18n } from "../i18n/provider";
@@ -26,19 +25,13 @@ export default function Home() {
         style={styles.scroll}
       />
       <View style={styles.bottom}>
-        <Pressable
-          accessibilityRole="button"
+        <PillButton
+          label={messages.Home.start}
+          variant="prominent"
+          symbol="play.fill"
+          height={56}
           onPress={() => router.push("/categories")}
-          style={({ pressed }) => [styles.start, pressed && styles.pressed]}
-        >
-          <SymbolView
-            name="play.fill"
-            size={16}
-            tintColor="#ffffff"
-            weight="semibold"
-          />
-          <Text style={styles.startLabel}>{messages.Home.start}</Text>
-        </Pressable>
+        />
         <PillButton
           label={messages.Home.mistakes}
           variant="glass"
@@ -63,15 +56,4 @@ const styles = StyleSheet.create({
     paddingBottom: 34,
     gap: 12,
   },
-  start: {
-    height: 56,
-    borderRadius: 28,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    backgroundColor: colors.indigo,
-  },
-  pressed: { opacity: 0.8 },
-  startLabel: { fontSize: 17, fontWeight: "600", color: "#ffffff" },
 });
