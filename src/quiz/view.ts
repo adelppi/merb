@@ -1,3 +1,4 @@
+import { wrongPositions } from "../questions/cards";
 import { canMoveCards, canReveal, type QuizState } from "./reducer";
 
 // 出題の画面の4つの状態（docs/specs/quiz.md の「画面」の節）で、何を出すか。
@@ -15,6 +16,8 @@ export type QuizView = {
   showNext: boolean;
   // 回答エリアの札を緑で出すか。ほかの状態は、不正解のときも藍で出す。
   placedGreen: boolean;
+  // 赤で出す回答エリアの札の id。不正解の表示が出ているあいだだけ入る。
+  wrongIds: number[];
 };
 
 export function quizView(state: QuizState): QuizView {
@@ -28,5 +31,17 @@ export function quizView(state: QuizState): QuizView {
     showReveal: canReveal(state),
     showNext: !movable,
     placedGreen: state.phase === "correct",
+    wrongIds: wrongIds(state),
   };
+}
+
+// 不正解の表示が出ているあいだ、間違った札の id を返す。
+function wrongIds(state: QuizState): number[] {
+  if (state.phase !== "incorrect") {
+    return [];
+  }
+  const texts = state.placed.map(
+    (id) => state.cards.find((card) => card.id === id)?.text ?? "",
+  );
+  return wrongPositions(texts, state.question).map((i) => state.placed[i]);
 }

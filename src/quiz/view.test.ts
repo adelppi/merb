@@ -38,10 +38,11 @@ describe("quizView", () => {
       showReveal: false,
       showNext: false,
       placedGreen: false,
+      wrongIds: [],
     });
   });
 
-  it("不正解のとき（2b）は、「不正解」、札置き場、「答えを見る」、「答え合わせ」を出し、札は藍のままにする", () => {
+  it("不正解のとき（2b）は、「不正解」、札置き場、「答えを見る」、「答え合わせ」を出し、間違った札だけ赤にする", () => {
     const state = run({ type: "place", id: 2 }, { type: "check" });
     expect(quizView(state)).toEqual({
       showPool: true,
@@ -52,6 +53,7 @@ describe("quizView", () => {
       showReveal: true,
       showNext: false,
       placedGreen: false,
+      wrongIds: [2],
     });
   });
 
@@ -82,6 +84,7 @@ describe("quizView", () => {
       showReveal: false,
       showNext: true,
       placedGreen: true,
+      wrongIds: [],
     });
   });
 
@@ -100,6 +103,7 @@ describe("quizView", () => {
       showReveal: false,
       showNext: true,
       placedGreen: false,
+      wrongIds: [],
     });
   });
 });

@@ -28,6 +28,31 @@ export function judge(placed: readonly string[], question: Question): boolean {
   );
 }
 
+// 不正解のとき、回答エリアの間違った札の位置（0 始まり）を返す。
+// 位置ごとの違いが最も少ない読み方（同じなら answers の先のもの）と比べる。
+// docs/specs/question-format.md の「間違った札」の節に当たる。
+export function wrongPositions(
+  placed: readonly string[],
+  question: Question,
+): number[] {
+  let best: readonly string[] | null = null;
+  let bestDiff = Number.POSITIVE_INFINITY;
+  for (const { cards } of question.answers) {
+    let diff = Math.abs(placed.length - cards.length);
+    for (let i = 0; i < Math.min(placed.length, cards.length); i++) {
+      if (placed[i] !== cards[i]) {
+        diff++;
+      }
+    }
+    if (diff < bestDiff) {
+      bestDiff = diff;
+      best = cards;
+    }
+  }
+  const reading = best ?? [];
+  return placed.flatMap((card, i) => (card === reading[i] ? [] : [i]));
+}
+
 // 札の文字列ごとの枚数を数える。
 export function countCards(cards: readonly string[]): Map<string, number> {
   const counts = new Map<string, number>();

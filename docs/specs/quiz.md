@@ -1,8 +1,8 @@
 # 1問を解く出題の画面
 
 - 状態: 合意
-- Issue: #17、#19、#22、#23、#24、#35
-- 関係する決定: [D-0004](../decisions/D-0004-question-format.md)、[D-0007](../decisions/D-0007-quiz-screen.md)、[D-0009](../decisions/D-0009-card-font.md)、[D-0010](../decisions/D-0010-retry-without-button.md)、[D-0011](../decisions/D-0011-question-prompt.md)、[D-0012](../decisions/D-0012-native-app.md)、[D-0014](../decisions/D-0014-ios-expo-router.md)、[D-0016](../decisions/D-0016-math-and-drag-libs.md)、[D-0018](../decisions/D-0018-design-open-questions.md)、[D-0019](../decisions/D-0019-i18n-and-locale-storage.md)、[D-0020](../decisions/D-0020-category-navigation.md)、[D-0021](../decisions/D-0021-operation-test-tool.md)
+- Issue: #17、#19、#22、#23、#24、#35、#58
+- 関係する決定: [D-0004](../decisions/D-0004-question-format.md)、[D-0007](../decisions/D-0007-quiz-screen.md)、[D-0009](../decisions/D-0009-card-font.md)、[D-0010](../decisions/D-0010-retry-without-button.md)、[D-0011](../decisions/D-0011-question-prompt.md)、[D-0012](../decisions/D-0012-native-app.md)、[D-0014](../decisions/D-0014-ios-expo-router.md)、[D-0016](../decisions/D-0016-math-and-drag-libs.md)、[D-0018](../decisions/D-0018-design-open-questions.md)、[D-0019](../decisions/D-0019-i18n-and-locale-storage.md)、[D-0020](../decisions/D-0020-category-navigation.md)、[D-0021](../decisions/D-0021-operation-test-tool.md)、[D-0025](../decisions/D-0025-wrong-cards-red.md)
 - デザイン: [docs/design/](../design/README.md) の出題の4つの状態（2a 解答中、2b 不正解、2c 正解、2d 答えを見た後）
 
 ## 目的
@@ -27,7 +27,7 @@
 4. 数式は KaTeX で描き、中央に大きく出す（[D-0016](../decisions/D-0016-math-and-drag-libs.md)）。設定は、問題の JSON の検査と同じにする（[問題の JSON の形](question-format.md)の「検査」の節）。
 5. 回答エリアは、薄い藍の角丸（22）の枠で、最小の高さを 116 にする。札は左上から並べ、折り返す。札の間隔は 8、枠の内側の余白は 12 にする。
 6. 札置き場には、[出す札](question-format.md#出す札)の決まりで出した札を、混ぜて並べる。問題を出すたびに混ぜ直す。枠は付けない。札が1枚もなくても、札を戻せるだけの高さを残す。
-7. 札は、高さ 44、角丸 12、左右の余白 16 にする。札置き場の札は白い背景に薄い影、回答エリアの札は藍の背景に白い文字にする。正解のときだけ、回答エリアの札を緑の背景にする。不正解のときも、回答エリアの札は藍のままで、位置ごとに緑と赤で分けない（[D-0018](../decisions/D-0018-design-open-questions.md)）。
+7. 札は、高さ 44、角丸 12、左右の余白 16 にする。札置き場の札は白い背景に薄い影、回答エリアの札は藍の背景に白い文字にする。正解のときだけ、回答エリアの札を緑の背景にする。不正解のときは、間違った札だけを赤の背景にし、ほかの札は藍のままにする（[D-0025](../decisions/D-0025-wrong-cards-red.md)）。
 8. 札の文字は、数式と同じ KaTeX の書体で出す。回答エリア、札置き場、ドラッグ中の札で同じ書体にする。
    - 札の文字列が英字1文字（`A`〜`Z`、`a`〜`z`）のときは、数式の中の文字と同じ斜体で出す。英単語の `a`（`a half` の `a` など）も、英字1文字なので斜体で出す。
    - ほかの札は、KaTeX の立体で出す。
@@ -73,9 +73,9 @@
 
 ### 間違えたとき（2b）
 
-1. 「不正解」と、赤の印を出す。回答エリアの札は、並べたまま、藍で見せる。札置き場も出す。
+1. 「不正解」と、赤の印を出す。回答エリアの札は並べたまま見せ、[間違った札](question-format.md#間違った札)だけを赤にする。札置き場も出す。
 2. 「答えを見る」と「答え合わせ」のボタンを出す。「次の問題」のボタンは出さない。
-3. ボタンを押さずに、そのまま札を運べる（「札を運ぶ」の節）。札を運んで回答エリアの並びが変わったら、「不正解」の表示を消す。「答えを見る」のボタンは、次の問題を出すまで出したままにする。
+3. ボタンを押さずに、そのまま札を運べる（「札を運ぶ」の節）。札を運んで回答エリアの並びが変わったら、「不正解」の表示と札の赤を消す。「答えを見る」のボタンは、次の問題を出すまで出したままにする。
 4. 札を並べ直してから、または並べ直さずに、もう一度「答え合わせ」を押せる。判定は「答え合わせ」の節の1と2のとおりにし、正解なら「正解したとき」のとおりにする。
 5. 続けて不正解になったときも、答え合わせのたびに「不正解」を出し直す。出し直すときは、「不正解」を 0.3 秒ほど左右に小さく揺らす。iOS の「視差効果を減らす」（動きを減らす設定）を有効にしているときは、揺らさずに、0.3 秒ほどかけて薄い色から元の色に戻して出す。
 6. 間違えた回数は数えず、見せない。
@@ -108,6 +108,7 @@
 - [x] 札を並べて答え合わせをすると、正解なら「正解」と、ほかの読み方と、「次の問題」が出て、札置き場は出ない（Vitest: `quizView`。Maestro: `correct`）
 - [x] 間違えて答え合わせをすると、「不正解」と、「答え合わせ」と「答えを見る」のボタンが出て、「次の問題」のボタンは出ない（Vitest: `quizView`。Maestro: `incorrect`）
 - [x] 間違えたあと、ボタンを押さずに札を運び、もう一度答え合わせができる（Vitest: reducer。Maestro: `incorrect`）
+- [x] 不正解のとき、間違った札だけが赤になり、ほかの札は藍のままになる（Vitest: 間違った位置を返す関数と `quizView`。画面で確かめる）
 - [x] 間違えたあとに札を運んで並びが変わると、「不正解」の表示が消え、「答えを見る」のボタンは残る（Vitest: `quizView`。Maestro: `incorrect`）
 - [x] 続けて不正解になると、答え合わせのたびに「不正解」を出し直す（Vitest: reducer の答え合わせの回数。Maestro: `incorrect`。揺れの動きは目で確かめる）
 - [x] 「答えを見る」で、すべての読み方が出て、「不正解」と札置き場は出ない（Vitest: `quizView`。Maestro: `reveal`）
