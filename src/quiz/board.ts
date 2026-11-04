@@ -5,6 +5,17 @@
 export const CARD_HEIGHT = 44;
 export const CARD_GAP = 8;
 export const ROW_HEIGHT = CARD_HEIGHT + CARD_GAP;
+// 回答エリアの余白
+export const AREA_PADDING = 12;
+// 札置き場の左の余白と、回答エリアとの間隔、札がないときの高さ
+const POOL_INSET = 2;
+const POOL_GAP = 16;
+const POOL_MIN_HEIGHT = 60;
+// 回答エリアと札置き場のあいだの「不正解」の高さ
+const STATUS_HEIGHT = 36;
+// 札を縮める割合の刻みと下限
+const SCALE_STEP = 0.05;
+const MIN_SCALE = 0.6;
 
 export type Pos = { x: number; y: number };
 
@@ -38,10 +49,12 @@ export function ordersFromList(count: number, list: number[]): Orders {
 
 // 回答エリアに並んだ札の位置（回答エリアの余白の内側での、札の左上）を求める。
 // 左から右へ並べ、札が収まらなくなったら次の行へ折り返す。並んでいない札の位置は {0, 0}。
+// scale は札を縮める割合で、widths はこの割合で縮めたあとの幅。
 export function layoutAnswer(
   orders: Orders,
   widths: number[],
   contentWidth: number,
+  scale = 1,
 ): Pos[] {
   "worklet";
   const positions: Pos[] = orders.map(() => ({ x: 0, y: 0 }));
@@ -53,8 +66,8 @@ export function layoutAnswer(
       row += 1;
       x = 0;
     }
-    positions[index] = { x, y: row * ROW_HEIGHT };
-    x += width + CARD_GAP;
+    positions[index] = { x, y: row * ROW_HEIGHT * scale };
+    x += width + CARD_GAP * scale;
   }
   return positions;
 }
@@ -64,13 +77,17 @@ export function countRows(
   order: number[],
   widths: number[],
   contentWidth: number,
+  scale = 1,
 ): number {
   "worklet";
   const orders = ordersFromList(widths.length, order);
-  const positions = layoutAnswer(orders, widths, contentWidth);
+  const positions = layoutAnswer(orders, widths, contentWidth, scale);
   let rows = 0;
   for (const index of order) {
-    rows = Math.max(rows, positions[index].y / ROW_HEIGHT + 1);
+    rows = Math.max(
+      rows,
+      Math.round(positions[index].y / (ROW_HEIGHT * scale)) + 1,
+    );
   }
   return rows;
 }
@@ -83,14 +100,15 @@ export function slotIndex(
   rects: { x: number; y: number; width: number }[],
   finger: Pos,
   ownY?: number,
+  scale = 1,
 ): number {
   "worklet";
+  const center = (CARD_HEIGHT * scale) / 2;
   let row = ownY;
   for (const rect of rects) {
     if (
       row === undefined ||
-      Math.abs(rect.y + CARD_HEIGHT / 2 - finger.y) <
-        Math.abs(row + CARD_HEIGHT / 2 - finger.y)
+      Math.abs(rect.y + center - finger.y) < Math.abs(row + center - finger.y)
     ) {
       row = rect.y;
     }
@@ -117,6 +135,7 @@ export function dragOrders(
   dragged: number,
   finger: Pos,
   overAnswer: boolean,
+  scale = 1,
 ): Orders {
   "worklet";
   const others = placedList(orders).filter((index) => index !== dragged);
@@ -125,7 +144,7 @@ export function dragOrders(
       ? orders
       : ordersFromList(orders.length, others);
   }
-  const positions = layoutAnswer(orders, widths, contentWidth);
+  const positions = layoutAnswer(orders, widths, contentWidth, scale);
   const at = slotIndex(
     others.map((index) => ({
       x: positions[index].x,
@@ -134,6 +153,7 @@ export function dragOrders(
     })),
     finger,
     orders[dragged] === -1 ? undefined : positions[dragged].y,
+    scale,
   );
   if (orders[dragged] === at) {
     return orders;
@@ -181,16 +201,85 @@ export function moveOf(
 
 // 回答エリアに札をすべて並べたときの、行の数の見積もり。
 // 並べ方によって行の数が変わるので、札置き場の順、幅の広い順、幅の狭い順のうち、いちばん多いものを使う。
-export function maxRows(widths: number[], contentWidth: number): number {
+export function maxRows(
+  widths: number[],
+  contentWidth: number,
+  scale = 1,
+): number {
   "worklet";
   const byIndex = widths.map((_, index) => index);
   const wide = byIndex.slice().sort((a, b) => widths[b] - widths[a]);
   const narrow = byIndex.slice().sort((a, b) => widths[a] - widths[b]);
   return Math.max(
-    countRows(byIndex, widths, contentWidth),
-    countRows(wide, widths, contentWidth),
-    countRows(narrow, widths, contentWidth),
+    countRows(byIndex, widths, contentWidth, scale),
+    countRows(wide, widths, contentWidth, scale),
+    countRows(narrow, widths, contentWidth, scale),
   );
+}
+
+// 札の大きさと盤面の配置。
+export type BoardFit = {
+  // 札を縮める割合
+  scale: number;
+  // 縮めたあとの札の幅
+  widths: number[];
+  // 札置き場の中での、札の元の位置（左上）
+  bank: Pos[];
+  // 回答エリアの余白の内側の幅と、回答エリアの高さ、札置き場の高さ
+  contentWidth: number;
+  answerHeight: number;
+  poolHeight: number;
+};
+
+function boardAt(
+  natural: number[],
+  boardWidth: number,
+  scale: number,
+): BoardFit {
+  const widths = natural.map((width) => Math.ceil(width * scale));
+  const contentWidth = boardWidth - AREA_PADDING * 2;
+  const rowHeight = ROW_HEIGHT * scale;
+  const gap = CARD_GAP * scale;
+  const rows = Math.max(2, maxRows(widths, contentWidth, scale));
+  const order = widths.map((_, index) => index);
+  const poolRows = countRows(order, widths, boardWidth - POOL_INSET, scale);
+  const positions = layoutAnswer(
+    ordersFromList(widths.length, order),
+    widths,
+    boardWidth - POOL_INSET,
+    scale,
+  );
+  return {
+    scale,
+    widths,
+    bank: positions.map((pos) => ({ x: pos.x + POOL_INSET, y: pos.y })),
+    contentWidth,
+    answerHeight: AREA_PADDING * 2 + rows * rowHeight - gap,
+    poolHeight: Math.max(POOL_MIN_HEIGHT, poolRows * rowHeight - gap),
+  };
+}
+
+// 盤面の高さ。「不正解」を出す分も入れる。
+export function boardHeight(fit: BoardFit): number {
+  return fit.answerHeight + STATUS_HEIGHT + POOL_GAP + fit.poolHeight;
+}
+
+// 高さ availableHeight に収まる、いちばん大きい札の大きさを選ぶ。下限でも収まらなければ、下限で返す。
+// natural は、縮める前の札の幅。
+export function fitBoard(
+  natural: number[],
+  boardWidth: number,
+  availableHeight: number,
+): BoardFit {
+  let fit = boardAt(natural, boardWidth, 1);
+  const steps = Math.round((1 - MIN_SCALE) / SCALE_STEP);
+  for (let step = 1; step <= steps; step++) {
+    if (boardHeight(fit) <= availableHeight) {
+      break;
+    }
+    fit = boardAt(natural, boardWidth, 1 - step * SCALE_STEP);
+  }
+  return fit;
 }
 
 // UI スレッドで、札を運ぶ計算を1回ずつ実行する。結果は使わない。

@@ -1,8 +1,8 @@
 # 1問を解く出題の画面
 
 - 状態: 合意
-- Issue: #17、#19、#22、#23、#24、#35、#58、#59、#62、#63、#64
-- 関係する決定: [D-0004](../decisions/D-0004-question-format.md)、[D-0007](../decisions/D-0007-quiz-screen.md)、[D-0009](../decisions/D-0009-card-font.md)、[D-0010](../decisions/D-0010-retry-without-button.md)、[D-0011](../decisions/D-0011-question-prompt.md)、[D-0012](../decisions/D-0012-native-app.md)、[D-0014](../decisions/D-0014-ios-expo-router.md)、[D-0016](../decisions/D-0016-math-and-drag-libs.md)、[D-0018](../decisions/D-0018-design-open-questions.md)、[D-0019](../decisions/D-0019-i18n-and-locale-storage.md)、[D-0020](../decisions/D-0020-category-navigation.md)、[D-0021](../decisions/D-0021-operation-test-tool.md)、[D-0025](../decisions/D-0025-wrong-cards-red.md)、[D-0027](../decisions/D-0027-prominent-glass.md)、[D-0028](../decisions/D-0028-drop-row.md)
+- Issue: #17、#19、#22、#23、#24、#35、#58、#59、#62、#63、#64、#65
+- 関係する決定: [D-0004](../decisions/D-0004-question-format.md)、[D-0007](../decisions/D-0007-quiz-screen.md)、[D-0009](../decisions/D-0009-card-font.md)、[D-0010](../decisions/D-0010-retry-without-button.md)、[D-0011](../decisions/D-0011-question-prompt.md)、[D-0012](../decisions/D-0012-native-app.md)、[D-0014](../decisions/D-0014-ios-expo-router.md)、[D-0016](../decisions/D-0016-math-and-drag-libs.md)、[D-0018](../decisions/D-0018-design-open-questions.md)、[D-0019](../decisions/D-0019-i18n-and-locale-storage.md)、[D-0020](../decisions/D-0020-category-navigation.md)、[D-0021](../decisions/D-0021-operation-test-tool.md)、[D-0025](../decisions/D-0025-wrong-cards-red.md)、[D-0027](../decisions/D-0027-prominent-glass.md)、[D-0028](../decisions/D-0028-drop-row.md)、[D-0029](../decisions/D-0029-fit-cards.md)
 - デザイン: [docs/design/](../design/README.md) の出題の4つの状態（2a 解答中、2b 不正解、2c 正解、2d 答えを見た後）
 
 ## 目的
@@ -27,7 +27,7 @@
 4. 数式は KaTeX で描き、中央に大きく出す（[D-0016](../decisions/D-0016-math-and-drag-libs.md)）。設定は、問題の JSON の検査と同じにする（[問題の JSON の形](question-format.md)の「検査」の節）。
 5. 回答エリアは、薄い藍の角丸（22）の枠で、最小の高さを 116 にする。札は左上から並べ、折り返す。札の間隔は 8、枠の内側の余白は 12 にする。
 6. 札置き場には、[出す札](question-format.md#出す札)の決まりで出した札を、混ぜて並べる。問題を出すたびに混ぜ直す。枠は付けない。札が1枚もなくても、札を戻せるだけの高さを残す。
-7. 札は、高さ 44、角丸 12、左右の余白 16 にする。札置き場の札は白い背景に薄い影、回答エリアの札は藍の背景に白い文字にする。正解のときだけ、回答エリアの札を緑の背景にする。不正解のときは、間違った札だけを赤の背景にし、ほかの札は藍のままにする（[D-0025](../decisions/D-0025-wrong-cards-red.md)）。
+7. 札は、高さ 44、角丸 12、左右の余白 16、文字の大きさ 18 にする。「札を運ぶ」の節の盤面の大きさの決まりで縮めるときは、これらと札の間隔を同じ割合で小さくする。札置き場の札は白い背景に薄い影、回答エリアの札は藍の背景に白い文字にする。正解のときだけ、回答エリアの札を緑の背景にする。不正解のときは、間違った札だけを赤の背景にし、ほかの札は藍のままにする（[D-0025](../decisions/D-0025-wrong-cards-red.md)）。
 8. 札の文字は、数式と同じ KaTeX の書体で出す。回答エリア、札置き場、ドラッグ中の札で同じ書体にする。
    - 札の文字列が英字1文字（`A`〜`Z`、`a`〜`z`）のときは、数式の中の文字と同じ斜体で出す。英単語の `a`（`a half` の `a` など）も、英字1文字なので斜体で出す。
    - ほかの札は、KaTeX の立体で出す。
@@ -52,7 +52,8 @@
 10. 札置き場には、札ごとの元の位置に、灰色の枠を置く。札が回答エリアにある間も、枠は元の位置に残る。札置き場の札の並びと位置は、問題を出したときから変わらない。
 11. 札が位置を変えるアニメーションは 0.16 秒、札の色が変わるアニメーションは 0.1 秒にする。
 12. 回答エリアは、札をすべて並べても収まる高さに固定する。札の数や並べ方が変わっても、高さは変わらない。
-13. この画面は、スクロールできない。
+13. 回答エリア、「不正解」の表示、札置き場が、画面の下のボタンより上に収まらないときは、収まるまで札を縮める（[D-0029](../decisions/D-0029-fit-cards.md)）。割合は 1 から 0.05 ずつ下げ、0.6 を下限にする。下限でも収まらないときは、0.6 で出す。
+14. この画面は、スクロールできない。
 
 ## 答え合わせ
 
@@ -106,6 +107,7 @@
 - [x] 札置き場の札をタップすると回答エリアの末尾へ、回答エリアの札をタップすると札置き場の元の位置へ動く（Vitest: reducer。Maestro: `incorrect`）
 - [x] 札置き場の札と回答エリアの札を、ドラッグで運べる（Vitest: `resolveDrop`。Maestro: `drag`）
 - [x] 札が1行に並んでいるとき、指が札の行の上下に外れていても、指の x 座標で入る位置が決まる（Vitest: `slotIndex`）
+- [x] 札が多い問題でも、回答エリアと札置き場が下のボタンより上に収まる（Vitest: `fitBoard`。画面でも確かめた）
 - [x] ドラッグしている間、入る位置に空きの枠が出て、ほかの札がそれを空けるように動く（目で確かめた）
 - [x] 出題の画面がスクロールしない（目で確かめた）
 - [x] 回答エリアの中での並べ替えと、札置き場へ戻す動きが「札を運ぶ」の節のとおりになる（Vitest: reducer と `resolveDrop`）
