@@ -5,6 +5,7 @@ import {
   canMoveCards,
   canReveal,
   otherAnswers,
+  placedAnswer,
   placedTexts,
   poolCards,
   type QuizAction,
@@ -97,6 +98,7 @@ describe("答え合わせ", () => {
     const state = run(...correct, { type: "check" });
     expect(state.phase).toBe("correct");
     expect(otherAnswers(state)).toEqual([fifthPower.answers[1]]);
+    expect(placedAnswer(state)).toEqual(fifthPower.answers[0]);
   });
 
   it("余った札があっても、どれかの正解と同じなら正解", () => {
@@ -105,6 +107,11 @@ describe("答え合わせ", () => {
     });
     expect(state.phase).toBe("correct");
     expect(otherAnswers(state)).toEqual([fifthPower.answers[0]]);
+    expect(placedAnswer(state)).toEqual(fifthPower.answers[1]);
+  });
+
+  it("どの正解とも違う並びなら placedAnswer は undefined になる", () => {
+    expect(placedAnswer(run(place(0), place(5)))).toBeUndefined();
   });
 
   it("間違えると incorrect になる", () => {

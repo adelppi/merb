@@ -21,6 +21,14 @@ appId: host.exp.Exponent
 - assertVisible: "正解"
 - assertVisible: "ほかの読み方"
 - assertVisible: "one hundred"
+# 「正解」の行と「ほかの読み方」の行に、読み方を聞くボタンを出す（押しても画面は変わらない）
+- tapOn:
+    text: "読み方を聞く"
+    index: 0
+- tapOn:
+    text: "読み方を聞く"
+    index: 1
+- assertVisible: "次の問題"
 # 正解のあとは札置き場を出さず、次の問題のボタンを出す
 - assertNotVisible: "hundreds"
 - assertNotVisible: "答え合わせ"
