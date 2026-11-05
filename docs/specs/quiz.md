@@ -106,7 +106,7 @@
 5. 読み上げる文字列は、「読み方の見せ方」の読み方のうち、英字の `a` と `A` を次のとおり変えたものにする（[D-0035](../decisions/D-0035-reading-speech.md)）。
    - 数式の文字の `a` と `A` は `eigh` にする。
    - 次の語の直前の小文字の `a` は冠詞なので、変えない: `half`、`third`、`quarter`、`fourth`、`fifth`、`hundred`、`thousand`、`remainder`。
-6. 端末が消音モードのときの音は [OQ-023](../open-questions.md#oq-023) で扱う。
+6. 端末が消音モードのときは音を鳴らさない（[D-0036](../decisions/D-0036-silent-mode.md)）。
 
 ## 文言
 
