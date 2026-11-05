@@ -53,3 +53,4 @@
 | [D-0032](D-0032-license.md) | ソースコードと問題を MIT ライセンスにする | 2026-11-04 |
 | [D-0033](D-0033-icon-and-splash.md) | アイコンは Icon Composer のファイルをそのまま使い、起動画面にシグマを出し、アプリを明るい表示に固定する | 2026-11-04 |
 | [D-0034](D-0034-store-pages.md) | プライバシーポリシーとサポートは GitHub Pages で公開し、問い合わせは GitHub の Issues で受ける | 2026-11-05 |
+| [D-0035](D-0035-reading-speech.md) | 読み方の音声は expo-speech で出し、数式の文字の a は eigh として読み上げる | 2026-11-05 |

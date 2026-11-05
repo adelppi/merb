@@ -1,3 +1,4 @@
+import * as Speech from "expo-speech";
 import { SymbolView } from "expo-symbols";
 import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -12,11 +13,18 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useI18n } from "../i18n/provider";
 import type { Answer } from "../questions/schema";
-import { otherAnswers, type QuizAction, type QuizState } from "../quiz/reducer";
+import { readingOf, speechOf } from "../questions/speech";
+import {
+  otherAnswers,
+  placedAnswer,
+  type QuizAction,
+  type QuizState,
+} from "../quiz/reducer";
 import { quizView } from "../quiz/view";
 import { CardBoard } from "./CardBoard";
 import { MathView } from "./MathView";
 import { PillButton } from "./PillButton";
+import { SpeakButton } from "./SpeakButton";
 import { colors } from "./theme";
 
 type Props = {
@@ -26,11 +34,6 @@ type Props = {
   next: () => void;
 };
 
-// 読み方。正解の text があれば text を、なければ cards を半角スペース1つでつないだもの。
-function readingOf(answer: Answer): string {
-  return answer.text ?? answer.cards.join(" ");
-}
-
 // 出題の画面の本体。戻るボタンは _layout.tsx のヘッダーで出す。
 export function QuizView({ state, dispatch, next }: Props) {
   const { locale, messages } = useI18n();
@@ -38,6 +41,12 @@ export function QuizView({ state, dispatch, next }: Props) {
   const view = quizView(state);
   const bottom = Math.max(insets.bottom, 16);
   const others = view.showCorrect ? otherAnswers(state) : [];
+  const placed = view.showCorrect ? placedAnswer(state) : undefined;
+  const questionId = state.question.id;
+
+  // 次の問題を出したときと、画面を離れたときは読み上げを止める。
+  // biome-ignore lint/correctness/useExhaustiveDependencies: 問題が変わるたびに、前の問題の読み上げを止める
+  useEffect(() => () => void Speech.stop(), [questionId]);
 
   const status = (
     <>
@@ -46,24 +55,28 @@ export function QuizView({ state, dispatch, next }: Props) {
       ) : null}
       {view.showCorrect ? (
         <>
-          <Badge
-            symbol="checkmark.circle.fill"
-            color={colors.green}
-            textColor={colors.greenText}
-            label={messages.Quiz.correct}
-          />
-          {others.length > 0 ? (
-            <Readings
-              title={messages.Quiz.otherReadings}
-              readings={others.map(readingOf)}
+          <View style={styles.statusRow}>
+            <Badge
+              symbol="checkmark.circle.fill"
+              color={colors.green}
+              textColor={colors.greenText}
+              label={messages.Quiz.correct}
             />
+            {placed ? (
+              <View style={styles.statusSpeak}>
+                <SpeakButton text={speechOf(placed)} />
+              </View>
+            ) : null}
+          </View>
+          {others.length > 0 ? (
+            <Readings title={messages.Quiz.otherReadings} answers={others} />
           ) : null}
         </>
       ) : null}
       {view.showAnswers ? (
         <Readings
           title={messages.Quiz.answer}
-          readings={state.question.answers.map(readingOf)}
+          answers={state.question.answers}
         />
       ) : null}
     </>
@@ -182,17 +195,20 @@ function IncorrectBadge({ label }: { label: string }) {
 }
 
 // 読み方の一覧。画面の文言と同じ書体で、区切り線で分けて並べる。
-function Readings({ title, readings }: { title: string; readings: string[] }) {
+function Readings({ title, answers }: { title: string; answers: Answer[] }) {
   return (
     <View style={styles.readings}>
       <Text style={styles.readingsTitle}>{title}</Text>
       <View style={styles.readingsBox}>
-        {readings.map((reading, index) => (
-          <View key={reading}>
+        {answers.map((answer, index) => (
+          <View key={readingOf(answer)}>
             {index > 0 ? <View style={styles.separator} /> : null}
-            <Text accessibilityLanguage="en-US" style={styles.reading}>
-              {reading}
-            </Text>
+            <View style={styles.readingRow}>
+              <Text accessibilityLanguage="en-US" style={styles.reading}>
+                {readingOf(answer)}
+              </Text>
+              <SpeakButton text={speechOf(answer)} />
+            </View>
           </View>
         ))}
       </View>
@@ -233,7 +249,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: colors.surface,
   },
-  reading: { fontSize: 17, lineHeight: 25, color: colors.text },
+  reading: { flex: 1, fontSize: 17, lineHeight: 25, color: colors.text },
+  readingRow: { flexDirection: "row", alignItems: "center", gap: 8 },
+  // Badge の上の余白とそろえ、「正解」の文字と高さを合わせる。
+  statusSpeak: { marginTop: 12 },
+  statusRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
   separator: {
     height: StyleSheet.hairlineWidth,
     marginBottom: 8,

@@ -144,6 +144,12 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }
 
+// 回答エリアに並べた札と同じ正解。並びがどの正解とも違えば undefined を返す。
+export function placedAnswer(state: QuizState): Answer | undefined {
+  const others = otherAnswers(state);
+  return state.question.answers.find((answer) => !others.includes(answer));
+}
+
 // 正解したときに「ほかの読み方」として見せる正解。回答エリアに並べたもの以外を answers の順に返す。
 export function otherAnswers(state: QuizState): Answer[] {
   const texts = placedTexts(state);
