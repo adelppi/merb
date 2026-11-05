@@ -52,3 +52,4 @@
 | [D-0031](D-0031-release-policy.md) | App Store へ TestFlight の配布なしで出し、公開後の修正に EAS Update を使う | 2026-11-04 |
 | [D-0032](D-0032-license.md) | ソースコードと問題を MIT ライセンスにする | 2026-11-04 |
 | [D-0033](D-0033-icon-and-splash.md) | アイコンは Icon Composer のファイルをそのまま使い、起動画面にシグマを出し、アプリを明るい表示に固定する | 2026-11-04 |
+| [D-0034](D-0034-store-pages.md) | プライバシーポリシーとサポートは GitHub Pages で公開し、問い合わせは GitHub の Issues で受ける | 2026-11-05 |

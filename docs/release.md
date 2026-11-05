@@ -102,4 +102,4 @@ eas update:rollback
 
 ## 掲載情報
 
-App Store Connect の名前は `merb` にする。無料で、全地域に配信する。説明文、スクリーンショット、プライバシーポリシー、サポートの URL は、掲載情報の Issue で用意する。
+App Store Connect に入力する内容は [store-listing.md](store-listing.md) に書いてある。
