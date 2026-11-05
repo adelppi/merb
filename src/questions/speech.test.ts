@@ -14,12 +14,12 @@ describe("readingOf", () => {
 
 describe("speechOf", () => {
   it.each([
-    ["a plus or minus b", "ay plus or minus b"],
-    ["four a c", "four ay c"],
-    ["two a", "two ay"],
-    ["A inverse", "ay inverse"],
-    ["x minus a, all over h", "x minus ay, all over h"],
-  ])("数式の文字の a を ay にする: %s", (reading, expected) => {
+    ["a plus or minus b", "eigh plus or minus b"],
+    ["four a c", "four eigh c"],
+    ["two a", "two eigh"],
+    ["A inverse", "eigh inverse"],
+    ["x minus a, all over h", "x minus eigh, all over h"],
+  ])("数式の文字の a を eigh にする: %s", (reading, expected) => {
     expect(speechOf({ cards: reading.split(" "), text: reading })).toBe(
       expected,
     );

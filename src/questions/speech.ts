@@ -22,7 +22,7 @@ export function readingOf(answer: Answer): string {
   return answer.text ?? answer.cards.join(" ");
 }
 
-// 読み上げる文字列。音声合成は a と A を冠詞と同じ長さで読むので、数式の文字は ay にする（D-0035）。
+// 読み上げる文字列。音声合成は a と A を文字の名前で読まないので、数式の文字は eigh にする（D-0035）。
 export function speechOf(answer: Answer): string {
-  return readingOf(answer).replace(letterA, "ay");
+  return readingOf(answer).replace(letterA, "eigh");
 }
