@@ -7,9 +7,10 @@ App Store Connect に入力する内容を書く。公開の URL の決め方は
 | 項目 | 内容 |
 |---|---|
 | 名前 | merb |
+| 主な言語 | 日本語 |
 | カテゴリ | 教育 |
 | 価格 | 無料 |
-| 配信地域 | すべての地域 |
+| 配信地域 | 日本だけ（[D-0037](decisions/D-0037-japan-only.md)） |
 | 著作権 | 2026 adelppi |
 | プライバシーポリシー | https://adelppi.github.io/merb/privacy.html |
 | サポート | https://adelppi.github.io/merb/support.html |
@@ -38,6 +39,8 @@ merb は、数式の英語での読み方を、問題を解きながら学ぶア
 
 ## 英語の掲載文
 
+日本だけで配信するので、入力は任意にする。
+
 Subtitle: Read math in English
 
 Description:
@@ -58,6 +61,23 @@ No account is needed.
 
 Keywords: `math,mathematics,English,reading,expression,LaTeX,study`
 
+## スクリーンショット
+
+`~/Desktop/merb-store-screenshots/` の画像を使う。リポジトリには入れていない。
+
+| フォルダ | サイズ | 扱い |
+|---|---|---|
+| `medium` | 1206 × 2622 | 必須 |
+| `large` | 1320 × 2868 | 任意 |
+
+## 配信地域の設定
+
+「価格および配信状況」の「App の配信状況」で、「特定の国または地域」を選び、日本だけを選ぶ。今後追加される国や地域に自動で配信する項目は選ばない。審査に提出する前に設定する。
+
+## トレーダーの申告
+
+EU に配信しなくても、トレーダーかどうかの申告が要る。Account Holder か Admin が、「ビジネス」の「契約」にある Digital Services Act の項目で申告する。トレーダーに当たるかどうかは、Apple の案内を読んで adelppi が判断する。
+
 ## プライバシーの申告
 
 アプリは EAS Update のために、インストールごとのランダムな id を Expo に送る。そのため、「データを収集しない」とは答えず、次のとおり申告する。
@@ -72,6 +92,12 @@ Keywords: `math,mathematics,English,reading,expression,LaTeX,study`
 ## 年齢区分
 
 暴力、性的な内容、賭博などの質問は「なし」で答える。アカウントがなく、利用者同士のやり取りもない。新しい質問は、回答のときに内容を確かめる。
+
+## 審査用のメモ
+
+```text
+アカウントの登録は要りません。読み方の音声は、iPhone が消音モードのときは鳴りません。音声を確かめるときは、消音モードを切ってください。
+```
 
 ## 輸出コンプライアンス
 

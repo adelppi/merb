@@ -44,3 +44,5 @@ adelppi がアイコンを作り、App Store へ出す準備を依頼した。�
 - `docs/release.md` を足し、`docs/README.md` の一覧に足した。
 - ライセンスの種類を [OQ-022](../open-questions.md#oq-022) に書き、[D-0032](D-0032-license.md) で決めた。
 - `app.json`、`eas.json`、`package.json` はこの決定の PR では変えない。別の Issue で変える。
+
+D-0037 で配信地域の決定を置き換えた。
