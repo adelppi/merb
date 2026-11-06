@@ -95,8 +95,32 @@ EU に配信しなくても、トレーダーかどうかの申告が要る。Ac
 
 ## 審査用のメモ
 
+App Review の Guideline 2.1 の指摘に答える文面である。App Review Information の Notes に入れる。`[RECORDING]` は、実機の画面収録を渡す方法に置き換える。
+
 ```text
-アカウントの登録は要りません。読み方の音声は、iPhone が消音モードのときは鳴りません。音声を確かめるときは、消音モードを切ってください。
+1. Screen recording
+[RECORDING]
+The recording was captured on a physical iPhone. It starts by launching the app and shows the typical flow. The app has no account registration, login, user-generated content, or paid content.
+
+2. Purpose and target audience
+merb is a study app for math learners educated in Japanese who want to express mathematics in English. Such learners often can read expressions only in Japanese. merb solves this by letting them practice the English reading of expressions: the app shows an expression, and the user arranges English cards to form its reading.
+
+3. Setup and main features
+No login, account, setup, or sample files are needed.
+- The app opens in Japanese. To use English, tap the gear at the top right and choose English, then go back.
+- Select one or more categories on the home screen, then tap "Start with selected".
+- Tap or drag cards into the answer area, then tap "Check".
+- After a correct answer or after "Show answer", tap a speaker button to hear the reading. Speech does not play while the iPhone is in silent mode.
+- Tap "Next question" to continue. Questions answered incorrectly can be retried with "Missed questions" on the home screen.
+
+4. External services
+The app uses Expo EAS Update to check for and deliver app updates. It uses the iOS speech synthesis feature for audio. All questions are bundled in the app. The app calls no AI service while running; question content was prepared in advance with the help of a large language model during development, checked, and included in the app. There is no authentication service, payment processor, or external data provider.
+
+5. Regional differences
+The app is distributed only in Japan. Its features and content do not differ by region.
+
+6. Regulated industry and third-party material
+The app is not in a regulated industry and does not include protected third-party material. It uses open-source libraries, and the questions are written for this app.
 ```
 
 ## 輸出コンプライアンス
