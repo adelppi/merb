@@ -55,7 +55,7 @@
 |---|---|---|
 | `numbers` | 数 | Numbers |
 | `fractions` | 分数 | Fractions |
-| `scripts-powers-roots` | 添え字・累乗・根号 | Suffixes, powers, roots |
+| `scripts-powers-roots` | 添え字・累乗・根号 | Subscripts, powers, roots |
 | `arithmetic` | 四則演算・括弧 | Arithmetic, parentheses |
 | `vectors-functions` | ベクトル・行列・関数 | Vectors, matrices, functions |
 | `calculus` | 微分・積分・総和 | Derivatives, integrals, sums |

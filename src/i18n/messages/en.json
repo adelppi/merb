@@ -18,7 +18,7 @@
   "CategoryNames": {
     "numbers": "Numbers",
     "fractions": "Fractions",
-    "scripts-powers-roots": "Suffixes, powers, roots",
+    "scripts-powers-roots": "Subscripts, powers, roots",
     "arithmetic": "Arithmetic, parentheses",
     "vectors-functions": "Vectors, matrices, functions",
     "calculus": "Derivatives, integrals, sums",
