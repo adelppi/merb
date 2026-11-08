@@ -21,13 +21,15 @@
 - Next.js の Web 版は削除した（D-0012、Issue #31）。Vercel との連携もやめた（D-0013）。
 - 画面の操作テストは Maestro で書き、フローを `maestro/` に置く（D-0021）。React Native Testing Library と `jest-expo` は入れない。画面が見せる状態の判断と、札の運び先の決定は、純粋な関数にして Vitest で確かめる。
 - 数式の描画と札のドラッグの道具は D-0016、文言の切り替え（自作の Context）と言語の保存（AsyncStorage）は D-0019 で決めた。`katex` は、問題の JSON の検査（`src/questions/latex.ts`）と数式の描画に使う。
+- 読み方の音声は `expo-speech` で出す（D-0035）。読み上げる文字列は `src/questions/speech.ts` で作り、数式の文字の `a` は `eigh` にする。
+- 公開後の修正は EAS Update（`expo-updates`）で届ける（D-0031）。リリースの手順は `docs/release.md`、App Store の掲載情報は `docs/store-listing.md` にある。
 
 ソースコードの置き場は次のとおり。理由は `docs/decisions/D-0005-architecture.md` に書いてある。
 
 | 場所 | 中身 |
 |---|---|
 | `src/app/` | Expo Router の画面。薄く保ち、問題を読んで画面の部品に渡すだけにする。`_layout.tsx` が `I18nProvider` を載せる。いまは `index.tsx`（ホーム。分類を選ぶ画面を兼ねる）、`quiz.tsx`（出題）、`settings.tsx`（設定）がある |
-| `src/questions/` | 問題の形、札の生成、判定、問題の JSON の検査。純粋な関数で書く。アプリに同梱する問題は `bundled.ts` が読み込む。`content/questions/` に JSON を足したら、`bundled.ts` にも足す |
+| `src/questions/` | 問題の形、札の生成、判定、問題の JSON の検査、読み上げる文字列（`speech.ts`）。純粋な関数で書く。アプリに同梱する問題は `bundled.ts` が読み込む。`content/questions/` に JSON を足したら、`bundled.ts` にも足す |
 | `src/quiz/` | 出題の進行。reducer、札を混ぜる処理、次の問題を選ぶ処理、`useQuiz`。分類の選択の処理（`categories.ts`）と、選んだ分類の保存（`selection-storage.ts`、`selection-provider.tsx`）もここに置く |
 | `src/mistakes/` | 間違えた問題の id の記録。追加と削除の処理、再挑戦で出す問題の選び方、AsyncStorage への保存と読み出し（`storage.ts`）、`MistakesProvider` と `useMistakes()`（`provider.tsx`） |
 | `src/i18n/` | 言語の型と値の検査（`locale.ts`）、言語の保存と読み出し（`storage.ts`）、`I18nProvider` と `useI18n()`（`provider.tsx`）。文言のファイルは `src/i18n/messages/` に置く |
@@ -37,6 +39,7 @@
 | `maestro/` | Maestro の操作テストのフロー（YAML）。シミュレーターの Expo Go に対して手元で実行する |
 | `assets/` | アプリのアイコン（`merb.icon`）と起動画面の画像 |
 | `app.json` | Expo の設定 |
+| `eas.json` | EAS Build と EAS Submit の設定 |
 
 画面の文言は、`useI18n()` が返す `messages` から読む。キーを足すときは、`ja.json` と `en.json` に同じ構造で足す。
 
